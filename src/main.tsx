@@ -5,21 +5,44 @@ import {
     createMemoryRouter,
 } from 'react-router-dom';
 
-import { MemoryCheck } from './routes/MemoryCheck';
+import { ErrorAppletMode } from './routes/ErrorAppletMode';
+import { ErrorMissingProdKeys } from './routes/ErrorMissingProdKeys';
 import { Select } from './routes/Select';
+import { Generate } from './routes/Generate';
+import { isFullMemoryMode } from './is-applet-mode';
+import { hasProdKeys } from './prod-keys';
+import { RouteErrorBoundary } from './routes/Error';
 
 const routes = [
     {
-        path: '/',
-        element: <MemoryCheck />,
+        path: '/error-applet-mode',
+        element: <ErrorAppletMode />,
+        errorElement: <RouteErrorBoundary />,
+    },
+    {
+        path: '/error-missing-prod-keys',
+        element: <ErrorMissingProdKeys />,
+        errorElement: <RouteErrorBoundary />,
     },
     {
         path: '/select',
         element: <Select />,
+        errorElement: <RouteErrorBoundary />,
+    },
+    {
+        path: '/generate',
+        element: <Generate />,
+        errorElement: <RouteErrorBoundary />,
     },
 ];
 
+const initialRoute = !isFullMemoryMode() ? '/error-applet-mode' :
+    !hasProdKeys() ? '/error-missing-prod-keys' :
+        '/select';
+
 const router = createMemoryRouter(routes, {
+    initialEntries: [initialRoute],
+    initialIndex: 0
 });
 
 render(<RouterProvider router={router} />, screen);

@@ -12,6 +12,11 @@ interface Module {
 
 interface ModuleInitOptions {
     noInitialRun?: boolean;
+    wasmBinary?: ArrayBuffer;
+    print?: (text: string) => void;
+    printErr?: (text: string) => void;
+    preRun?: (Module: Module) => void;
+    onRuntimeInitialized?: () => void;
 }
 
 export default function (options: ModuleInitOptions): Promise<Module>;

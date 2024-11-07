@@ -4,6 +4,9 @@ function* nroIterator(path: string | URL) {
         return;
     }
     for (const entry of entries) {
+        if (!entry.endsWith('.nro')) {
+            continue;
+        }
         const fullPath = new URL(entry, path);
         const data = Switch.readFileSync(fullPath);
         if (!data) {
