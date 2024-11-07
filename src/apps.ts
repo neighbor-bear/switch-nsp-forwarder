@@ -12,9 +12,8 @@ function* nroIterator(path: string | URL) {
         if (!data) {
             continue;
         }
-        const app = new Switch.Application(data)
-        yield app;
+        yield fullPath;
     }
 }
 
-export const apps = [...nroIterator('sdmc:/switch/')];
+export const apps: [string, Switch.Application][] = [...nroIterator('sdmc:/switch/')].map((fullPath) => [fullPath.href, new Switch.Application(Switch.readFileSync(fullPath))]);

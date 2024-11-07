@@ -2,6 +2,7 @@ import { NACP } from '@tootallnate/nacp';
 import { Text, useRoot } from 'react-tela';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { prodKeys } from '../prod-keys';
 import type { Module } from '../hacbrewpack';
 
 export function Generate() {
@@ -12,12 +13,17 @@ export function Generate() {
     useEffect(() => {
         (async () => {
             const ModuleFactory = await import('../hacbrewpack.js');
-            const titleId = '01b7b5d958110000';
+            const titleId = '01b7b5d858110000';
             const helloWasm = Switch.readFileSync('romfs:/hacbrewpack.wasm');
             if (!helloWasm) {
                 setStatus('error: missing `hacbrewpack.wasm` file');
                 return;
             }
+            if (!prodKeys) {
+                setStatus('error: missing `prod.keys` file');
+                return;
+            }
+            const keys = new Uint8Array(prodKeys);
 
             let Module: Module;
             await ModuleFactory.default({
@@ -36,7 +42,6 @@ export function Generate() {
                     setStatus('preRun');
                     const { FS } = Module;
 
-                    const keys = new Uint8Array(Switch.readFileSync('sdmc:/switch/prod.keys'));
                     FS.writeFile('/keys.dat', keys);
 
                     const main = new Uint8Array(Switch.readFileSync('romfs:/template/exefs/main'));
@@ -62,8 +67,8 @@ export function Generate() {
                     //FS.writeFile('/logo/StartupMovie.gif', startupMovie);
 
                     FS.mkdir('/romfs');
-                    FS.writeFile('/romfs/nextArgv', 'sdmc:/hbmenu.nro');
-                    FS.writeFile('/romfs/nextNroPath', 'sdmc:/hbmenu.nro');
+                    FS.writeFile('/romfs/nextArgv', state.path);
+                    FS.writeFile('/romfs/nextNroPath', state.path);
                 },
                 onRuntimeInitialized: () => {
                     setStatus('onRuntimeInitialized');
@@ -71,6 +76,21 @@ export function Generate() {
                         const exitCode = Module.callMain(['--nopatchnacplogo', '--titleid', titleId, '--nologo']);
                         //const exitCode = 1;
                         setStatus(`exit code: ${exitCode}`);
+
+                        if (exitCode === 0) {
+                            try {
+                                const nspName = Module.FS.readdir('/hacbrewpack_nsp').filter((n) =>
+                                    n.endsWith('.nsp')
+                                )[0];
+
+                                const data = Module.FS.readFile(`/hacbrewpack_nsp/${nspName}`);
+                                const outUrl = new URL(nspName, 'sdmc:/');
+                                Switch.writeFileSync(outUrl, data);
+                                setStatus(`Saved NSP to ${outUrl}`);
+                            } catch (err) {
+                                setStatus(`Failed to locate NSP file: ${err.message}`);
+                            }
+                        }
                     } catch (err) {
                         setStatus(`error: ${err}`);
                     }
