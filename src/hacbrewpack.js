@@ -1,6 +1,6 @@
 var hacbrewpack = (() => {
 	var _scriptName =
-		typeof document != "undefined" ? document.currentScript?.src : undefined;
+		typeof document != 'undefined' ? document.currentScript?.src : undefined;
 
 	return function (moduleArg = {}) {
 		var moduleRtn;
@@ -28,24 +28,24 @@ var hacbrewpack = (() => {
 			readyPromiseReject = reject;
 		});
 		[
-			"_memory",
-			"___indirect_function_table",
-			"_main",
-			"onRuntimeInitialized",
+			'_memory',
+			'___indirect_function_table',
+			'_main',
+			'onRuntimeInitialized',
 		].forEach((prop) => {
 			if (!Object.getOwnPropertyDescriptor(readyPromise, prop)) {
 				Object.defineProperty(readyPromise, prop, {
 					get: () =>
 						abort(
-							"You are getting " +
+							'You are getting ' +
 								prop +
-								" on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js",
+								' on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js',
 						),
 					set: () =>
 						abort(
-							"You are setting " +
+							'You are setting ' +
 								prop +
-								" on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js",
+								' on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js',
 						),
 				});
 			}
@@ -70,16 +70,16 @@ var hacbrewpack = (() => {
 		var moduleOverrides = Object.assign({}, Module);
 
 		var arguments_ = [];
-		var thisProgram = "./this.program";
+		var thisProgram = './this.program';
 		var quit_ = (status, toThrow) => {
 			throw toThrow;
 		};
 
 		// `/` should be present at the end if `scriptDirectory` is not empty
-		var scriptDirectory = "";
+		var scriptDirectory = '';
 		function locateFile(path) {
-			if (Module["locateFile"]) {
-				return Module["locateFile"](path, scriptDirectory);
+			if (Module['locateFile']) {
+				return Module['locateFile'](path, scriptDirectory);
 			}
 			return scriptDirectory + path;
 		}
@@ -89,12 +89,12 @@ var hacbrewpack = (() => {
 
 		if (ENVIRONMENT_IS_SHELL) {
 			if (
-				(typeof process == "object" && typeof require === "function") ||
-				typeof window == "object" ||
-				typeof importScripts == "function"
+				(typeof process == 'object' && typeof require === 'function') ||
+				typeof window == 'object' ||
+				typeof importScripts == 'function'
 			)
 				throw new Error(
-					"not compiled for this environment (did you build to HTML and try to run it not on the web, or set ENVIRONMENT to something - like node - and run it someplace else - like on the web?)",
+					'not compiled for this environment (did you build to HTML and try to run it not on the web, or set ENVIRONMENT to something - like node - and run it someplace else - like on the web?)',
 				);
 		}
 
@@ -105,7 +105,7 @@ var hacbrewpack = (() => {
 			if (ENVIRONMENT_IS_WORKER) {
 				// Check worker, not web, since window could be polyfilled
 				scriptDirectory = self.location.href;
-			} else if (typeof document != "undefined" && document.currentScript) {
+			} else if (typeof document != 'undefined' && document.currentScript) {
 				// web
 				scriptDirectory = document.currentScript.src;
 			}
@@ -120,41 +120,41 @@ var hacbrewpack = (() => {
 			// and scriptDirectory will correctly be replaced with an empty string.
 			// If scriptDirectory contains a query (starting with ?) or a fragment (starting with #),
 			// they are removed because they could contain a slash.
-			if (scriptDirectory.startsWith("blob:")) {
-				scriptDirectory = "";
+			if (scriptDirectory.startsWith('blob:')) {
+				scriptDirectory = '';
 			} else {
 				scriptDirectory = scriptDirectory.substr(
 					0,
-					scriptDirectory.replace(/[?#].*/, "").lastIndexOf("/") + 1,
+					scriptDirectory.replace(/[?#].*/, '').lastIndexOf('/') + 1,
 				);
 			}
 
-			if (!(typeof window == "object" || typeof importScripts == "function"))
+			if (!(typeof window == 'object' || typeof importScripts == 'function'))
 				throw new Error(
-					"not compiled for this environment (did you build to HTML and try to run it not on the web, or set ENVIRONMENT to something - like node - and run it someplace else - like on the web?)",
+					'not compiled for this environment (did you build to HTML and try to run it not on the web, or set ENVIRONMENT to something - like node - and run it someplace else - like on the web?)',
 				);
 
 			{
 				// include: web_or_worker_shell_read.js
 				readAsync = (url) => {
-					assert(!isFileURI(url), "readAsync does not work with file:// URLs");
-					return fetch(url, { credentials: "same-origin" }).then((response) => {
+					assert(!isFileURI(url), 'readAsync does not work with file:// URLs');
+					return fetch(url, { credentials: 'same-origin' }).then((response) => {
 						if (response.ok) {
 							return response.arrayBuffer();
 						}
 						return Promise.reject(
-							new Error(response.status + " : " + response.url),
+							new Error(response.status + ' : ' + response.url),
 						);
 					});
 				};
 				// end include: web_or_worker_shell_read.js
 			}
 		} else {
-			throw new Error("environment detection error");
+			throw new Error('environment detection error');
 		}
 
-		var out = Module["print"] || console.log.bind(console);
-		var err = Module["printErr"] || console.error.bind(console);
+		var out = Module['print'] || console.log.bind(console);
+		var err = Module['printErr'] || console.error.bind(console);
 
 		// Merge back in the overrides
 		Object.assign(Module, moduleOverrides);
@@ -168,83 +168,83 @@ var hacbrewpack = (() => {
 		// expected to arrive, and second, by using a local everywhere else that can be
 		// minified.
 
-		if (Module["arguments"]) arguments_ = Module["arguments"];
-		legacyModuleProp("arguments", "arguments_");
+		if (Module['arguments']) arguments_ = Module['arguments'];
+		legacyModuleProp('arguments', 'arguments_');
 
-		if (Module["thisProgram"]) thisProgram = Module["thisProgram"];
-		legacyModuleProp("thisProgram", "thisProgram");
+		if (Module['thisProgram']) thisProgram = Module['thisProgram'];
+		legacyModuleProp('thisProgram', 'thisProgram');
 
 		// perform assertions in shell.js after we set up out() and err(), as otherwise if an assertion fails it cannot print the message
 		// Assertions on removed incoming Module JS APIs.
 		assert(
-			typeof Module["memoryInitializerPrefixURL"] == "undefined",
-			"Module.memoryInitializerPrefixURL option was removed, use Module.locateFile instead",
+			typeof Module['memoryInitializerPrefixURL'] == 'undefined',
+			'Module.memoryInitializerPrefixURL option was removed, use Module.locateFile instead',
 		);
 		assert(
-			typeof Module["pthreadMainPrefixURL"] == "undefined",
-			"Module.pthreadMainPrefixURL option was removed, use Module.locateFile instead",
+			typeof Module['pthreadMainPrefixURL'] == 'undefined',
+			'Module.pthreadMainPrefixURL option was removed, use Module.locateFile instead',
 		);
 		assert(
-			typeof Module["cdInitializerPrefixURL"] == "undefined",
-			"Module.cdInitializerPrefixURL option was removed, use Module.locateFile instead",
+			typeof Module['cdInitializerPrefixURL'] == 'undefined',
+			'Module.cdInitializerPrefixURL option was removed, use Module.locateFile instead',
 		);
 		assert(
-			typeof Module["filePackagePrefixURL"] == "undefined",
-			"Module.filePackagePrefixURL option was removed, use Module.locateFile instead",
+			typeof Module['filePackagePrefixURL'] == 'undefined',
+			'Module.filePackagePrefixURL option was removed, use Module.locateFile instead',
 		);
 		assert(
-			typeof Module["read"] == "undefined",
-			"Module.read option was removed",
+			typeof Module['read'] == 'undefined',
+			'Module.read option was removed',
 		);
 		assert(
-			typeof Module["readAsync"] == "undefined",
-			"Module.readAsync option was removed (modify readAsync in JS)",
+			typeof Module['readAsync'] == 'undefined',
+			'Module.readAsync option was removed (modify readAsync in JS)',
 		);
 		assert(
-			typeof Module["readBinary"] == "undefined",
-			"Module.readBinary option was removed (modify readBinary in JS)",
+			typeof Module['readBinary'] == 'undefined',
+			'Module.readBinary option was removed (modify readBinary in JS)',
 		);
 		assert(
-			typeof Module["setWindowTitle"] == "undefined",
-			"Module.setWindowTitle option was removed (modify emscripten_set_window_title in JS)",
+			typeof Module['setWindowTitle'] == 'undefined',
+			'Module.setWindowTitle option was removed (modify emscripten_set_window_title in JS)',
 		);
 		assert(
-			typeof Module["TOTAL_MEMORY"] == "undefined",
-			"Module.TOTAL_MEMORY has been renamed Module.INITIAL_MEMORY",
+			typeof Module['TOTAL_MEMORY'] == 'undefined',
+			'Module.TOTAL_MEMORY has been renamed Module.INITIAL_MEMORY',
 		);
-		legacyModuleProp("asm", "wasmExports");
-		legacyModuleProp("readAsync", "readAsync");
-		legacyModuleProp("readBinary", "readBinary");
-		legacyModuleProp("setWindowTitle", "setWindowTitle");
-		var IDBFS = "IDBFS is no longer included by default; build with -lidbfs.js";
+		legacyModuleProp('asm', 'wasmExports');
+		legacyModuleProp('readAsync', 'readAsync');
+		legacyModuleProp('readBinary', 'readBinary');
+		legacyModuleProp('setWindowTitle', 'setWindowTitle');
+		var IDBFS = 'IDBFS is no longer included by default; build with -lidbfs.js';
 		var PROXYFS =
-			"PROXYFS is no longer included by default; build with -lproxyfs.js";
+			'PROXYFS is no longer included by default; build with -lproxyfs.js';
 		var WORKERFS =
-			"WORKERFS is no longer included by default; build with -lworkerfs.js";
+			'WORKERFS is no longer included by default; build with -lworkerfs.js';
 		var FETCHFS =
-			"FETCHFS is no longer included by default; build with -lfetchfs.js";
+			'FETCHFS is no longer included by default; build with -lfetchfs.js';
 		var ICASEFS =
-			"ICASEFS is no longer included by default; build with -licasefs.js";
+			'ICASEFS is no longer included by default; build with -licasefs.js';
 		var JSFILEFS =
-			"JSFILEFS is no longer included by default; build with -ljsfilefs.js";
-		var OPFS = "OPFS is no longer included by default; build with -lopfs.js";
+			'JSFILEFS is no longer included by default; build with -ljsfilefs.js';
+		var OPFS = 'OPFS is no longer included by default; build with -lopfs.js';
 
 		var NODEFS =
-			"NODEFS is no longer included by default; build with -lnodefs.js";
+			'NODEFS is no longer included by default; build with -lnodefs.js';
 
 		assert(
 			!ENVIRONMENT_IS_WORKER,
-			"worker environment detected but not enabled at build time.  Add `worker` to `-sENVIRONMENT` to enable.",
+			'worker environment detected but not enabled at build time.  Add `worker` to `-sENVIRONMENT` to enable.',
 		);
 
 		assert(
 			!ENVIRONMENT_IS_NODE,
-			"node environment detected but not enabled at build time.  Add `node` to `-sENVIRONMENT` to enable.",
+			'node environment detected but not enabled at build time.  Add `node` to `-sENVIRONMENT` to enable.',
 		);
 
 		assert(
 			!ENVIRONMENT_IS_SHELL,
-			"shell environment detected but not enabled at build time.  Add `shell` to `-sENVIRONMENT` to enable.",
+			'shell environment detected but not enabled at build time.  Add `shell` to `-sENVIRONMENT` to enable.',
 		);
 
 		// end include: shell.js
@@ -260,11 +260,11 @@ var hacbrewpack = (() => {
 		// An online HTML version (which may be of a different version of Emscripten)
 		//    is up at http://kripken.github.io/emscripten-site/docs/api_reference/preamble.js.html
 
-		var wasmBinary = Module["wasmBinary"];
-		legacyModuleProp("wasmBinary", "wasmBinary");
+		var wasmBinary = Module['wasmBinary'];
+		legacyModuleProp('wasmBinary', 'wasmBinary');
 
-		if (typeof WebAssembly != "object") {
-			err("no native wasm support detected");
+		if (typeof WebAssembly != 'object') {
+			err('no native wasm support detected');
 		}
 
 		// Wasm globals
@@ -291,7 +291,7 @@ var hacbrewpack = (() => {
 		/** @type {function(*, string=)} */
 		function assert(condition, text) {
 			if (!condition) {
-				abort("Assertion failed" + (text ? ": " + text : ""));
+				abort('Assertion failed' + (text ? ': ' + text : ''));
 			}
 		}
 
@@ -299,13 +299,13 @@ var hacbrewpack = (() => {
 		// builds with assertions.
 		function _malloc() {
 			abort(
-				"malloc() called but not included in the build - add `_malloc` to EXPORTED_FUNCTIONS",
+				'malloc() called but not included in the build - add `_malloc` to EXPORTED_FUNCTIONS',
 			);
 		}
 		function _free() {
 			// Show a helpful error since we used to include free by default in the past.
 			abort(
-				"free() called but not included in the build - add `_free` to EXPORTED_FUNCTIONS",
+				'free() called but not included in the build - add `_free` to EXPORTED_FUNCTIONS',
 			);
 		}
 
@@ -332,38 +332,38 @@ var hacbrewpack = (() => {
 		// include: runtime_shared.js
 		function updateMemoryViews() {
 			var b = wasmMemory.buffer;
-			Module["HEAP8"] = HEAP8 = new Int8Array(b);
-			Module["HEAP16"] = HEAP16 = new Int16Array(b);
-			Module["HEAPU8"] = HEAPU8 = new Uint8Array(b);
-			Module["HEAPU16"] = HEAPU16 = new Uint16Array(b);
-			Module["HEAP32"] = HEAP32 = new Int32Array(b);
-			Module["HEAPU32"] = HEAPU32 = new Uint32Array(b);
-			Module["HEAPF32"] = HEAPF32 = new Float32Array(b);
-			Module["HEAPF64"] = HEAPF64 = new Float64Array(b);
+			Module['HEAP8'] = HEAP8 = new Int8Array(b);
+			Module['HEAP16'] = HEAP16 = new Int16Array(b);
+			Module['HEAPU8'] = HEAPU8 = new Uint8Array(b);
+			Module['HEAPU16'] = HEAPU16 = new Uint16Array(b);
+			Module['HEAP32'] = HEAP32 = new Int32Array(b);
+			Module['HEAPU32'] = HEAPU32 = new Uint32Array(b);
+			Module['HEAPF32'] = HEAPF32 = new Float32Array(b);
+			Module['HEAPF64'] = HEAPF64 = new Float64Array(b);
 		}
 
 		// end include: runtime_shared.js
 		assert(
-			!Module["STACK_SIZE"],
-			"STACK_SIZE can no longer be set at runtime.  Use -sSTACK_SIZE at link time",
+			!Module['STACK_SIZE'],
+			'STACK_SIZE can no longer be set at runtime.  Use -sSTACK_SIZE at link time',
 		);
 
 		assert(
-			typeof Int32Array != "undefined" &&
-				typeof Float64Array !== "undefined" &&
+			typeof Int32Array != 'undefined' &&
+				typeof Float64Array !== 'undefined' &&
 				Int32Array.prototype.subarray != undefined &&
 				Int32Array.prototype.set != undefined,
-			"JS engine does not provide full typed array support",
+			'JS engine does not provide full typed array support',
 		);
 
 		// If memory is defined in wasm, the user can't provide it, or set INITIAL_MEMORY
 		assert(
-			!Module["wasmMemory"],
-			"Use of `wasmMemory` detected.  Use -sIMPORTED_MEMORY to define wasmMemory externally",
+			!Module['wasmMemory'],
+			'Use of `wasmMemory` detected.  Use -sIMPORTED_MEMORY to define wasmMemory externally',
 		);
 		assert(
-			!Module["INITIAL_MEMORY"],
-			"Detected runtime INITIAL_MEMORY setting.  Use -sIMPORTED_MEMORY to define wasmMemory dynamically",
+			!Module['INITIAL_MEMORY'],
+			'Detected runtime INITIAL_MEMORY setting.  Use -sIMPORTED_MEMORY to define wasmMemory dynamically',
 		);
 
 		// include: runtime_stack_check.js
@@ -403,7 +403,7 @@ var hacbrewpack = (() => {
 			// Also test the global address 0 for integrity.
 			if (HEAPU32[0 >> 2] != 0x63736d65 /* 'emsc' */) {
 				abort(
-					"Runtime error: The application has corrupted its heap memory area (address zero)!",
+					'Runtime error: The application has corrupted its heap memory area (address zero)!',
 				);
 			}
 		}
@@ -417,9 +417,9 @@ var hacbrewpack = (() => {
 		var runtimeInitialized = false;
 
 		function preRun() {
-			var preRuns = Module["preRun"];
+			var preRuns = Module['preRun'];
 			if (preRuns) {
-				if (typeof preRuns == "function") preRuns = [preRuns];
+				if (typeof preRuns == 'function') preRuns = [preRuns];
 				preRuns.forEach(addOnPreRun);
 			}
 			callRuntimeCallbacks(__ATPRERUN__);
@@ -431,7 +431,7 @@ var hacbrewpack = (() => {
 
 			checkStackCookie();
 
-			if (!Module["noFSInit"] && !FS.initialized) FS.init();
+			if (!Module['noFSInit'] && !FS.initialized) FS.init();
 			FS.ignorePermissions = false;
 
 			TTY.init();
@@ -447,9 +447,9 @@ var hacbrewpack = (() => {
 		function postRun() {
 			checkStackCookie();
 
-			var postRuns = Module["postRun"];
+			var postRuns = Module['postRun'];
 			if (postRuns) {
-				if (typeof postRuns == "function") postRuns = [postRuns];
+				if (typeof postRuns == 'function') postRuns = [postRuns];
 				postRuns.forEach(addOnPostRun);
 			}
 
@@ -485,19 +485,19 @@ var hacbrewpack = (() => {
 
 		assert(
 			Math.imul,
-			"This browser does not support Math.imul(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill",
+			'This browser does not support Math.imul(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill',
 		);
 		assert(
 			Math.fround,
-			"This browser does not support Math.fround(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill",
+			'This browser does not support Math.fround(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill',
 		);
 		assert(
 			Math.clz32,
-			"This browser does not support Math.clz32(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill",
+			'This browser does not support Math.clz32(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill',
 		);
 		assert(
 			Math.trunc,
-			"This browser does not support Math.trunc(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill",
+			'This browser does not support Math.trunc(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill',
 		);
 		// end include: runtime_math.js
 		// A counter of dependencies for calling run(). If we need to
@@ -523,14 +523,14 @@ var hacbrewpack = (() => {
 		function addRunDependency(id) {
 			runDependencies++;
 
-			Module["monitorRunDependencies"]?.(runDependencies);
+			Module['monitorRunDependencies']?.(runDependencies);
 
 			if (id) {
 				assert(!runDependencyTracking[id]);
 				runDependencyTracking[id] = 1;
 				if (
 					runDependencyWatcher === null &&
-					typeof setInterval != "undefined"
+					typeof setInterval != 'undefined'
 				) {
 					// Check for missing dependencies every few seconds
 					runDependencyWatcher = setInterval(() => {
@@ -543,30 +543,30 @@ var hacbrewpack = (() => {
 						for (var dep in runDependencyTracking) {
 							if (!shown) {
 								shown = true;
-								err("still waiting on run dependencies:");
+								err('still waiting on run dependencies:');
 							}
 							err(`dependency: ${dep}`);
 						}
 						if (shown) {
-							err("(end of list)");
+							err('(end of list)');
 						}
 					}, 10000);
 				}
 			} else {
-				err("warning: run dependency added without ID");
+				err('warning: run dependency added without ID');
 			}
 		}
 
 		function removeRunDependency(id) {
 			runDependencies--;
 
-			Module["monitorRunDependencies"]?.(runDependencies);
+			Module['monitorRunDependencies']?.(runDependencies);
 
 			if (id) {
 				assert(runDependencyTracking[id]);
 				delete runDependencyTracking[id];
 			} else {
-				err("warning: run dependency removed without ID");
+				err('warning: run dependency removed without ID');
 			}
 			if (runDependencies == 0) {
 				if (runDependencyWatcher !== null) {
@@ -583,9 +583,9 @@ var hacbrewpack = (() => {
 
 		/** @param {string|number=} what */
 		function abort(what) {
-			Module["onAbort"]?.(what);
+			Module['onAbort']?.(what);
 
-			what = "Aborted(" + what + ")";
+			what = 'Aborted(' + what + ')';
 			// TODO(sbc): Should we remove printing and leave it up to whoever
 			// catches the exception?
 			err(what);
@@ -619,7 +619,7 @@ var hacbrewpack = (() => {
 		// end include: memoryprofiler.js
 		// include: URIUtils.js
 		// Prefix of data URIs emitted by SINGLE_FILE and related options.
-		var dataURIPrefix = "data:application/octet-stream;base64,";
+		var dataURIPrefix = 'data:application/octet-stream;base64,';
 
 		/**
 		 * Indicates whether filename is a base64 data URI.
@@ -631,7 +631,7 @@ var hacbrewpack = (() => {
 		 * Indicates whether filename is delivered via file protocol (as opposed to http/https)
 		 * @noinline
 		 */
-		var isFileURI = (filename) => filename.startsWith("file://");
+		var isFileURI = (filename) => filename.startsWith('file://');
 		// end include: URIUtils.js
 		function createExportWrapper(name, nargs) {
 			return (...args) => {
@@ -653,7 +653,7 @@ var hacbrewpack = (() => {
 		// include: runtime_exceptions.js
 		// end include: runtime_exceptions.js
 		function findWasmBinary() {
-			var f = "hacbrewpack.wasm";
+			var f = 'hacbrewpack.wasm';
 			if (!isDataURI(f)) {
 				return locateFile(f);
 			}
@@ -669,7 +669,7 @@ var hacbrewpack = (() => {
 			if (readBinary) {
 				return readBinary(file);
 			}
-			throw "both async and sync fetching of the wasm failed";
+			throw 'both async and sync fetching of the wasm failed';
 		}
 
 		function getBinaryPromise(binaryFile) {
@@ -708,11 +708,11 @@ var hacbrewpack = (() => {
 		function instantiateAsync(binary, binaryFile, imports, callback) {
 			if (
 				!binary &&
-				typeof WebAssembly.instantiateStreaming == "function" &&
+				typeof WebAssembly.instantiateStreaming == 'function' &&
 				!isDataURI(binaryFile) &&
-				typeof fetch == "function"
+				typeof fetch == 'function'
 			) {
-				return fetch(binaryFile, { credentials: "same-origin" }).then(
+				return fetch(binaryFile, { credentials: 'same-origin' }).then(
 					(response) => {
 						// Suppress closure warning here since the upstream definition for
 						// instantiateStreaming only allows Promise<Repsponse> rather than
@@ -725,7 +725,7 @@ var hacbrewpack = (() => {
 							// We expect the most common failure cause to be a bad MIME type for the binary,
 							// in which case falling back to ArrayBuffer instantiation should work.
 							err(`wasm streaming compile failed: ${reason}`);
-							err("falling back to ArrayBuffer instantiation");
+							err('falling back to ArrayBuffer instantiation');
 							return instantiateArrayBuffer(binaryFile, imports, callback);
 						});
 					},
@@ -753,22 +753,22 @@ var hacbrewpack = (() => {
 			function receiveInstance(instance, module) {
 				wasmExports = instance.exports;
 
-				wasmMemory = wasmExports["memory"];
+				wasmMemory = wasmExports['memory'];
 
-				assert(wasmMemory, "memory not found in wasm exports");
+				assert(wasmMemory, 'memory not found in wasm exports');
 				updateMemoryViews();
 
-				wasmTable = wasmExports["__indirect_function_table"];
+				wasmTable = wasmExports['__indirect_function_table'];
 
-				assert(wasmTable, "table not found in wasm exports");
+				assert(wasmTable, 'table not found in wasm exports');
 
-				addOnInit(wasmExports["__wasm_call_ctors"]);
+				addOnInit(wasmExports['__wasm_call_ctors']);
 
-				removeRunDependency("wasm-instantiate");
+				removeRunDependency('wasm-instantiate');
 				return wasmExports;
 			}
 			// wait for the pthread pool (if any)
-			addRunDependency("wasm-instantiate");
+			addRunDependency('wasm-instantiate');
 
 			// Prefer streaming instantiation if available.
 			// Async compilation can be confusing when an error on the page overwrites Module
@@ -780,12 +780,12 @@ var hacbrewpack = (() => {
 				// receiveInstance() will swap in the exports (to Module.asm) so they can be called
 				assert(
 					Module === trueModule,
-					"the Module object should not be replaced during async compilation - perhaps the order of HTML elements is wrong?",
+					'the Module object should not be replaced during async compilation - perhaps the order of HTML elements is wrong?',
 				);
 				trueModule = null;
 				// TODO: Due to Closure regression https://github.com/google/closure-compiler/issues/3193, the above line no longer optimizes out down to the following line.
 				// When the regression is fixed, can restore the above PTHREADS-enabled path.
-				receiveInstance(result["instance"]);
+				receiveInstance(result['instance']);
 			}
 
 			// User shell pages can write their own Module.instantiateWasm = function(imports, successCallback) callback
@@ -794,9 +794,9 @@ var hacbrewpack = (() => {
 			// performing.
 			// Also pthreads and wasm workers initialize the wasm instance through this
 			// path.
-			if (Module["instantiateWasm"]) {
+			if (Module['instantiateWasm']) {
 				try {
-					return Module["instantiateWasm"](info, receiveInstance);
+					return Module['instantiateWasm'](info, receiveInstance);
 				} catch (e) {
 					err(`Module.instantiateWasm callback failed with error: ${e}`);
 					// If instantiation fails, reject the module ready promise.
@@ -827,12 +827,12 @@ var hacbrewpack = (() => {
 			var h8 = new Int8Array(h16.buffer);
 			h16[0] = 0x6373;
 			if (h8[0] !== 0x73 || h8[1] !== 0x63)
-				throw "Runtime error: expected the system to be little-endian! (Run with -sSUPPORT_BIG_ENDIAN to bypass)";
+				throw 'Runtime error: expected the system to be little-endian! (Run with -sSUPPORT_BIG_ENDIAN to bypass)';
 		})();
 
-		if (Module["ENVIRONMENT"]) {
+		if (Module['ENVIRONMENT']) {
 			throw new Error(
-				"Module.ENVIRONMENT has been deprecated. To force the environment, use the ENVIRONMENT compile-time option (for example, -sENVIRONMENT=web or -sENVIRONMENT=node)",
+				'Module.ENVIRONMENT has been deprecated. To force the environment, use the ENVIRONMENT compile-time option (for example, -sENVIRONMENT=web or -sENVIRONMENT=node)',
 			);
 		}
 
@@ -842,8 +842,8 @@ var hacbrewpack = (() => {
 					configurable: true,
 					get() {
 						let extra = incoming
-							? " (the initial value can be provided on Module, but after startup the value is only looked for on a local variable of that name)"
-							: "";
+							? ' (the initial value can be provided on Module, but after startup the value is only looked for on a local variable of that name)'
+							: '';
 						abort(
 							`\`Module.${prop}\` has been replaced by \`${newName}\`` + extra,
 						);
@@ -863,15 +863,15 @@ var hacbrewpack = (() => {
 		// forcing the filesystem exports a few things by default
 		function isExportedByForceFilesystem(name) {
 			return (
-				name === "FS_createPath" ||
-				name === "FS_createDataFile" ||
-				name === "FS_createPreloadedFile" ||
-				name === "FS_unlink" ||
-				name === "addRunDependency" ||
+				name === 'FS_createPath' ||
+				name === 'FS_createDataFile' ||
+				name === 'FS_createPreloadedFile' ||
+				name === 'FS_unlink' ||
+				name === 'addRunDependency' ||
 				// The old FS has some functionality that WasmFS lacks.
-				name === "FS_createLazyFile" ||
-				name === "FS_createDevice" ||
-				name === "removeRunDependency"
+				name === 'FS_createLazyFile' ||
+				name === 'FS_createDevice' ||
+				name === 'removeRunDependency'
 			);
 		}
 
@@ -896,8 +896,8 @@ var hacbrewpack = (() => {
 			});
 		}
 
-		missingGlobal("buffer", "Please use HEAP8.buffer or wasmMemory.buffer");
-		missingGlobal("asm", "Please use wasmExports instead");
+		missingGlobal('buffer', 'Please use HEAP8.buffer or wasmMemory.buffer');
+		missingGlobal('asm', 'Please use wasmExports instead');
 
 		function missingLibrarySymbol(sym) {
 			hookGlobalSymbolAccess(sym, () => {
@@ -908,13 +908,13 @@ var hacbrewpack = (() => {
 				// library.js, which means $name for a JS name with no prefix, or name
 				// for a JS name like _name.
 				var librarySymbol = sym;
-				if (!librarySymbol.startsWith("_")) {
-					librarySymbol = "$" + sym;
+				if (!librarySymbol.startsWith('_')) {
+					librarySymbol = '$' + sym;
 				}
 				msg += ` (e.g. -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE='${librarySymbol}')`;
 				if (isExportedByForceFilesystem(sym)) {
 					msg +=
-						". Alternatively, forcing filesystem support (-sFORCE_FILESYSTEM) can export this for you";
+						'. Alternatively, forcing filesystem support (-sFORCE_FILESYSTEM) can export this for you';
 				}
 				warnOnce(msg);
 			});
@@ -932,7 +932,7 @@ var hacbrewpack = (() => {
 						var msg = `'${sym}' was not exported. add it to EXPORTED_RUNTIME_METHODS (see the Emscripten FAQ)`;
 						if (isExportedByForceFilesystem(sym)) {
 							msg +=
-								". Alternatively, forcing filesystem support (-sFORCE_FILESYSTEM) can export this for you";
+								'. Alternatively, forcing filesystem support (-sFORCE_FILESYSTEM) can export this for you';
 						}
 						abort(msg);
 					},
@@ -952,7 +952,7 @@ var hacbrewpack = (() => {
 
 		/** @constructor */
 		function ExitStatus(status) {
-			this.name = "ExitStatus";
+			this.name = 'ExitStatus';
 			this.message = `Program terminated with exit(${status})`;
 			this.status = status;
 		}
@@ -966,37 +966,37 @@ var hacbrewpack = (() => {
 		 * @param {number} ptr
 		 * @param {string} type
 		 */
-		function getValue(ptr, type = "i8") {
-			if (type.endsWith("*")) type = "*";
+		function getValue(ptr, type = 'i8') {
+			if (type.endsWith('*')) type = '*';
 			switch (type) {
-				case "i1":
+				case 'i1':
 					return HEAP8[ptr];
-				case "i8":
+				case 'i8':
 					return HEAP8[ptr];
-				case "i16":
+				case 'i16':
 					return HEAP16[ptr >> 1];
-				case "i32":
+				case 'i32':
 					return HEAP32[ptr >> 2];
-				case "i64":
-					abort("to do getValue(i64) use WASM_BIGINT");
-				case "float":
+				case 'i64':
+					abort('to do getValue(i64) use WASM_BIGINT');
+				case 'float':
 					return HEAPF32[ptr >> 2];
-				case "double":
+				case 'double':
 					return HEAPF64[ptr >> 3];
-				case "*":
+				case '*':
 					return HEAPU32[ptr >> 2];
 				default:
 					abort(`invalid type for getValue: ${type}`);
 			}
 		}
 
-		var noExitRuntime = Module["noExitRuntime"] || true;
+		var noExitRuntime = Module['noExitRuntime'] || true;
 
 		var ptrToString = (ptr) => {
-			assert(typeof ptr === "number");
+			assert(typeof ptr === 'number');
 			// With CAN_ADDRESS_2GB or MEMORY64, pointers are already unsigned.
 			ptr >>>= 0;
-			return "0x" + ptr.toString(16).padStart(8, "0");
+			return '0x' + ptr.toString(16).padStart(8, '0');
 		};
 
 		/**
@@ -1004,30 +1004,30 @@ var hacbrewpack = (() => {
 		 * @param {number} value
 		 * @param {string} type
 		 */
-		function setValue(ptr, value, type = "i8") {
-			if (type.endsWith("*")) type = "*";
+		function setValue(ptr, value, type = 'i8') {
+			if (type.endsWith('*')) type = '*';
 			switch (type) {
-				case "i1":
+				case 'i1':
 					HEAP8[ptr] = value;
 					break;
-				case "i8":
+				case 'i8':
 					HEAP8[ptr] = value;
 					break;
-				case "i16":
+				case 'i16':
 					HEAP16[ptr >> 1] = value;
 					break;
-				case "i32":
+				case 'i32':
 					HEAP32[ptr >> 2] = value;
 					break;
-				case "i64":
-					abort("to do setValue(i64) use WASM_BIGINT");
-				case "float":
+				case 'i64':
+					abort('to do setValue(i64) use WASM_BIGINT');
+				case 'float':
 					HEAPF32[ptr >> 2] = value;
 					break;
-				case "double":
+				case 'double':
 					HEAPF64[ptr >> 3] = value;
 					break;
-				case "*":
+				case '*':
 					HEAPU32[ptr >> 2] = value;
 					break;
 				default:
@@ -1048,7 +1048,7 @@ var hacbrewpack = (() => {
 		};
 
 		var UTF8Decoder =
-			typeof TextDecoder != "undefined" ? new TextDecoder() : undefined;
+			typeof TextDecoder != 'undefined' ? new TextDecoder() : undefined;
 
 		/**
 		 * Given a pointer 'idx' to a null-terminated UTF8-encoded string in the given
@@ -1072,7 +1072,7 @@ var hacbrewpack = (() => {
 			if (endPtr - idx > 16 && heapOrArray.buffer && UTF8Decoder) {
 				return UTF8Decoder.decode(heapOrArray.subarray(idx, endPtr));
 			}
-			var str = "";
+			var str = '';
 			// If building with TextDecoder, we have already computed the string length
 			// above, so test loop end condition against that
 			while (idx < endPtr) {
@@ -1096,9 +1096,9 @@ var hacbrewpack = (() => {
 				} else {
 					if ((u0 & 0xf8) != 0xf0)
 						warnOnce(
-							"Invalid UTF-8 leading byte " +
+							'Invalid UTF-8 leading byte ' +
 								ptrToString(u0) +
-								" encountered when deserializing a UTF-8 string in wasm memory to a JS string!",
+								' encountered when deserializing a UTF-8 string in wasm memory to a JS string!',
 						);
 					u0 =
 						((u0 & 7) << 18) |
@@ -1137,18 +1137,18 @@ var hacbrewpack = (() => {
 		 */
 		var UTF8ToString = (ptr, maxBytesToRead) => {
 			assert(
-				typeof ptr == "number",
+				typeof ptr == 'number',
 				`UTF8ToString expects a number (got ${typeof ptr})`,
 			);
-			return ptr ? UTF8ArrayToString(HEAPU8, ptr, maxBytesToRead) : "";
+			return ptr ? UTF8ArrayToString(HEAPU8, ptr, maxBytesToRead) : '';
 		};
 		var ___assert_fail = (condition, filename, line, func) => {
 			abort(
 				`Assertion failed: ${UTF8ToString(condition)}, at: ` +
 					[
-						filename ? UTF8ToString(filename) : "unknown filename",
+						filename ? UTF8ToString(filename) : 'unknown filename',
 						line,
-						func ? UTF8ToString(func) : "unknown function",
+						func ? UTF8ToString(func) : 'unknown function',
 					],
 			);
 		};
@@ -1166,7 +1166,7 @@ var hacbrewpack = (() => {
 			}
 			assert(
 				wasmTable.get(funcPtr) == func,
-				"JavaScript-side Wasm function table mirror is out of date!",
+				'JavaScript-side Wasm function table mirror is out of date!',
 			);
 			return func;
 		};
@@ -1183,7 +1183,7 @@ var hacbrewpack = (() => {
 		var syscallGetVarargP = syscallGetVarargI;
 
 		var PATH = {
-			isAbs: (path) => path.charAt(0) === "/",
+			isAbs: (path) => path.charAt(0) === '/',
 			splitPath: (filename) => {
 				var splitPathRe =
 					/^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
@@ -1194,9 +1194,9 @@ var hacbrewpack = (() => {
 				var up = 0;
 				for (var i = parts.length - 1; i >= 0; i--) {
 					var last = parts[i];
-					if (last === ".") {
+					if (last === '.') {
 						parts.splice(i, 1);
-					} else if (last === "..") {
+					} else if (last === '..') {
 						parts.splice(i, 1);
 						up++;
 					} else if (up) {
@@ -1207,26 +1207,26 @@ var hacbrewpack = (() => {
 				// if the path is allowed to go above the root, restore leading ..s
 				if (allowAboveRoot) {
 					for (; up; up--) {
-						parts.unshift("..");
+						parts.unshift('..');
 					}
 				}
 				return parts;
 			},
 			normalize: (path) => {
 				var isAbsolute = PATH.isAbs(path),
-					trailingSlash = path.substr(-1) === "/";
+					trailingSlash = path.substr(-1) === '/';
 				// Normalize the path
 				path = PATH.normalizeArray(
-					path.split("/").filter((p) => !!p),
+					path.split('/').filter((p) => !!p),
 					!isAbsolute,
-				).join("/");
+				).join('/');
 				if (!path && !isAbsolute) {
-					path = ".";
+					path = '.';
 				}
 				if (path && trailingSlash) {
-					path += "/";
+					path += '/';
 				}
-				return (isAbsolute ? "/" : "") + path;
+				return (isAbsolute ? '/' : '') + path;
 			},
 			dirname: (path) => {
 				var result = PATH.splitPath(path),
@@ -1234,7 +1234,7 @@ var hacbrewpack = (() => {
 					dir = result[1];
 				if (!root && !dir) {
 					// No dirname whatsoever
-					return ".";
+					return '.';
 				}
 				if (dir) {
 					// It has a dirname, strip trailing slash
@@ -1244,21 +1244,21 @@ var hacbrewpack = (() => {
 			},
 			basename: (path) => {
 				// EMSCRIPTEN return '/'' for '/', not an empty string
-				if (path === "/") return "/";
+				if (path === '/') return '/';
 				path = PATH.normalize(path);
-				path = path.replace(/\/$/, "");
-				var lastSlash = path.lastIndexOf("/");
+				path = path.replace(/\/$/, '');
+				var lastSlash = path.lastIndexOf('/');
 				if (lastSlash === -1) return path;
 				return path.substr(lastSlash + 1);
 			},
-			join: (...paths) => PATH.normalize(paths.join("/")),
-			join2: (l, r) => PATH.normalize(l + "/" + r),
+			join: (...paths) => PATH.normalize(paths.join('/')),
+			join2: (l, r) => PATH.normalize(l + '/' + r),
 		};
 
 		var initRandomFill = () => {
 			if (
-				typeof crypto == "object" &&
-				typeof crypto["getRandomValues"] == "function"
+				typeof crypto == 'object' &&
+				typeof crypto['getRandomValues'] == 'function'
 			) {
 				// for modern web browsers
 				return (view) => crypto.getRandomValues(view);
@@ -1266,7 +1266,7 @@ var hacbrewpack = (() => {
 			// we couldn't find a proper implementation, as Math.random() is not suitable for /dev/random, see emscripten-core/emscripten/pull/7096
 			else
 				abort(
-					"no cryptographic support found for randomDevice. consider polyfilling it if you want to use something insecure like Math.random(), e.g. put this in a --pre-js: var crypto = { getRandomValues: (array) => { for (var i = 0; i < array.length; i++) array[i] = (Math.random()*256)|0 } };",
+					'no cryptographic support found for randomDevice. consider polyfilling it if you want to use something insecure like Math.random(), e.g. put this in a --pre-js: var crypto = { getRandomValues: (array) => { for (var i = 0; i < array.length; i++) array[i] = (Math.random()*256)|0 } };',
 				);
 		};
 		var randomFill = (view) => {
@@ -1276,26 +1276,26 @@ var hacbrewpack = (() => {
 
 		var PATH_FS = {
 			resolve: (...args) => {
-				var resolvedPath = "",
+				var resolvedPath = '',
 					resolvedAbsolute = false;
 				for (var i = args.length - 1; i >= -1 && !resolvedAbsolute; i--) {
 					var path = i >= 0 ? args[i] : FS.cwd();
 					// Skip empty and invalid entries
-					if (typeof path != "string") {
-						throw new TypeError("Arguments to path.resolve must be strings");
+					if (typeof path != 'string') {
+						throw new TypeError('Arguments to path.resolve must be strings');
 					} else if (!path) {
-						return ""; // an invalid portion invalidates the whole thing
+						return ''; // an invalid portion invalidates the whole thing
 					}
-					resolvedPath = path + "/" + resolvedPath;
+					resolvedPath = path + '/' + resolvedPath;
 					resolvedAbsolute = PATH.isAbs(path);
 				}
 				// At this point the path should be resolved to a full absolute path, but
 				// handle relative paths to be safe (might happen when process.cwd() fails)
 				resolvedPath = PATH.normalizeArray(
-					resolvedPath.split("/").filter((p) => !!p),
+					resolvedPath.split('/').filter((p) => !!p),
 					!resolvedAbsolute,
-				).join("/");
-				return (resolvedAbsolute ? "/" : "") + resolvedPath || ".";
+				).join('/');
+				return (resolvedAbsolute ? '/' : '') + resolvedPath || '.';
 			},
 			relative: (from, to) => {
 				from = PATH_FS.resolve(from).substr(1);
@@ -1303,17 +1303,17 @@ var hacbrewpack = (() => {
 				function trim(arr) {
 					var start = 0;
 					for (; start < arr.length; start++) {
-						if (arr[start] !== "") break;
+						if (arr[start] !== '') break;
 					}
 					var end = arr.length - 1;
 					for (; end >= 0; end--) {
-						if (arr[end] !== "") break;
+						if (arr[end] !== '') break;
 					}
 					if (start > end) return [];
 					return arr.slice(start, end - start + 1);
 				}
-				var fromParts = trim(from.split("/"));
-				var toParts = trim(to.split("/"));
+				var fromParts = trim(from.split('/'));
+				var toParts = trim(to.split('/'));
 				var length = Math.min(fromParts.length, toParts.length);
 				var samePartsLength = length;
 				for (var i = 0; i < length; i++) {
@@ -1324,10 +1324,10 @@ var hacbrewpack = (() => {
 				}
 				var outputParts = [];
 				for (var i = samePartsLength; i < fromParts.length; i++) {
-					outputParts.push("..");
+					outputParts.push('..');
 				}
 				outputParts = outputParts.concat(toParts.slice(samePartsLength));
-				return outputParts.join("/");
+				return outputParts.join('/');
 			},
 		};
 
@@ -1357,7 +1357,7 @@ var hacbrewpack = (() => {
 
 		var stringToUTF8Array = (str, heap, outIdx, maxBytesToWrite) => {
 			assert(
-				typeof str === "string",
+				typeof str === 'string',
 				`stringToUTF8Array expects a string (got ${typeof str})`,
 			);
 			// Parameter maxBytesToWrite is not optional. Negative values, 0, null,
@@ -1395,9 +1395,9 @@ var hacbrewpack = (() => {
 					if (outIdx + 3 >= endIdx) break;
 					if (u > 0x10ffff)
 						warnOnce(
-							"Invalid Unicode code point " +
+							'Invalid Unicode code point ' +
 								ptrToString(u) +
-								" encountered when serializing a JS string to a UTF-8 string in wasm memory! (Valid unicode code points should be in range 0-0x10FFFF).",
+								' encountered when serializing a JS string to a UTF-8 string in wasm memory! (Valid unicode code points should be in range 0-0x10FFFF).',
 						);
 					heap[outIdx++] = 0xf0 | (u >> 18);
 					heap[outIdx++] = 0x80 | ((u >> 12) & 63);
@@ -1426,13 +1426,13 @@ var hacbrewpack = (() => {
 			if (!FS_stdin_getChar_buffer.length) {
 				var result = null;
 				if (
-					typeof window != "undefined" &&
-					typeof window.prompt == "function"
+					typeof window != 'undefined' &&
+					typeof window.prompt == 'function'
 				) {
 					// Browser.
-					result = window.prompt("Input: "); // returns null on cancel
+					result = window.prompt('Input: '); // returns null on cancel
 					if (result !== null) {
-						result += "\n";
+						result += '\n';
 					}
 				} else {
 				}
@@ -1590,18 +1590,18 @@ var hacbrewpack = (() => {
 		};
 
 		var alignMemory = (size, alignment) => {
-			assert(alignment, "alignment argument is required");
+			assert(alignment, 'alignment argument is required');
 			return Math.ceil(size / alignment) * alignment;
 		};
 		var mmapAlloc = (size) => {
 			abort(
-				"internal error: mmapAlloc called but `emscripten_builtin_memalign` native symbol not exported",
+				'internal error: mmapAlloc called but `emscripten_builtin_memalign` native symbol not exported',
 			);
 		};
 		var MEMFS = {
 			ops_table: null,
 			mount(mount) {
-				return MEMFS.createNode(null, "/", 16384 | 511 /* 0777 */, 0);
+				return MEMFS.createNode(null, '/', 16384 | 511 /* 0777 */, 0);
 			},
 			createNode(parent, name, mode, dev) {
 				if (FS.isBlkdev(mode) || FS.isFIFO(mode)) {
@@ -1803,7 +1803,7 @@ var hacbrewpack = (() => {
 					parent.timestamp = Date.now();
 				},
 				readdir(node) {
-					var entries = [".", ".."];
+					var entries = ['.', '..'];
 					for (var key of Object.keys(node.contents)) {
 						entries.push(key);
 					}
@@ -1861,7 +1861,7 @@ var hacbrewpack = (() => {
 						if (canOwn) {
 							assert(
 								position === 0,
-								"canOwn must imply no weird position inside the file",
+								'canOwn must imply no weird position inside the file',
 							);
 							node.contents = buffer.subarray(offset, offset + length);
 							node.usedBytes = length;
@@ -1965,7 +1965,7 @@ var hacbrewpack = (() => {
 
 		/** @param {boolean=} noRunDep */
 		var asyncLoad = (url, onload, onerror, noRunDep) => {
-			var dep = !noRunDep ? getUniqueRunDependency(`al ${url}`) : "";
+			var dep = !noRunDep ? getUniqueRunDependency(`al ${url}`) : '';
 			readAsync(url).then(
 				(arrayBuffer) => {
 					assert(
@@ -1997,16 +1997,16 @@ var hacbrewpack = (() => {
 			FS.createDataFile(parent, name, fileData, canRead, canWrite, canOwn);
 		};
 
-		var preloadPlugins = Module["preloadPlugins"] || [];
+		var preloadPlugins = Module['preloadPlugins'] || [];
 		var FS_handledByPreloadPlugin = (byteArray, fullname, finish, onerror) => {
 			// Ensure plugins are ready.
-			if (typeof Browser != "undefined") Browser.init();
+			if (typeof Browser != 'undefined') Browser.init();
 
 			var handled = false;
 			preloadPlugins.forEach((plugin) => {
 				if (handled) return;
-				if (plugin["canHandle"](fullname)) {
-					plugin["handle"](byteArray, fullname, finish, onerror);
+				if (plugin['canHandle'](fullname)) {
+					plugin['handle'](byteArray, fullname, finish, onerror);
 					handled = true;
 				}
 			});
@@ -2055,7 +2055,7 @@ var hacbrewpack = (() => {
 				finish(byteArray);
 			}
 			addRunDependency(dep);
-			if (typeof url == "string") {
+			if (typeof url == 'string') {
 				asyncLoad(url, processData, onerror);
 			} else {
 				processData(url);
@@ -2065,14 +2065,14 @@ var hacbrewpack = (() => {
 		var FS_modeStringToFlags = (str) => {
 			var flagModes = {
 				r: 0,
-				"r+": 2,
+				'r+': 2,
 				w: 512 | 64 | 1,
-				"w+": 512 | 64 | 2,
+				'w+': 512 | 64 | 2,
 				a: 1024 | 64 | 1,
-				"a+": 1024 | 64 | 2,
+				'a+': 1024 | 64 | 2,
 			};
 			var flags = flagModes[str];
-			if (typeof flags == "undefined") {
+			if (typeof flags == 'undefined') {
 				throw new Error(`Unknown file open mode: ${str}`);
 			}
 			return flags;
@@ -2219,7 +2219,7 @@ var hacbrewpack = (() => {
 			streams: [],
 			nextInode: 1,
 			nameTable: null,
-			currentPath: "/",
+			currentPath: '/',
 			initialized: false,
 			ignorePermissions: true,
 			ErrnoError: class extends Error {
@@ -2230,10 +2230,10 @@ var hacbrewpack = (() => {
 				// the test `err instanceof FS.ErrnoError` won't detect an error coming from another filesystem, causing bugs.
 				// we'll use the reliable test `err.name == "ErrnoError"` instead
 				constructor(errno) {
-					super(runtimeInitialized ? strError(errno) : "");
+					super(runtimeInitialized ? strError(errno) : '');
 					// TODO(sbc): Use the inline member declaration syntax once we
 					// support it in acorn and closure.
-					this.name = "ErrnoError";
+					this.name = 'ErrnoError';
 					this.errno = errno;
 					for (var key in ERRNO_CODES) {
 						if (ERRNO_CODES[key] === errno) {
@@ -2320,7 +2320,7 @@ var hacbrewpack = (() => {
 			lookupPath(path, opts = {}) {
 				path = PATH_FS.resolve(path);
 
-				if (!path) return { path: "", node: null };
+				if (!path) return { path: '', node: null };
 
 				var defaults = {
 					follow_mount: true,
@@ -2334,11 +2334,11 @@ var hacbrewpack = (() => {
 				}
 
 				// split the absolute path
-				var parts = path.split("/").filter((p) => !!p);
+				var parts = path.split('/').filter((p) => !!p);
 
 				// start at the root
 				var current = FS.root;
-				var current_path = "/";
+				var current_path = '/';
 
 				for (var i = 0; i < parts.length; i++) {
 					var islast = i === parts.length - 1;
@@ -2386,7 +2386,7 @@ var hacbrewpack = (() => {
 					if (FS.isRoot(node)) {
 						var mount = node.mount.mountpoint;
 						if (!path) return mount;
-						return mount[mount.length - 1] !== "/"
+						return mount[mount.length - 1] !== '/'
 							? `${mount}/${path}`
 							: mount + path;
 					}
@@ -2438,7 +2438,7 @@ var hacbrewpack = (() => {
 				return FS.lookup(parent, name);
 			},
 			createNode(parent, name, mode, rdev) {
-				assert(typeof parent == "object");
+				assert(typeof parent == 'object');
 				var node = new FS.FSNode(parent, name, mode, rdev);
 
 				FS.hashAddNode(node);
@@ -2476,9 +2476,9 @@ var hacbrewpack = (() => {
 				return (mode & 49152) === 49152;
 			},
 			flagsToPermissionString(flag) {
-				var perms = ["r", "w", "rw"][flag & 3];
+				var perms = ['r', 'w', 'rw'][flag & 3];
 				if (flag & 512) {
-					perms += "w";
+					perms += 'w';
 				}
 				return perms;
 			},
@@ -2487,18 +2487,18 @@ var hacbrewpack = (() => {
 					return 0;
 				}
 				// return 0 if any user, group or owner bits are set.
-				if (perms.includes("r") && !(node.mode & 292)) {
+				if (perms.includes('r') && !(node.mode & 292)) {
 					return 2;
-				} else if (perms.includes("w") && !(node.mode & 146)) {
+				} else if (perms.includes('w') && !(node.mode & 146)) {
 					return 2;
-				} else if (perms.includes("x") && !(node.mode & 73)) {
+				} else if (perms.includes('x') && !(node.mode & 73)) {
 					return 2;
 				}
 				return 0;
 			},
 			mayLookup(dir) {
 				if (!FS.isDir(dir.mode)) return 54;
-				var errCode = FS.nodePermissions(dir, "x");
+				var errCode = FS.nodePermissions(dir, 'x');
 				if (errCode) return errCode;
 				if (!dir.node_ops.lookup) return 2;
 				return 0;
@@ -2508,7 +2508,7 @@ var hacbrewpack = (() => {
 					var node = FS.lookupNode(dir, name);
 					return 20;
 				} catch (e) {}
-				return FS.nodePermissions(dir, "wx");
+				return FS.nodePermissions(dir, 'wx');
 			},
 			mayDelete(dir, name, isdir) {
 				var node;
@@ -2517,7 +2517,7 @@ var hacbrewpack = (() => {
 				} catch (e) {
 					return e.errno;
 				}
-				var errCode = FS.nodePermissions(dir, "wx");
+				var errCode = FS.nodePermissions(dir, 'wx');
 				if (errCode) {
 					return errCode;
 				}
@@ -2543,7 +2543,7 @@ var hacbrewpack = (() => {
 					return 32;
 				} else if (FS.isDir(node.mode)) {
 					if (
-						FS.flagsToPermissionString(flags) !== "r" || // opening for write
+						FS.flagsToPermissionString(flags) !== 'r' || // opening for write
 						flags & 512
 					) {
 						// TODO: check for O_SEARCH? (== search for dir only)
@@ -2623,7 +2623,7 @@ var hacbrewpack = (() => {
 				return mounts;
 			},
 			syncfs(populate, callback) {
-				if (typeof populate == "function") {
+				if (typeof populate == 'function') {
 					callback = populate;
 					populate = false;
 				}
@@ -2667,12 +2667,12 @@ var hacbrewpack = (() => {
 				});
 			},
 			mount(type, opts, mountpoint) {
-				if (typeof type == "string") {
+				if (typeof type == 'string') {
 					// The filesystem was not included, and instead we have an error
 					// message stored in the variable.
 					throw type;
 				}
-				var root = mountpoint === "/";
+				var root = mountpoint === '/';
 				var pseudo = !mountpoint;
 				var node;
 
@@ -2760,7 +2760,7 @@ var hacbrewpack = (() => {
 				var lookup = FS.lookupPath(path, { parent: true });
 				var parent = lookup.node;
 				var name = PATH.basename(path);
-				if (!name || name === "." || name === "..") {
+				if (!name || name === '.' || name === '..') {
 					throw new FS.ErrnoError(28);
 				}
 				var errCode = FS.mayCreate(parent, name);
@@ -2785,11 +2785,11 @@ var hacbrewpack = (() => {
 				return FS.mknod(path, mode, 0);
 			},
 			mkdirTree(path, mode) {
-				var dirs = path.split("/");
-				var d = "";
+				var dirs = path.split('/');
+				var d = '';
 				for (var i = 0; i < dirs.length; ++i) {
 					if (!dirs[i]) continue;
-					d += "/" + dirs[i];
+					d += '/' + dirs[i];
 					try {
 						FS.mkdir(d, mode);
 					} catch (e) {
@@ -2798,7 +2798,7 @@ var hacbrewpack = (() => {
 				}
 			},
 			mkdev(path, mode, dev) {
-				if (typeof dev == "undefined") {
+				if (typeof dev == 'undefined') {
 					dev = mode;
 					mode = 438 /* 0666 */;
 				}
@@ -2847,12 +2847,12 @@ var hacbrewpack = (() => {
 				var old_node = FS.lookupNode(old_dir, old_name);
 				// old path should not be an ancestor of the new path
 				var relative = PATH_FS.relative(old_path, new_dirname);
-				if (relative.charAt(0) !== ".") {
+				if (relative.charAt(0) !== '.') {
 					throw new FS.ErrnoError(28);
 				}
 				// new path should not be an ancestor of the old path
 				relative = PATH_FS.relative(new_path, old_dirname);
-				if (relative.charAt(0) !== ".") {
+				if (relative.charAt(0) !== '.') {
 					throw new FS.ErrnoError(55);
 				}
 				// see if the new path already exists
@@ -2891,7 +2891,7 @@ var hacbrewpack = (() => {
 				}
 				// if we are going to change the parent, check write permissions
 				if (new_dir !== old_dir) {
-					errCode = FS.nodePermissions(old_dir, "w");
+					errCode = FS.nodePermissions(old_dir, 'w');
 					if (errCode) {
 						throw new FS.ErrnoError(errCode);
 					}
@@ -2992,7 +2992,7 @@ var hacbrewpack = (() => {
 			},
 			chmod(path, mode, dontFollow) {
 				var node;
-				if (typeof path == "string") {
+				if (typeof path == 'string') {
 					var lookup = FS.lookupPath(path, { follow: !dontFollow });
 					node = lookup.node;
 				} else {
@@ -3015,7 +3015,7 @@ var hacbrewpack = (() => {
 			},
 			chown(path, uid, gid, dontFollow) {
 				var node;
-				if (typeof path == "string") {
+				if (typeof path == 'string') {
 					var lookup = FS.lookupPath(path, { follow: !dontFollow });
 					node = lookup.node;
 				} else {
@@ -3041,7 +3041,7 @@ var hacbrewpack = (() => {
 					throw new FS.ErrnoError(28);
 				}
 				var node;
-				if (typeof path == "string") {
+				if (typeof path == 'string') {
 					var lookup = FS.lookupPath(path, { follow: true });
 					node = lookup.node;
 				} else {
@@ -3056,7 +3056,7 @@ var hacbrewpack = (() => {
 				if (!FS.isFile(node.mode)) {
 					throw new FS.ErrnoError(28);
 				}
-				var errCode = FS.nodePermissions(node, "w");
+				var errCode = FS.nodePermissions(node, 'w');
 				if (errCode) {
 					throw new FS.ErrnoError(errCode);
 				}
@@ -3080,18 +3080,18 @@ var hacbrewpack = (() => {
 				});
 			},
 			open(path, flags, mode) {
-				if (path === "") {
+				if (path === '') {
 					throw new FS.ErrnoError(44);
 				}
-				flags = typeof flags == "string" ? FS_modeStringToFlags(flags) : flags;
+				flags = typeof flags == 'string' ? FS_modeStringToFlags(flags) : flags;
 				if (flags & 64) {
-					mode = typeof mode == "undefined" ? 438 /* 0666 */ : mode;
+					mode = typeof mode == 'undefined' ? 438 /* 0666 */ : mode;
 					mode = (mode & 4095) | 32768;
 				} else {
 					mode = 0;
 				}
 				var node;
-				if (typeof path == "object") {
+				if (typeof path == 'object') {
 					node = path;
 				} else {
 					path = PATH.normalize(path);
@@ -3161,7 +3161,7 @@ var hacbrewpack = (() => {
 				if (stream.stream_ops.open) {
 					stream.stream_ops.open(stream);
 				}
-				if (Module["logReadFiles"] && !(flags & 1)) {
+				if (Module['logReadFiles'] && !(flags & 1)) {
 					if (!(path in FS.readFiles)) {
 						FS.readFiles[path] = 1;
 					}
@@ -3218,7 +3218,7 @@ var hacbrewpack = (() => {
 				if (!stream.stream_ops.read) {
 					throw new FS.ErrnoError(28);
 				}
-				var seeking = typeof position != "undefined";
+				var seeking = typeof position != 'undefined';
 				if (!seeking) {
 					position = stream.position;
 				} else if (!stream.seekable) {
@@ -3255,7 +3255,7 @@ var hacbrewpack = (() => {
 					// seek to the end before writing in append mode
 					FS.llseek(stream, 0, 2);
 				}
-				var seeking = typeof position != "undefined";
+				var seeking = typeof position != 'undefined';
 				if (!seeking) {
 					position = stream.position;
 				} else if (!stream.seekable) {
@@ -3336,8 +3336,8 @@ var hacbrewpack = (() => {
 			},
 			readFile(path, opts = {}) {
 				opts.flags = opts.flags || 0;
-				opts.encoding = opts.encoding || "binary";
-				if (opts.encoding !== "utf8" && opts.encoding !== "binary") {
+				opts.encoding = opts.encoding || 'binary';
+				if (opts.encoding !== 'utf8' && opts.encoding !== 'binary') {
 					throw new Error(`Invalid encoding type "${opts.encoding}"`);
 				}
 				var ret;
@@ -3346,9 +3346,9 @@ var hacbrewpack = (() => {
 				var length = stat.size;
 				var buf = new Uint8Array(length);
 				FS.read(stream, buf, 0, length, 0);
-				if (opts.encoding === "utf8") {
+				if (opts.encoding === 'utf8') {
 					ret = UTF8ArrayToString(buf);
-				} else if (opts.encoding === "binary") {
+				} else if (opts.encoding === 'binary') {
 					ret = buf;
 				}
 				FS.close(stream);
@@ -3357,14 +3357,14 @@ var hacbrewpack = (() => {
 			writeFile(path, data, opts = {}) {
 				opts.flags = opts.flags || 577;
 				var stream = FS.open(path, opts.flags, opts.mode);
-				if (typeof data == "string") {
+				if (typeof data == 'string') {
 					var buf = new Uint8Array(lengthBytesUTF8(data) + 1);
 					var actualNumBytes = stringToUTF8Array(data, buf, 0, buf.length);
 					FS.write(stream, buf, 0, actualNumBytes, undefined, opts.canOwn);
 				} else if (ArrayBuffer.isView(data)) {
 					FS.write(stream, data, 0, data.byteLength, undefined, opts.canOwn);
 				} else {
-					throw new Error("Unsupported data type");
+					throw new Error('Unsupported data type');
 				}
 				FS.close(stream);
 			},
@@ -3377,33 +3377,33 @@ var hacbrewpack = (() => {
 				if (!FS.isDir(lookup.node.mode)) {
 					throw new FS.ErrnoError(54);
 				}
-				var errCode = FS.nodePermissions(lookup.node, "x");
+				var errCode = FS.nodePermissions(lookup.node, 'x');
 				if (errCode) {
 					throw new FS.ErrnoError(errCode);
 				}
 				FS.currentPath = lookup.path;
 			},
 			createDefaultDirectories() {
-				FS.mkdir("/tmp");
-				FS.mkdir("/home");
-				FS.mkdir("/home/web_user");
+				FS.mkdir('/tmp');
+				FS.mkdir('/home');
+				FS.mkdir('/home/web_user');
 			},
 			createDefaultDevices() {
 				// create /dev
-				FS.mkdir("/dev");
+				FS.mkdir('/dev');
 				// setup /dev/null
 				FS.registerDevice(FS.makedev(1, 3), {
 					read: () => 0,
 					write: (stream, buffer, offset, length, pos) => length,
 				});
-				FS.mkdev("/dev/null", FS.makedev(1, 3));
+				FS.mkdev('/dev/null', FS.makedev(1, 3));
 				// setup /dev/tty and /dev/tty1
 				// stderr needs to print output using err() rather than out()
 				// so we register a second tty just for it.
 				TTY.register(FS.makedev(5, 0), TTY.default_tty_ops);
 				TTY.register(FS.makedev(6, 0), TTY.default_tty1_ops);
-				FS.mkdev("/dev/tty", FS.makedev(5, 0));
-				FS.mkdev("/dev/tty1", FS.makedev(6, 0));
+				FS.mkdev('/dev/tty', FS.makedev(5, 0));
+				FS.mkdev('/dev/tty1', FS.makedev(6, 0));
 				// setup /dev/[u]random
 				// use a buffer to avoid overhead of individual crypto calls per byte
 				var randomBuffer = new Uint8Array(1024),
@@ -3414,25 +3414,25 @@ var hacbrewpack = (() => {
 					}
 					return randomBuffer[--randomLeft];
 				};
-				FS.createDevice("/dev", "random", randomByte);
-				FS.createDevice("/dev", "urandom", randomByte);
+				FS.createDevice('/dev', 'random', randomByte);
+				FS.createDevice('/dev', 'urandom', randomByte);
 				// we're not going to emulate the actual shm device,
 				// just create the tmp dirs that reside in it commonly
-				FS.mkdir("/dev/shm");
-				FS.mkdir("/dev/shm/tmp");
+				FS.mkdir('/dev/shm');
+				FS.mkdir('/dev/shm/tmp');
 			},
 			createSpecialDirectories() {
 				// create /proc/self/fd which allows /proc/self/fd/6 => readlink gives the
 				// name of the stream for fd 6 (see test_unistd_ttyname)
-				FS.mkdir("/proc");
-				var proc_self = FS.mkdir("/proc/self");
-				FS.mkdir("/proc/self/fd");
+				FS.mkdir('/proc');
+				var proc_self = FS.mkdir('/proc/self');
+				FS.mkdir('/proc/self/fd');
 				FS.mount(
 					{
 						mount() {
 							var node = FS.createNode(
 								proc_self,
-								"fd",
+								'fd',
 								16384 | 511 /* 0777 */,
 								73,
 							);
@@ -3442,7 +3442,7 @@ var hacbrewpack = (() => {
 									var stream = FS.getStreamChecked(fd);
 									var ret = {
 										parent: null,
-										mount: { mountpoint: "fake" },
+										mount: { mountpoint: 'fake' },
 										node_ops: { readlink: () => stream.path },
 									};
 									ret.parent = ret; // make it look like a simple root node
@@ -3453,7 +3453,7 @@ var hacbrewpack = (() => {
 						},
 					},
 					{},
-					"/proc/self/fd",
+					'/proc/self/fd',
 				);
 			},
 			createStandardStreams(input, output, error) {
@@ -3466,25 +3466,25 @@ var hacbrewpack = (() => {
 				// have been overwritten we create a unique device for
 				// them instead.
 				if (input) {
-					FS.createDevice("/dev", "stdin", input);
+					FS.createDevice('/dev', 'stdin', input);
 				} else {
-					FS.symlink("/dev/tty", "/dev/stdin");
+					FS.symlink('/dev/tty', '/dev/stdin');
 				}
 				if (output) {
-					FS.createDevice("/dev", "stdout", null, output);
+					FS.createDevice('/dev', 'stdout', null, output);
 				} else {
-					FS.symlink("/dev/tty", "/dev/stdout");
+					FS.symlink('/dev/tty', '/dev/stdout');
 				}
 				if (error) {
-					FS.createDevice("/dev", "stderr", null, error);
+					FS.createDevice('/dev', 'stderr', null, error);
 				} else {
-					FS.symlink("/dev/tty1", "/dev/stderr");
+					FS.symlink('/dev/tty1', '/dev/stderr');
 				}
 
 				// open default streams for the stdin, stdout and stderr devices
-				var stdin = FS.open("/dev/stdin", 0);
-				var stdout = FS.open("/dev/stdout", 1);
-				var stderr = FS.open("/dev/stderr", 1);
+				var stdin = FS.open('/dev/stdin', 0);
+				var stdout = FS.open('/dev/stdout', 1);
+				var stderr = FS.open('/dev/stderr', 1);
 				assert(stdin.fd === 0, `invalid handle for stdin (${stdin.fd})`);
 				assert(stdout.fd === 1, `invalid handle for stdout (${stdout.fd})`);
 				assert(stderr.fd === 2, `invalid handle for stderr (${stderr.fd})`);
@@ -3493,12 +3493,12 @@ var hacbrewpack = (() => {
 				// Some errors may happen quite a bit, to avoid overhead we reuse them (and suffer a lack of stack info)
 				[44].forEach((code) => {
 					FS.genericErrors[code] = new FS.ErrnoError(code);
-					FS.genericErrors[code].stack = "<generic error, no stack>";
+					FS.genericErrors[code].stack = '<generic error, no stack>';
 				});
 
 				FS.nameTable = new Array(4096);
 
-				FS.mount(MEMFS, {}, "/");
+				FS.mount(MEMFS, {}, '/');
 
 				FS.createDefaultDirectories();
 				FS.createDefaultDevices();
@@ -3511,14 +3511,14 @@ var hacbrewpack = (() => {
 			init(input, output, error) {
 				assert(
 					!FS.initialized,
-					"FS.init was previously called. If you want to initialize later with custom parameters, remove any earlier calls (note that one is automatically added to the generated code)",
+					'FS.init was previously called. If you want to initialize later with custom parameters, remove any earlier calls (note that one is automatically added to the generated code)',
 				);
 				FS.initialized = true;
 
 				// Allow Module.stdin etc. to provide defaults, if none explicitly passed to us here
-				input ??= Module["stdin"];
-				output ??= Module["stdout"];
-				error ??= Module["stderr"];
+				input ??= Module['stdin'];
+				output ??= Module['stdout'];
+				error ??= Module['stderr'];
 
 				FS.createStandardStreams(input, output, error);
 			},
@@ -3570,15 +3570,15 @@ var hacbrewpack = (() => {
 					ret.path = lookup.path;
 					ret.object = lookup.node;
 					ret.name = lookup.node.name;
-					ret.isRoot = lookup.path === "/";
+					ret.isRoot = lookup.path === '/';
 				} catch (e) {
 					ret.error = e.errno;
 				}
 				return ret;
 			},
 			createPath(parent, path, canRead, canWrite) {
-				parent = typeof parent == "string" ? parent : FS.getPath(parent);
-				var parts = path.split("/").reverse();
+				parent = typeof parent == 'string' ? parent : FS.getPath(parent);
+				var parts = path.split('/').reverse();
 				while (parts.length) {
 					var part = parts.pop();
 					if (!part) continue;
@@ -3594,7 +3594,7 @@ var hacbrewpack = (() => {
 			},
 			createFile(parent, name, properties, canRead, canWrite) {
 				var path = PATH.join2(
-					typeof parent == "string" ? parent : FS.getPath(parent),
+					typeof parent == 'string' ? parent : FS.getPath(parent),
 					name,
 				);
 				var mode = FS_getMode(canRead, canWrite);
@@ -3603,13 +3603,13 @@ var hacbrewpack = (() => {
 			createDataFile(parent, name, data, canRead, canWrite, canOwn) {
 				var path = name;
 				if (parent) {
-					parent = typeof parent == "string" ? parent : FS.getPath(parent);
+					parent = typeof parent == 'string' ? parent : FS.getPath(parent);
 					path = name ? PATH.join2(parent, name) : parent;
 				}
 				var mode = FS_getMode(canRead, canWrite);
 				var node = FS.create(path, mode);
 				if (data) {
-					if (typeof data == "string") {
+					if (typeof data == 'string') {
 						var arr = new Array(data.length);
 						for (var i = 0, len = data.length; i < len; ++i)
 							arr[i] = data.charCodeAt(i);
@@ -3625,7 +3625,7 @@ var hacbrewpack = (() => {
 			},
 			createDevice(parent, name, input, output) {
 				var path = PATH.join2(
-					typeof parent == "string" ? parent : FS.getPath(parent),
+					typeof parent == 'string' ? parent : FS.getPath(parent),
 					name,
 				);
 				var mode = FS_getMode(!!input, !!output);
@@ -3683,9 +3683,9 @@ var hacbrewpack = (() => {
 			forceLoadFile(obj) {
 				if (obj.isDevice || obj.isFolder || obj.link || obj.contents)
 					return true;
-				if (typeof XMLHttpRequest != "undefined") {
+				if (typeof XMLHttpRequest != 'undefined') {
 					throw new Error(
-						"Lazy loading should have been performed (contents set) in createLazyFile, but it was not. Lazy loading only works in web workers. Use --embed-file or --preload-file in emcc on the main thread.",
+						'Lazy loading should have been performed (contents set) in createLazyFile, but it was not. Lazy loading only works in web workers. Use --embed-file or --preload-file in emcc on the main thread.',
 					);
 				} else {
 					// Command-line.
@@ -3719,22 +3719,22 @@ var hacbrewpack = (() => {
 					cacheLength() {
 						// Find length
 						var xhr = new XMLHttpRequest();
-						xhr.open("HEAD", url, false);
+						xhr.open('HEAD', url, false);
 						xhr.send(null);
 						if (
 							!((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304)
 						)
 							throw new Error(
-								"Couldn't load " + url + ". Status: " + xhr.status,
+								"Couldn't load " + url + '. Status: ' + xhr.status,
 							);
-						var datalength = Number(xhr.getResponseHeader("Content-length"));
+						var datalength = Number(xhr.getResponseHeader('Content-length'));
 						var header;
 						var hasByteServing =
-							(header = xhr.getResponseHeader("Accept-Ranges")) &&
-							header === "bytes";
+							(header = xhr.getResponseHeader('Accept-Ranges')) &&
+							header === 'bytes';
 						var usesGzip =
-							(header = xhr.getResponseHeader("Content-Encoding")) &&
-							header === "gzip";
+							(header = xhr.getResponseHeader('Content-Encoding')) &&
+							header === 'gzip';
 
 						var chunkSize = 1024 * 1024; // Chunk size in bytes
 
@@ -3744,27 +3744,27 @@ var hacbrewpack = (() => {
 						var doXHR = (from, to) => {
 							if (from > to)
 								throw new Error(
-									"invalid range (" +
+									'invalid range (' +
 										from +
-										", " +
+										', ' +
 										to +
-										") or no bytes requested!",
+										') or no bytes requested!',
 								);
 							if (to > datalength - 1)
 								throw new Error(
-									"only " + datalength + " bytes available! programmer error!",
+									'only ' + datalength + ' bytes available! programmer error!',
 								);
 
 							// TODO: Use mozResponseArrayBuffer, responseStream, etc. if available.
 							var xhr = new XMLHttpRequest();
-							xhr.open("GET", url, false);
+							xhr.open('GET', url, false);
 							if (datalength !== chunkSize)
-								xhr.setRequestHeader("Range", "bytes=" + from + "-" + to);
+								xhr.setRequestHeader('Range', 'bytes=' + from + '-' + to);
 
 							// Some hints to the browser that we want binary data.
-							xhr.responseType = "arraybuffer";
+							xhr.responseType = 'arraybuffer';
 							if (xhr.overrideMimeType) {
-								xhr.overrideMimeType("text/plain; charset=x-user-defined");
+								xhr.overrideMimeType('text/plain; charset=x-user-defined');
 							}
 
 							xhr.send(null);
@@ -3772,25 +3772,25 @@ var hacbrewpack = (() => {
 								!((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304)
 							)
 								throw new Error(
-									"Couldn't load " + url + ". Status: " + xhr.status,
+									"Couldn't load " + url + '. Status: ' + xhr.status,
 								);
 							if (xhr.response !== undefined) {
 								return new Uint8Array(
 									/** @type{Array<number>} */ (xhr.response || []),
 								);
 							}
-							return intArrayFromString(xhr.responseText || "", true);
+							return intArrayFromString(xhr.responseText || '', true);
 						};
 						var lazyArray = this;
 						lazyArray.setDataGetter((chunkNum) => {
 							var start = chunkNum * chunkSize;
 							var end = (chunkNum + 1) * chunkSize - 1; // including this byte
 							end = Math.min(end, datalength - 1); // if datalength-1 is selected, this is the last block
-							if (typeof lazyArray.chunks[chunkNum] == "undefined") {
+							if (typeof lazyArray.chunks[chunkNum] == 'undefined') {
 								lazyArray.chunks[chunkNum] = doXHR(start, end);
 							}
-							if (typeof lazyArray.chunks[chunkNum] == "undefined")
-								throw new Error("doXHR failed!");
+							if (typeof lazyArray.chunks[chunkNum] == 'undefined')
+								throw new Error('doXHR failed!');
 							return lazyArray.chunks[chunkNum];
 						});
 
@@ -3800,7 +3800,7 @@ var hacbrewpack = (() => {
 							datalength = this.getter(0).length;
 							chunkSize = datalength;
 							out(
-								"LazyFiles on gzip forces download of the whole file when length is accessed",
+								'LazyFiles on gzip forces download of the whole file when length is accessed',
 							);
 						}
 
@@ -3822,9 +3822,9 @@ var hacbrewpack = (() => {
 					}
 				}
 
-				if (typeof XMLHttpRequest != "undefined") {
+				if (typeof XMLHttpRequest != 'undefined') {
 					if (!ENVIRONMENT_IS_WORKER)
-						throw "Cannot do synchronous binary XHRs outside webworkers in modern browsers. Use --embed-file or --preload-file in emcc";
+						throw 'Cannot do synchronous binary XHRs outside webworkers in modern browsers. Use --embed-file or --preload-file in emcc';
 					var lazyArray = new LazyUint8Array();
 					var properties = { isDevice: false, contents: lazyArray };
 				} else {
@@ -3896,25 +3896,25 @@ var hacbrewpack = (() => {
 				return node;
 			},
 			absolutePath() {
-				abort("FS.absolutePath has been removed; use PATH_FS.resolve instead");
+				abort('FS.absolutePath has been removed; use PATH_FS.resolve instead');
 			},
 			createFolder() {
-				abort("FS.createFolder has been removed; use FS.mkdir instead");
+				abort('FS.createFolder has been removed; use FS.mkdir instead');
 			},
 			createLink() {
-				abort("FS.createLink has been removed; use FS.symlink instead");
+				abort('FS.createLink has been removed; use FS.symlink instead');
 			},
 			joinPath() {
-				abort("FS.joinPath has been removed; use PATH.join instead");
+				abort('FS.joinPath has been removed; use PATH.join instead');
 			},
 			mmapAlloc() {
 				abort(
-					"FS.mmapAlloc has been replaced by the top level function mmapAlloc",
+					'FS.mmapAlloc has been replaced by the top level function mmapAlloc',
 				);
 			},
 			standardizePath() {
 				abort(
-					"FS.standardizePath has been removed; use PATH.normalize instead",
+					'FS.standardizePath has been removed; use PATH.normalize instead',
 				);
 			},
 		};
@@ -4085,7 +4085,7 @@ var hacbrewpack = (() => {
 				}
 				return -28;
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return -e.errno;
 			}
 		}
@@ -4095,15 +4095,15 @@ var hacbrewpack = (() => {
 				var stream = SYSCALLS.getStreamFromFD(fd);
 				return SYSCALLS.doStat(FS.stat, stream.path, buf);
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return -e.errno;
 			}
 		}
 
 		var stringToUTF8 = (str, outPtr, maxBytesToWrite) => {
 			assert(
-				typeof maxBytesToWrite == "number",
-				"stringToUTF8(str, outPtr, maxBytesToWrite) is missing the third parameter that specifies the length of the output buffer!",
+				typeof maxBytesToWrite == 'number',
+				'stringToUTF8(str, outPtr, maxBytesToWrite) is missing the third parameter that specifies the length of the output buffer!',
 			);
 			return stringToUTF8Array(str, HEAPU8, outPtr, maxBytesToWrite);
 		};
@@ -4123,10 +4123,10 @@ var hacbrewpack = (() => {
 					var id;
 					var type;
 					var name = stream.getdents[idx];
-					if (name === ".") {
+					if (name === '.') {
 						id = stream.node.id;
 						type = 4; // DT_DIR
-					} else if (name === "..") {
+					} else if (name === '..') {
 						var lookup = FS.lookupPath(stream.path, { parent: true });
 						id = lookup.node.id;
 						type = 4; // DT_DIR
@@ -4180,7 +4180,7 @@ var hacbrewpack = (() => {
 				FS.llseek(stream, idx * struct_size, 0);
 				return pos;
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return -e.errno;
 			}
 		}
@@ -4281,7 +4281,7 @@ var hacbrewpack = (() => {
 						return -28; // not supported
 				}
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return -e.errno;
 			}
 		}
@@ -4291,7 +4291,7 @@ var hacbrewpack = (() => {
 				path = SYSCALLS.getStr(path);
 				return SYSCALLS.doStat(FS.lstat, path, buf);
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return -e.errno;
 			}
 		}
@@ -4303,12 +4303,12 @@ var hacbrewpack = (() => {
 				// remove a trailing slash, if one - /a/b/ has basename of '', but
 				// we want to create b in the context of this function
 				path = PATH.normalize(path);
-				if (path[path.length - 1] === "/")
+				if (path[path.length - 1] === '/')
 					path = path.substr(0, path.length - 1);
 				FS.mkdir(path, mode, 0);
 				return 0;
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return -e.errno;
 			}
 		}
@@ -4323,7 +4323,7 @@ var hacbrewpack = (() => {
 				path = SYSCALLS.calculateAt(dirfd, path, allowEmpty);
 				return SYSCALLS.doStat(nofollow ? FS.lstat : FS.stat, path, buf);
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return -e.errno;
 			}
 		}
@@ -4336,7 +4336,7 @@ var hacbrewpack = (() => {
 				var mode = varargs ? syscallGetVarargI() : 0;
 				return FS.open(path, flags, mode).fd;
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return -e.errno;
 			}
 		}
@@ -4350,7 +4350,7 @@ var hacbrewpack = (() => {
 				FS.rename(oldpath, newpath);
 				return 0;
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return -e.errno;
 			}
 		}
@@ -4361,7 +4361,7 @@ var hacbrewpack = (() => {
 				FS.rmdir(path);
 				return 0;
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return -e.errno;
 			}
 		}
@@ -4371,7 +4371,7 @@ var hacbrewpack = (() => {
 				path = SYSCALLS.getStr(path);
 				return SYSCALLS.doStat(FS.stat, path, buf);
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return -e.errno;
 			}
 		}
@@ -4385,17 +4385,17 @@ var hacbrewpack = (() => {
 				} else if (flags === 512) {
 					FS.rmdir(path);
 				} else {
-					abort("Invalid flags passed to unlinkat");
+					abort('Invalid flags passed to unlinkat');
 				}
 				return 0;
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return -e.errno;
 			}
 		}
 
 		var __abort_js = () => {
-			abort("native code called abort()");
+			abort('native code called abort()');
 		};
 
 		var __emscripten_memcpy_js = (dest, src, num) =>
@@ -4414,14 +4414,14 @@ var hacbrewpack = (() => {
 			// 1. ExitStatus, which is thrown by exit()
 			// 2. "unwind", which is thrown by emscripten_unwind_to_js_event_loop() and others
 			//    that wish to return to JS event loop.
-			if (e instanceof ExitStatus || e == "unwind") {
+			if (e instanceof ExitStatus || e == 'unwind') {
 				return EXITSTATUS;
 			}
 			checkStackCookie();
 			if (e instanceof WebAssembly.RuntimeError) {
 				if (_emscripten_stack_get_current() <= 0) {
 					err(
-						"Stack overflow detected.  You can try increasing -sSTACK_SIZE (currently set to 655360)",
+						'Stack overflow detected.  You can try increasing -sSTACK_SIZE (currently set to 655360)',
 					);
 				}
 			}
@@ -4433,7 +4433,7 @@ var hacbrewpack = (() => {
 		var _proc_exit = (code) => {
 			EXITSTATUS = code;
 			if (!keepRuntimeAlive()) {
-				Module["onExit"]?.(code);
+				Module['onExit']?.(code);
 				ABORT = true;
 			}
 			quit_(code, new ExitStatus(code));
@@ -4469,7 +4469,7 @@ var hacbrewpack = (() => {
 		var callUserCallback = (func) => {
 			if (ABORT) {
 				err(
-					"user callback triggered after runtime exited or application aborted.  Ignoring.",
+					'user callback triggered after runtime exited or application aborted.  Ignoring.',
 				);
 				return;
 			}
@@ -4594,7 +4594,7 @@ var hacbrewpack = (() => {
 		var ENV = {};
 
 		var getExecutableName = () => {
-			return thisProgram || "./this.program";
+			return thisProgram || './this.program';
 		};
 		var getEnvStrings = () => {
 			if (!getEnvStrings.strings) {
@@ -4602,17 +4602,17 @@ var hacbrewpack = (() => {
 				// Browser language detection #8751
 				var lang =
 					(
-						(typeof navigator == "object" &&
+						(typeof navigator == 'object' &&
 							navigator.languages &&
 							navigator.languages[0]) ||
-						"C"
-					).replace("-", "_") + ".UTF-8";
+						'C'
+					).replace('-', '_') + '.UTF-8';
 				var env = {
-					USER: "web_user",
-					LOGNAME: "web_user",
-					PATH: "/",
-					PWD: "/",
-					HOME: "/home/web_user",
+					USER: 'web_user',
+					LOGNAME: 'web_user',
+					PATH: '/',
+					PWD: '/',
+					HOME: '/home/web_user',
 					LANG: lang,
 					_: getExecutableName(),
 				};
@@ -4667,7 +4667,7 @@ var hacbrewpack = (() => {
 				FS.close(stream);
 				return 0;
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return e.errno;
 			}
 		}
@@ -4683,7 +4683,7 @@ var hacbrewpack = (() => {
 				if (curr < 0) return -1;
 				ret += curr;
 				if (curr < len) break; // nothing more to read
-				if (typeof offset != "undefined") {
+				if (typeof offset != 'undefined') {
 					offset += curr;
 				}
 			}
@@ -4697,7 +4697,7 @@ var hacbrewpack = (() => {
 				HEAPU32[pnum >> 2] = num;
 				return 0;
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return e.errno;
 			}
 		}
@@ -4733,7 +4733,7 @@ var hacbrewpack = (() => {
 					stream.getdents = null; // reset readdir state
 				return 0;
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return e.errno;
 			}
 		}
@@ -4752,7 +4752,7 @@ var hacbrewpack = (() => {
 					// No more space to write.
 					break;
 				}
-				if (typeof offset != "undefined") {
+				if (typeof offset != 'undefined') {
 					offset += curr;
 				}
 			}
@@ -4766,7 +4766,7 @@ var hacbrewpack = (() => {
 				HEAPU32[pnum >> 2] = num;
 				return 0;
 			} catch (e) {
-				if (typeof FS == "undefined" || !(e.name === "ErrnoError")) throw e;
+				if (typeof FS == 'undefined' || !(e.name === 'ErrnoError')) throw e;
 				return e.errno;
 			}
 		}
@@ -4783,7 +4783,7 @@ var hacbrewpack = (() => {
 		FS.staticInit();
 		// Set module methods based on EXPORTED_RUNTIME_METHODS
 		function checkIncomingModuleAPI() {
-			ignoredModuleProp("fetchSettings");
+			ignoredModuleProp('fetchSettings');
 		}
 		var wasmImports = {
 			/** @export */
@@ -4844,319 +4844,319 @@ var hacbrewpack = (() => {
 			proc_exit: _proc_exit,
 		};
 		var wasmExports = createWasm();
-		var ___wasm_call_ctors = createExportWrapper("__wasm_call_ctors", 0);
-		var _main = (Module["_main"] = createExportWrapper("__main_argc_argv", 2));
-		var _fflush = createExportWrapper("fflush", 1);
-		var __emscripten_timeout = createExportWrapper("_emscripten_timeout", 2);
-		var _strerror = createExportWrapper("strerror", 1);
+		var ___wasm_call_ctors = createExportWrapper('__wasm_call_ctors', 0);
+		var _main = (Module['_main'] = createExportWrapper('__main_argc_argv', 2));
+		var _fflush = createExportWrapper('fflush', 1);
+		var __emscripten_timeout = createExportWrapper('_emscripten_timeout', 2);
+		var _strerror = createExportWrapper('strerror', 1);
 		var _emscripten_stack_init = () =>
-			(_emscripten_stack_init = wasmExports["emscripten_stack_init"])();
+			(_emscripten_stack_init = wasmExports['emscripten_stack_init'])();
 		var _emscripten_stack_get_free = () =>
-			(_emscripten_stack_get_free = wasmExports["emscripten_stack_get_free"])();
+			(_emscripten_stack_get_free = wasmExports['emscripten_stack_get_free'])();
 		var _emscripten_stack_get_base = () =>
-			(_emscripten_stack_get_base = wasmExports["emscripten_stack_get_base"])();
+			(_emscripten_stack_get_base = wasmExports['emscripten_stack_get_base'])();
 		var _emscripten_stack_get_end = () =>
-			(_emscripten_stack_get_end = wasmExports["emscripten_stack_get_end"])();
+			(_emscripten_stack_get_end = wasmExports['emscripten_stack_get_end'])();
 		var __emscripten_stack_restore = (a0) =>
-			(__emscripten_stack_restore = wasmExports["_emscripten_stack_restore"])(
+			(__emscripten_stack_restore = wasmExports['_emscripten_stack_restore'])(
 				a0,
 			);
 		var __emscripten_stack_alloc = (a0) =>
-			(__emscripten_stack_alloc = wasmExports["_emscripten_stack_alloc"])(a0);
+			(__emscripten_stack_alloc = wasmExports['_emscripten_stack_alloc'])(a0);
 		var _emscripten_stack_get_current = () =>
 			(_emscripten_stack_get_current =
-				wasmExports["emscripten_stack_get_current"])();
-		var dynCall_jiji = (Module["dynCall_jiji"] = createExportWrapper(
-			"dynCall_jiji",
+				wasmExports['emscripten_stack_get_current'])();
+		var dynCall_jiji = (Module['dynCall_jiji'] = createExportWrapper(
+			'dynCall_jiji',
 			5,
 		));
 
 		// include: postamble.js
 		// === Auto-generated postamble setup entry stuff ===
 
-		Module["run"] = run;
-		Module["callMain"] = callMain;
-		Module["FS"] = FS;
+		Module['run'] = run;
+		Module['callMain'] = callMain;
+		Module['FS'] = FS;
 		var missingLibrarySymbols = [
-			"writeI53ToI64",
-			"writeI53ToI64Clamped",
-			"writeI53ToI64Signaling",
-			"writeI53ToU64Clamped",
-			"writeI53ToU64Signaling",
-			"readI53FromI64",
-			"readI53FromU64",
-			"convertI32PairToI53",
-			"convertU32PairToI53",
-			"getTempRet0",
-			"setTempRet0",
-			"inetPton4",
-			"inetNtop4",
-			"inetPton6",
-			"inetNtop6",
-			"readSockaddr",
-			"writeSockaddr",
-			"emscriptenLog",
-			"readEmAsmArgs",
-			"jstoi_q",
-			"listenOnce",
-			"autoResumeAudioContext",
-			"dynCallLegacy",
-			"getDynCaller",
-			"dynCall",
-			"runtimeKeepalivePush",
-			"runtimeKeepalivePop",
-			"asmjsMangle",
-			"HandleAllocator",
-			"getNativeTypeSize",
-			"STACK_SIZE",
-			"STACK_ALIGN",
-			"POINTER_SIZE",
-			"ASSERTIONS",
-			"getCFunc",
-			"ccall",
-			"cwrap",
-			"uleb128Encode",
-			"sigToWasmTypes",
-			"generateFuncType",
-			"convertJsFunctionToWasm",
-			"getEmptyTableSlot",
-			"updateTableMap",
-			"getFunctionAddress",
-			"addFunction",
-			"removeFunction",
-			"reallyNegative",
-			"unSign",
-			"strLen",
-			"reSign",
-			"formatString",
-			"intArrayToString",
-			"AsciiToString",
-			"UTF16ToString",
-			"stringToUTF16",
-			"lengthBytesUTF16",
-			"UTF32ToString",
-			"stringToUTF32",
-			"lengthBytesUTF32",
-			"stringToNewUTF8",
-			"writeArrayToMemory",
-			"registerKeyEventCallback",
-			"maybeCStringToJsString",
-			"findEventTarget",
-			"getBoundingClientRect",
-			"fillMouseEventData",
-			"registerMouseEventCallback",
-			"registerWheelEventCallback",
-			"registerUiEventCallback",
-			"registerFocusEventCallback",
-			"fillDeviceOrientationEventData",
-			"registerDeviceOrientationEventCallback",
-			"fillDeviceMotionEventData",
-			"registerDeviceMotionEventCallback",
-			"screenOrientation",
-			"fillOrientationChangeEventData",
-			"registerOrientationChangeEventCallback",
-			"fillFullscreenChangeEventData",
-			"registerFullscreenChangeEventCallback",
-			"JSEvents_requestFullscreen",
-			"JSEvents_resizeCanvasForFullscreen",
-			"registerRestoreOldStyle",
-			"hideEverythingExceptGivenElement",
-			"restoreHiddenElements",
-			"setLetterbox",
-			"softFullscreenResizeWebGLRenderTarget",
-			"doRequestFullscreen",
-			"fillPointerlockChangeEventData",
-			"registerPointerlockChangeEventCallback",
-			"registerPointerlockErrorEventCallback",
-			"requestPointerLock",
-			"fillVisibilityChangeEventData",
-			"registerVisibilityChangeEventCallback",
-			"registerTouchEventCallback",
-			"fillGamepadEventData",
-			"registerGamepadEventCallback",
-			"registerBeforeUnloadEventCallback",
-			"fillBatteryEventData",
-			"battery",
-			"registerBatteryEventCallback",
-			"setCanvasElementSize",
-			"getCanvasElementSize",
-			"jsStackTrace",
-			"getCallstack",
-			"convertPCtoSourceLocation",
-			"checkWasiClock",
-			"wasiRightsToMuslOFlags",
-			"wasiOFlagsToMuslOFlags",
-			"createDyncallWrapper",
-			"safeSetTimeout",
-			"setImmediateWrapped",
-			"clearImmediateWrapped",
-			"polyfillSetImmediate",
-			"registerPostMainLoop",
-			"registerPreMainLoop",
-			"getPromise",
-			"makePromise",
-			"idsToPromises",
-			"makePromiseCallback",
-			"ExceptionInfo",
-			"findMatchingCatch",
-			"Browser_asyncPrepareDataCounter",
-			"safeRequestAnimationFrame",
-			"isLeapYear",
-			"ydayFromDate",
-			"arraySum",
-			"addDays",
-			"getSocketFromFD",
-			"getSocketAddress",
-			"FS_unlink",
-			"FS_mkdirTree",
-			"_setNetworkCallback",
-			"heapObjectForWebGLType",
-			"toTypedArrayIndex",
-			"webgl_enable_ANGLE_instanced_arrays",
-			"webgl_enable_OES_vertex_array_object",
-			"webgl_enable_WEBGL_draw_buffers",
-			"webgl_enable_WEBGL_multi_draw",
-			"webgl_enable_EXT_polygon_offset_clamp",
-			"webgl_enable_EXT_clip_control",
-			"webgl_enable_WEBGL_polygon_mode",
-			"emscriptenWebGLGet",
-			"computeUnpackAlignedImageSize",
-			"colorChannelsInGlTextureFormat",
-			"emscriptenWebGLGetTexPixelData",
-			"emscriptenWebGLGetUniform",
-			"webglGetUniformLocation",
-			"webglPrepareUniformLocationsBeforeFirstUse",
-			"webglGetLeftBracePos",
-			"emscriptenWebGLGetVertexAttrib",
-			"__glGetActiveAttribOrUniform",
-			"writeGLArray",
-			"registerWebGlEventCallback",
-			"runAndAbortIfError",
-			"ALLOC_NORMAL",
-			"ALLOC_STACK",
-			"allocate",
-			"writeStringToMemory",
-			"writeAsciiToMemory",
-			"setErrNo",
-			"demangle",
-			"stackTrace",
+			'writeI53ToI64',
+			'writeI53ToI64Clamped',
+			'writeI53ToI64Signaling',
+			'writeI53ToU64Clamped',
+			'writeI53ToU64Signaling',
+			'readI53FromI64',
+			'readI53FromU64',
+			'convertI32PairToI53',
+			'convertU32PairToI53',
+			'getTempRet0',
+			'setTempRet0',
+			'inetPton4',
+			'inetNtop4',
+			'inetPton6',
+			'inetNtop6',
+			'readSockaddr',
+			'writeSockaddr',
+			'emscriptenLog',
+			'readEmAsmArgs',
+			'jstoi_q',
+			'listenOnce',
+			'autoResumeAudioContext',
+			'dynCallLegacy',
+			'getDynCaller',
+			'dynCall',
+			'runtimeKeepalivePush',
+			'runtimeKeepalivePop',
+			'asmjsMangle',
+			'HandleAllocator',
+			'getNativeTypeSize',
+			'STACK_SIZE',
+			'STACK_ALIGN',
+			'POINTER_SIZE',
+			'ASSERTIONS',
+			'getCFunc',
+			'ccall',
+			'cwrap',
+			'uleb128Encode',
+			'sigToWasmTypes',
+			'generateFuncType',
+			'convertJsFunctionToWasm',
+			'getEmptyTableSlot',
+			'updateTableMap',
+			'getFunctionAddress',
+			'addFunction',
+			'removeFunction',
+			'reallyNegative',
+			'unSign',
+			'strLen',
+			'reSign',
+			'formatString',
+			'intArrayToString',
+			'AsciiToString',
+			'UTF16ToString',
+			'stringToUTF16',
+			'lengthBytesUTF16',
+			'UTF32ToString',
+			'stringToUTF32',
+			'lengthBytesUTF32',
+			'stringToNewUTF8',
+			'writeArrayToMemory',
+			'registerKeyEventCallback',
+			'maybeCStringToJsString',
+			'findEventTarget',
+			'getBoundingClientRect',
+			'fillMouseEventData',
+			'registerMouseEventCallback',
+			'registerWheelEventCallback',
+			'registerUiEventCallback',
+			'registerFocusEventCallback',
+			'fillDeviceOrientationEventData',
+			'registerDeviceOrientationEventCallback',
+			'fillDeviceMotionEventData',
+			'registerDeviceMotionEventCallback',
+			'screenOrientation',
+			'fillOrientationChangeEventData',
+			'registerOrientationChangeEventCallback',
+			'fillFullscreenChangeEventData',
+			'registerFullscreenChangeEventCallback',
+			'JSEvents_requestFullscreen',
+			'JSEvents_resizeCanvasForFullscreen',
+			'registerRestoreOldStyle',
+			'hideEverythingExceptGivenElement',
+			'restoreHiddenElements',
+			'setLetterbox',
+			'softFullscreenResizeWebGLRenderTarget',
+			'doRequestFullscreen',
+			'fillPointerlockChangeEventData',
+			'registerPointerlockChangeEventCallback',
+			'registerPointerlockErrorEventCallback',
+			'requestPointerLock',
+			'fillVisibilityChangeEventData',
+			'registerVisibilityChangeEventCallback',
+			'registerTouchEventCallback',
+			'fillGamepadEventData',
+			'registerGamepadEventCallback',
+			'registerBeforeUnloadEventCallback',
+			'fillBatteryEventData',
+			'battery',
+			'registerBatteryEventCallback',
+			'setCanvasElementSize',
+			'getCanvasElementSize',
+			'jsStackTrace',
+			'getCallstack',
+			'convertPCtoSourceLocation',
+			'checkWasiClock',
+			'wasiRightsToMuslOFlags',
+			'wasiOFlagsToMuslOFlags',
+			'createDyncallWrapper',
+			'safeSetTimeout',
+			'setImmediateWrapped',
+			'clearImmediateWrapped',
+			'polyfillSetImmediate',
+			'registerPostMainLoop',
+			'registerPreMainLoop',
+			'getPromise',
+			'makePromise',
+			'idsToPromises',
+			'makePromiseCallback',
+			'ExceptionInfo',
+			'findMatchingCatch',
+			'Browser_asyncPrepareDataCounter',
+			'safeRequestAnimationFrame',
+			'isLeapYear',
+			'ydayFromDate',
+			'arraySum',
+			'addDays',
+			'getSocketFromFD',
+			'getSocketAddress',
+			'FS_unlink',
+			'FS_mkdirTree',
+			'_setNetworkCallback',
+			'heapObjectForWebGLType',
+			'toTypedArrayIndex',
+			'webgl_enable_ANGLE_instanced_arrays',
+			'webgl_enable_OES_vertex_array_object',
+			'webgl_enable_WEBGL_draw_buffers',
+			'webgl_enable_WEBGL_multi_draw',
+			'webgl_enable_EXT_polygon_offset_clamp',
+			'webgl_enable_EXT_clip_control',
+			'webgl_enable_WEBGL_polygon_mode',
+			'emscriptenWebGLGet',
+			'computeUnpackAlignedImageSize',
+			'colorChannelsInGlTextureFormat',
+			'emscriptenWebGLGetTexPixelData',
+			'emscriptenWebGLGetUniform',
+			'webglGetUniformLocation',
+			'webglPrepareUniformLocationsBeforeFirstUse',
+			'webglGetLeftBracePos',
+			'emscriptenWebGLGetVertexAttrib',
+			'__glGetActiveAttribOrUniform',
+			'writeGLArray',
+			'registerWebGlEventCallback',
+			'runAndAbortIfError',
+			'ALLOC_NORMAL',
+			'ALLOC_STACK',
+			'allocate',
+			'writeStringToMemory',
+			'writeAsciiToMemory',
+			'setErrNo',
+			'demangle',
+			'stackTrace',
 		];
 		missingLibrarySymbols.forEach(missingLibrarySymbol);
 
 		var unexportedSymbols = [
-			"addOnPreRun",
-			"addOnInit",
-			"addOnPreMain",
-			"addOnExit",
-			"addOnPostRun",
-			"addRunDependency",
-			"removeRunDependency",
-			"out",
-			"err",
-			"abort",
-			"wasmMemory",
-			"wasmExports",
-			"writeStackCookie",
-			"checkStackCookie",
-			"convertI32PairToI53Checked",
-			"stackSave",
-			"stackRestore",
-			"stackAlloc",
-			"ptrToString",
-			"zeroMemory",
-			"exitJS",
-			"getHeapMax",
-			"growMemory",
-			"ENV",
-			"ERRNO_CODES",
-			"strError",
-			"DNS",
-			"Protocols",
-			"Sockets",
-			"initRandomFill",
-			"randomFill",
-			"timers",
-			"warnOnce",
-			"readEmAsmArgsArray",
-			"jstoi_s",
-			"getExecutableName",
-			"handleException",
-			"keepRuntimeAlive",
-			"callUserCallback",
-			"maybeExit",
-			"asyncLoad",
-			"alignMemory",
-			"mmapAlloc",
-			"wasmTable",
-			"noExitRuntime",
-			"freeTableIndexes",
-			"functionsInTableMap",
-			"setValue",
-			"getValue",
-			"PATH",
-			"PATH_FS",
-			"UTF8Decoder",
-			"UTF8ArrayToString",
-			"UTF8ToString",
-			"stringToUTF8Array",
-			"stringToUTF8",
-			"lengthBytesUTF8",
-			"intArrayFromString",
-			"stringToAscii",
-			"UTF16Decoder",
-			"stringToUTF8OnStack",
-			"JSEvents",
-			"specialHTMLTargets",
-			"findCanvasEventTarget",
-			"currentFullscreenStrategy",
-			"restoreOldWindowedStyle",
-			"UNWIND_CACHE",
-			"ExitStatus",
-			"getEnvStrings",
-			"doReadv",
-			"doWritev",
-			"promiseMap",
-			"uncaughtExceptionCount",
-			"exceptionLast",
-			"exceptionCaught",
-			"Browser",
-			"getPreloadedImageData__data",
-			"wget",
-			"MONTH_DAYS_REGULAR",
-			"MONTH_DAYS_LEAP",
-			"MONTH_DAYS_REGULAR_CUMULATIVE",
-			"MONTH_DAYS_LEAP_CUMULATIVE",
-			"SYSCALLS",
-			"preloadPlugins",
-			"FS_createPreloadedFile",
-			"FS_modeStringToFlags",
-			"FS_getMode",
-			"FS_stdin_getChar_buffer",
-			"FS_stdin_getChar",
-			"FS_createPath",
-			"FS_createDevice",
-			"FS_readFile",
-			"FS_createDataFile",
-			"FS_createLazyFile",
-			"MEMFS",
-			"TTY",
-			"PIPEFS",
-			"SOCKFS",
-			"tempFixedLengthArray",
-			"miniTempWebGLFloatBuffers",
-			"miniTempWebGLIntBuffers",
-			"GL",
-			"AL",
-			"GLUT",
-			"EGL",
-			"GLEW",
-			"IDBStore",
-			"SDL",
-			"SDL_gfx",
-			"allocateUTF8",
-			"allocateUTF8OnStack",
-			"print",
-			"printErr",
+			'addOnPreRun',
+			'addOnInit',
+			'addOnPreMain',
+			'addOnExit',
+			'addOnPostRun',
+			'addRunDependency',
+			'removeRunDependency',
+			'out',
+			'err',
+			'abort',
+			'wasmMemory',
+			'wasmExports',
+			'writeStackCookie',
+			'checkStackCookie',
+			'convertI32PairToI53Checked',
+			'stackSave',
+			'stackRestore',
+			'stackAlloc',
+			'ptrToString',
+			'zeroMemory',
+			'exitJS',
+			'getHeapMax',
+			'growMemory',
+			'ENV',
+			'ERRNO_CODES',
+			'strError',
+			'DNS',
+			'Protocols',
+			'Sockets',
+			'initRandomFill',
+			'randomFill',
+			'timers',
+			'warnOnce',
+			'readEmAsmArgsArray',
+			'jstoi_s',
+			'getExecutableName',
+			'handleException',
+			'keepRuntimeAlive',
+			'callUserCallback',
+			'maybeExit',
+			'asyncLoad',
+			'alignMemory',
+			'mmapAlloc',
+			'wasmTable',
+			'noExitRuntime',
+			'freeTableIndexes',
+			'functionsInTableMap',
+			'setValue',
+			'getValue',
+			'PATH',
+			'PATH_FS',
+			'UTF8Decoder',
+			'UTF8ArrayToString',
+			'UTF8ToString',
+			'stringToUTF8Array',
+			'stringToUTF8',
+			'lengthBytesUTF8',
+			'intArrayFromString',
+			'stringToAscii',
+			'UTF16Decoder',
+			'stringToUTF8OnStack',
+			'JSEvents',
+			'specialHTMLTargets',
+			'findCanvasEventTarget',
+			'currentFullscreenStrategy',
+			'restoreOldWindowedStyle',
+			'UNWIND_CACHE',
+			'ExitStatus',
+			'getEnvStrings',
+			'doReadv',
+			'doWritev',
+			'promiseMap',
+			'uncaughtExceptionCount',
+			'exceptionLast',
+			'exceptionCaught',
+			'Browser',
+			'getPreloadedImageData__data',
+			'wget',
+			'MONTH_DAYS_REGULAR',
+			'MONTH_DAYS_LEAP',
+			'MONTH_DAYS_REGULAR_CUMULATIVE',
+			'MONTH_DAYS_LEAP_CUMULATIVE',
+			'SYSCALLS',
+			'preloadPlugins',
+			'FS_createPreloadedFile',
+			'FS_modeStringToFlags',
+			'FS_getMode',
+			'FS_stdin_getChar_buffer',
+			'FS_stdin_getChar',
+			'FS_createPath',
+			'FS_createDevice',
+			'FS_readFile',
+			'FS_createDataFile',
+			'FS_createLazyFile',
+			'MEMFS',
+			'TTY',
+			'PIPEFS',
+			'SOCKFS',
+			'tempFixedLengthArray',
+			'miniTempWebGLFloatBuffers',
+			'miniTempWebGLIntBuffers',
+			'GL',
+			'AL',
+			'GLUT',
+			'EGL',
+			'GLEW',
+			'IDBStore',
+			'SDL',
+			'SDL_gfx',
+			'allocateUTF8',
+			'allocateUTF8OnStack',
+			'print',
+			'printErr',
 		];
 		unexportedSymbols.forEach(unexportedRuntimeSymbol);
 
@@ -5174,7 +5174,7 @@ var hacbrewpack = (() => {
 				runDependencies == 0,
 				'cannot call main when async dependencies remain! (listen on Module["onRuntimeInitialized"])',
 			);
-			assert(calledPrerun, "cannot call main without calling preRun first");
+			assert(calledPrerun, 'cannot call main without calling preRun first');
 
 			var entryFunction = _main;
 
@@ -5231,7 +5231,7 @@ var hacbrewpack = (() => {
 				// or while the async setStatus time below was happening
 				if (calledRun) return;
 				calledRun = 1;
-				Module["calledRun"] = 1;
+				Module['calledRun'] = 1;
 
 				if (ABORT) return;
 
@@ -5240,17 +5240,17 @@ var hacbrewpack = (() => {
 				preMain();
 
 				readyPromiseResolve(Module);
-				Module["onRuntimeInitialized"]?.();
+				Module['onRuntimeInitialized']?.();
 
 				if (shouldRunNow) callMain(args);
 
 				postRun();
 			}
 
-			if (Module["setStatus"]) {
-				Module["setStatus"]("Running...");
+			if (Module['setStatus']) {
+				Module['setStatus']('Running...');
 				setTimeout(() => {
-					setTimeout(() => Module["setStatus"](""), 1);
+					setTimeout(() => Module['setStatus'](''), 1);
 					doRun();
 				}, 1);
 			} else {
@@ -5281,8 +5281,8 @@ var hacbrewpack = (() => {
 				// it doesn't matter if it fails
 				_fflush(0);
 				// also flush in the JS FS layer
-				["stdout", "stderr"].forEach((name) => {
-					var info = FS.analyzePath("/dev/" + name);
+				['stdout', 'stderr'].forEach((name) => {
+					var info = FS.analyzePath('/dev/' + name);
 					if (!info) return;
 					var stream = info.object;
 					var rdev = stream.rdev;
@@ -5296,23 +5296,23 @@ var hacbrewpack = (() => {
 			err = oldErr;
 			if (has) {
 				warnOnce(
-					"stdio streams had content in them that was not flushed. you should set EXIT_RUNTIME to 1 (see the Emscripten FAQ), or make sure to emit a newline when you printf etc.",
+					'stdio streams had content in them that was not flushed. you should set EXIT_RUNTIME to 1 (see the Emscripten FAQ), or make sure to emit a newline when you printf etc.',
 				);
 			}
 		}
 
-		if (Module["preInit"]) {
-			if (typeof Module["preInit"] == "function")
-				Module["preInit"] = [Module["preInit"]];
-			while (Module["preInit"].length > 0) {
-				Module["preInit"].pop()();
+		if (Module['preInit']) {
+			if (typeof Module['preInit'] == 'function')
+				Module['preInit'] = [Module['preInit']];
+			while (Module['preInit'].length > 0) {
+				Module['preInit'].pop()();
 			}
 		}
 
 		// shouldRunNow refers to calling main(), not run().
 		var shouldRunNow = true;
 
-		if (Module["noInitialRun"]) shouldRunNow = false;
+		if (Module['noInitialRun']) shouldRunNow = false;
 
 		run();
 
@@ -5349,7 +5349,7 @@ var hacbrewpack = (() => {
 		return moduleRtn;
 	};
 })();
-if (typeof exports === "object" && typeof module === "object")
+if (typeof exports === 'object' && typeof module === 'object')
 	module.exports = hacbrewpack;
-else if (typeof define === "function" && define["amd"])
+else if (typeof define === 'function' && define['amd'])
 	define([], () => hacbrewpack);

@@ -1,33 +1,35 @@
 {
-	"private": true,
-	"titleId": "01c7d19eae2a0000",
-	"productName": "NSP Forwarder Generator",
-	"name": "nsp-forwarder",
-	"version": "0.0.0",
-	"license": "MIT",
-	"description": "Generate NSP to NRO forwarders for Switch",
-	"scripts": {
-		"build": "esbuild --bundle --sourcemap --sources-content=false --target=es2022 --format=esm --outdir=romfs --define:process.env.NODE_ENV=\\\"production\\\" src/main.tsx",
-		"nro": "nxjs-nro",
-		"nsp": "nxjs-nsp"
-	},
-	"author": {
-		"name": "Nathan Rajlich",
-		"email": "n@n8.io"
-	},
-	"packageManager": "pnpm@9.10.0+sha512.73a29afa36a0d092ece5271de5177ecbf8318d454ecd701343131b8ebc0c1a91c487da46ab77c8e596d6acf1461e3594ced4becedf8921b074fbd8653ed7051c",
-	"dependencies": {
-		"@nx.js/constants": "^0.1.5",
-		"@tootallnate/nacp": "^0.0.1",
-		"react": "^18.3.1",
-		"react-router-dom": "6.27.0",
-		"react-tela": "^0.0.3"
-	},
-	"devDependencies": {
-		"@nx.js/nro": "^0.0.54",
-		"@nx.js/nsp": "^0.0.54",
-		"@nx.js/runtime": "^0.0.54",
-		"@types/react": "^18.3.12",
-		"esbuild": "^0.17.19"
-	}
+  "private": true,
+  "titleId": "01c7d19eae2a0000",
+  "productName": "NSP Forwarder Generator",
+  "name": "nsp-forwarder",
+  "version": "0.0.0",
+  "license": "MIT",
+  "description": "Generate NSP to NRO forwarders for Switch",
+  "scripts": {
+    "build": "esbuild --bundle --sourcemap --sources-content=false --target=es2022 --format=esm --outdir=romfs --define:process.env.NODE_ENV=\\\"production\\\" src/main.tsx",
+    "format": "biome format --write src",
+    "nro": "nxjs-nro",
+    "nsp": "nxjs-nsp"
+  },
+  "author": {
+    "name": "Nathan Rajlich",
+    "email": "n@n8.io"
+  },
+  "packageManager": "pnpm@9.10.0+sha512.73a29afa36a0d092ece5271de5177ecbf8318d454ecd701343131b8ebc0c1a91c487da46ab77c8e596d6acf1461e3594ced4becedf8921b074fbd8653ed7051c",
+  "dependencies": {
+    "@nx.js/constants": "^0.1.5",
+    "@tootallnate/nacp": "^0.0.1",
+    "react": "^18.3.1",
+    "react-router-dom": "6.27.0",
+    "react-tela": "^0.0.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@nx.js/nro": "^0.0.54",
+    "@nx.js/nsp": "^0.0.54",
+    "@nx.js/runtime": "^0.0.54",
+    "@types/react": "^18.3.12",
+    "esbuild": "^0.17.19"
+  }
 }

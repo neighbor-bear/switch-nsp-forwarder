@@ -1,0 +1,19 @@
+{
+  "linter": {
+    "enabled": false
+  },
+  "formatter": {
+    "ignore": ["romfs"]
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "single"
+    }
+  },
+  "json": {
+    "formatter": {
+      "indentStyle": "space"
+    }
+  }
+}
