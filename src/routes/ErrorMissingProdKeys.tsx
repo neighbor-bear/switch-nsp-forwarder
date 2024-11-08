@@ -59,7 +59,7 @@ export function ErrorMissingProdKeys() {
 				x={root.ctx.canvas.width / 2}
 				y={480}
 			>
-				(Press to exit)
+				{'(Press     to exit)'}
 			</Text>
 			<Text
 				fontFamily='system-icons'
@@ -69,7 +69,7 @@ export function ErrorMissingProdKeys() {
 				x={root.ctx.canvas.width / 2 - 8}
 				y={480}
 			>
-				
+				
 			</Text>
 		</>
 	);
