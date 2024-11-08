@@ -17,13 +17,10 @@ export function Select() {
 		{
 			[Button.A]() {
 				const [path, app] = apps[selectedIndex];
-				navigate('/generate', {
+				navigate('/edit', {
 					state: {
 						app,
 						path,
-						name: app.name,
-						author: app.author,
-						version: app.version,
 					},
 				});
 			},

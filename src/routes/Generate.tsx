@@ -3,6 +3,7 @@ import { Text, useRoot } from 'react-tela';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { prodKeys } from '../prod-keys';
+import { generateRandomID } from '../title-id';
 import type { Module } from '../hacbrewpack';
 
 export function Generate() {
@@ -11,9 +12,12 @@ export function Generate() {
 	const [logs, setLogs] = useState('');
 
 	useEffect(() => {
-		(async () => {
+		async function g() {
 			const ModuleFactory = await import('../hacbrewpack.js');
-			const titleId = '01b7b5d858110000';
+			const titleId =
+				state.app.id > 0n
+					? state.app.id.toString(16).padStart(16, '0')
+					: generateRandomID();
 			const helloWasm = Switch.readFileSync('romfs:/hacbrewpack.wasm');
 			if (!helloWasm) {
 				setStatus('error: missing `hacbrewpack.wasm` file');
@@ -60,6 +64,8 @@ export function Generate() {
 					nacp.author = state.author;
 					nacp.version = state.version;
 
+					nacp.startupUserAccount = 0;
+
 					FS.mkdir('/control');
 					FS.writeFile('/control/control.nacp', new Uint8Array(nacp.buffer));
 
@@ -93,7 +99,13 @@ export function Generate() {
 								)[0];
 
 								const data = Module.FS.readFile(`/hacbrewpack_nsp/${nspName}`);
-								const outUrl = new URL(nspName, 'sdmc:/');
+
+								// TODO: Sanitize characters that are not allowed in filenames
+								const outUrl = new URL(
+									`${state.name} [${titleId}].nsp`,
+									'sdmc:/',
+								);
+
 								Switch.writeFileSync(outUrl, data);
 								setStatus(`Saved NSP to ${outUrl}`);
 							} catch (err) {
@@ -105,7 +117,8 @@ export function Generate() {
 					}
 				},
 			});
-		})();
+		}
+		setTimeout(g, 250);
 	}, []);
 
 	return (
@@ -114,7 +127,7 @@ export function Generate() {
 				{status}
 			</Text>
 			<Text fill='white' fontSize={24} y={32}>
-				{state.app.name}
+				{state.name}
 			</Text>
 			{logs.split('\n').map((line, i) => (
 				<Text key={i} fill='white' fontSize={24} y={64 + i * 30}>

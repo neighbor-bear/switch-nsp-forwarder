@@ -10,6 +10,7 @@ import { ErrorMissingProdKeys } from './routes/ErrorMissingProdKeys';
 import { Select } from './routes/Select';
 import { Generate } from './routes/Generate';
 import { RouteErrorBoundary } from './routes/Error';
+import { Edit } from './routes/Edit';
 
 const routes = [
 	{
@@ -25,6 +26,11 @@ const routes = [
 	{
 		path: '/select',
 		element: <Select />,
+		errorElement: <RouteErrorBoundary />,
+	},
+	{
+		path: '/edit',
+		element: <Edit />,
 		errorElement: <RouteErrorBoundary />,
 	},
 	{
