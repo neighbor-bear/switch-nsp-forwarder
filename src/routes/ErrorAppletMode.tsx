@@ -1,23 +1,19 @@
-import { Button } from '@nx.js/constants';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Text, useRoot } from 'react-tela';
+import { Button } from '@nx.js/constants';
+import { useGamepad } from '../hooks/use-gamepad';
 
 export function ErrorAppletMode() {
 	const root = useRoot();
 
-	useEffect(() => {
-		let raf: number;
-		function loop() {
-			const [gp] = navigator.getGamepads();
-			if (gp?.buttons[Button.A]?.pressed) {
+	useGamepad(
+		{
+			[Button.A]() {
 				Switch.exit();
-			} else {
-				raf = requestAnimationFrame(loop);
-			}
-		}
-		loop();
-		return () => cancelAnimationFrame(raf);
-	}, []);
+			},
+		},
+		[],
+	);
 
 	return (
 		<>
