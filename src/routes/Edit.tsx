@@ -1,9 +1,11 @@
 import { Button } from '@nx.js/constants';
+import React, { useState } from 'react';
 import { Group, Rect, Text, useRoot } from 'react-tela';
-import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useGamepad } from '../hooks/use-gamepad';
 import { TextInput } from '../components/TextInput';
+import { AppIcon } from '../components/AppIcon';
+import { useGamepad } from '../hooks/use-gamepad';
+import { usePreventExit } from '../hooks/use-prevent-exit';
 
 export function Edit() {
 	const {
@@ -16,6 +18,10 @@ export function Edit() {
 	const [version, setVersion] = useState(app.version);
 	const [profileSelector, setProfileSelector] = useState(false);
 	const [nroPath, setNroPath] = useState(path);
+	const [focusedIndex, setFocusedIndex] = useState(-1);
+	const [cursorPosition, setCursorPosition] = useState(3);
+
+	usePreventExit();
 
 	useGamepad(
 		{
@@ -45,72 +51,40 @@ export function Edit() {
 		[app, nroPath, name, author, version, navigate],
 	);
 
-	// Prevent + from closing the app
-	useEffect(() => {
-		function onBeforeUnload(e: Event) {
-			e.preventDefault();
-		}
-		window.addEventListener('beforeunload', onBeforeUnload);
-		return () => window.removeEventListener('beforeunload', onBeforeUnload);
-	}, []);
+	const fields = [
+		{ name: 'App Title', value: name, onChange: setName },
+		{ name: 'Author', value: author, onChange: setAuthor },
+		{ name: 'Version', value: version, onChange: setVersion },
+		{ name: 'NRO Path', value: nroPath, onChange: setNroPath },
+	];
 
 	return (
 		<>
-			<Text fill='white' fontSize={32} x={4} y={4}>
+			<Text fill='white' fontSize={32} x={4} y={8}>
 				Edit configuration for your forwarder:
 			</Text>
 
-			<Text fill='white' fontSize={24} x={20} y={80}>
-				App Title:
-			</Text>
-			<TextInput
-				value={name}
-				onChange={(v) => setName(v)}
-				width={500}
-				x={160}
-				y={80}
-				fontSize={24}
-				fill='white'
-			/>
+			{fields.map(({ name, value, onChange }, i) => (
+				<>
+					<Text fill='white' fontSize={24} x={20} y={88 + i * 50}>
+						{name}:
+					</Text>
+					<TextInput
+						value={value}
+						onChange={onChange}
+						width={500}
+						x={160}
+						y={80 + i * 50}
+						fontSize={24}
+						fill='white'
+						focused={focusedIndex === i}
+						cursorPosition={cursorPosition}
+						onTouchEnd={() => setFocusedIndex(i)}
+					/>
+				</>
+			))}
 
-			<Text fill='white' fontSize={24} x={20} y={130}>
-				Author:
-			</Text>
-			<TextInput
-				value={author}
-				onChange={(v) => setAuthor(v)}
-				width={500}
-				x={160}
-				y={130}
-				fontSize={24}
-				fill='white'
-			/>
-
-			<Text fill='white' fontSize={24} x={20} y={180}>
-				Version:
-			</Text>
-			<TextInput
-				value={version}
-				onChange={(v) => setVersion(v)}
-				width={500}
-				x={160}
-				y={180}
-				fontSize={24}
-				fill='white'
-			/>
-
-			<Text fill='white' fontSize={24} x={20} y={230}>
-				NRO Path:
-			</Text>
-			<TextInput
-				value={nroPath}
-				onChange={(v) => setNroPath(v)}
-				width={500}
-				x={160}
-				y={230}
-				fontSize={24}
-				fill='white'
-			/>
+			<AppIcon app={app} x={root.ctx.canvas.width - 320} y={64} />
 
 			<Group
 				width={root.ctx.canvas.width}

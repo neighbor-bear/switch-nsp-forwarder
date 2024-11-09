@@ -13,16 +13,19 @@ export function Select() {
 
 	const perRow = 4;
 
+	function goToEdit([path, app]: [string, Switch.Application]) {
+		navigate('/edit', {
+			state: {
+				app,
+				path,
+			},
+		});
+	}
+
 	useGamepad(
 		{
 			[Button.A]() {
-				const [path, app] = apps[selectedIndex];
-				navigate('/edit', {
-					state: {
-						app,
-						path,
-					},
-				});
+				goToEdit(apps[selectedIndex]);
 			},
 			[Button.Left]() {
 				setSelectedIndex((i) => {
@@ -65,6 +68,7 @@ export function Select() {
 						key={app[0]}
 						app={app[1]}
 						index={i}
+						onTouchEnd={() => goToEdit(app)}
 						selected={selectedIndex === i}
 					/>
 				))}
