@@ -15,6 +15,10 @@ export function Generate() {
 			const ModuleFactory = await import('../hacbrewpack.js');
 			const titleId = state.titleId;
 			const helloWasm = Switch.readFileSync('romfs:/hacbrewpack.wasm');
+			const mainData = Switch.readFileSync('romfs:/template/exefs/main');
+			const mainNpdmData = Switch.readFileSync(
+				'romfs:/template/exefs/main.npdm',
+			);
 			if (!helloWasm) {
 				setStatus('error: missing `hacbrewpack.wasm` file');
 				return;
@@ -23,6 +27,17 @@ export function Generate() {
 				setStatus('error: missing `prod.keys` file');
 				return;
 			}
+			if (!mainData) {
+				setStatus('error: missing `main` file');
+				return;
+			}
+			if (!mainNpdmData) {
+				setStatus('error: missing `main.npdm` file');
+				return;
+			}
+
+			const main = new Uint8Array(mainData);
+			const mainNpdm = new Uint8Array(mainNpdmData);
 			const keys = new Uint8Array(prodKeys);
 
 			let Module: Module;
@@ -44,12 +59,6 @@ export function Generate() {
 
 					FS.writeFile('/keys.dat', keys);
 
-					const main = new Uint8Array(
-						Switch.readFileSync('romfs:/template/exefs/main'),
-					);
-					const mainNpdm = new Uint8Array(
-						Switch.readFileSync('romfs:/template/exefs/main.npdm'),
-					);
 					FS.mkdir('/exefs');
 					FS.writeFile('/exefs/main', main);
 					FS.writeFile('/exefs/main.npdm', mainNpdm);
@@ -104,7 +113,7 @@ export function Generate() {
 
 								Switch.writeFileSync(outUrl, data);
 								setStatus(`Saved NSP to ${outUrl}`);
-							} catch (err) {
+							} catch (err: any) {
 								setStatus(`Failed to locate NSP file: ${err.message}`);
 							}
 						}
