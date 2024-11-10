@@ -1,25 +1,42 @@
 import { Button } from '@nx.js/constants';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Group, Rect, Text, useRoot } from 'react-tela';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TextInput } from '../components/TextInput';
 import { AppIcon } from '../components/AppIcon';
 import { useGamepad } from '../hooks/use-gamepad';
 import { usePreventExit } from '../hooks/use-prevent-exit';
+import { generateRandomID } from '../title-id';
+import { Footer, FooterItem } from '../components/Footer';
+
+export interface EditState {
+	app: Switch.Application;
+	path: string;
+}
 
 export function Edit() {
-	const {
-		state: { app, path },
-	} = useLocation();
+	const { app, path }: { app: Switch.Application; path: string } =
+		useLocation().state;
 	const root = useRoot();
 	const navigate = useNavigate();
-	const [name, setName] = useState(app.name);
-	const [author, setAuthor] = useState(app.author);
-	const [version, setVersion] = useState(app.version);
+	const [titleId, setTitleId] = useState(() =>
+		app.id > 0n ? app.id.toString(16).padStart(16, '0') : generateRandomID(),
+	);
+	const [name, setName] = useState(() => app.name);
+	const [author, setAuthor] = useState(() => app.author);
+	const [version, setVersion] = useState(() => app.version);
 	const [profileSelector, setProfileSelector] = useState(false);
 	const [nroPath, setNroPath] = useState(path);
 	const [focusedIndex, setFocusedIndex] = useState(-1);
-	const [cursorPosition, setCursorPosition] = useState(3);
+
+	const fields = [
+		{ name: 'Title ID', value: titleId, onChange: setTitleId, description: '' },
+		{ name: 'App Title', value: name, onChange: setName },
+		{ name: 'Author', value: author, onChange: setAuthor },
+		{ name: 'Version', value: version, onChange: setVersion },
+		{ name: 'NRO Path', value: nroPath, onChange: setNroPath },
+	];
+	const fieldsLength = fields.length;
 
 	usePreventExit();
 
@@ -30,33 +47,33 @@ export function Edit() {
 					state: {
 						app,
 						path: nroPath,
+						titleId,
 						name,
 						author,
 						version,
 					},
 				});
 			},
-			[Button.A]() {
-				if (navigator.virtualKeyboard.boundingRect.height) return;
-				navigator.virtualKeyboard.show();
-			},
+			//[Button.A]() {
+			//	if (navigator.virtualKeyboard.boundingRect.height) return;
+			//	navigator.virtualKeyboard.show();
+			//},
 			[Button.B]() {
 				if (navigator.virtualKeyboard.boundingRect.height) return;
 				// Go back
 				navigate(-1);
 			},
-			[Button.Up]() {},
-			[Button.Down]() {},
+			[Button.Up]() {
+				if (navigator.virtualKeyboard.boundingRect.height) return;
+				setFocusedIndex((i) => Math.max(0, i - 1));
+			},
+			[Button.Down]() {
+				if (navigator.virtualKeyboard.boundingRect.height) return;
+				setFocusedIndex((i) => Math.min(fieldsLength - 1, i + 1));
+			},
 		},
-		[app, nroPath, name, author, version, navigate],
+		[app, nroPath, titleId, name, author, version, fieldsLength, navigate],
 	);
-
-	const fields = [
-		{ name: 'App Title', value: name, onChange: setName },
-		{ name: 'Author', value: author, onChange: setAuthor },
-		{ name: 'Version', value: version, onChange: setVersion },
-		{ name: 'NRO Path', value: nroPath, onChange: setNroPath },
-	];
 
 	return (
 		<>
@@ -78,7 +95,6 @@ export function Edit() {
 						fontSize={24}
 						fill='white'
 						focused={focusedIndex === i}
-						cursorPosition={cursorPosition}
 						onTouchEnd={() => setFocusedIndex(i)}
 					/>
 				</>
@@ -86,76 +102,17 @@ export function Edit() {
 
 			<AppIcon app={app} x={root.ctx.canvas.width - 320} y={64} />
 
-			<Group
-				width={root.ctx.canvas.width}
-				height={80}
-				y={root.ctx.canvas.height - 80}
-			>
-				<Rect width={root.ctx.canvas.width} height={2} fill='white' />
-				<Text
-					fill='white'
-					fontSize={32}
-					textBaseline='middle'
-					textAlign='right'
-					x={root.ctx.canvas.width - 20}
-					y={40}
-				>
-					Generate
-				</Text>
-				<Text
-					fontFamily='system-icons'
-					fill='white'
-					fontSize={32}
-					textBaseline='middle'
-					textAlign='right'
-					x={root.ctx.canvas.width - 174}
-					y={40}
-				>
-					
-				</Text>
-				<Text
-					fill='white'
-					fontSize={32}
-					textBaseline='middle'
-					textAlign='right'
-					x={root.ctx.canvas.width - 260}
-					y={40}
-				>
-					Edit
-				</Text>
-				<Text
-					fontFamily='system-icons'
-					fill='white'
-					fontSize={32}
-					textBaseline='middle'
-					textAlign='right'
-					x={root.ctx.canvas.width - 330}
-					y={40}
-				>
-					
-				</Text>
-				<Text
-					fill='white'
-					fontSize={32}
-					textBaseline='middle'
-					textAlign='right'
-					x={root.ctx.canvas.width - 420}
-					y={40}
-				>
+			<Footer>
+				<FooterItem button={Button.B} x={root.ctx.canvas.width - 400}>
 					Back
-				</Text>
-				<Text
-					fontFamily='system-icons'
-					fill='white'
-					fontSize={32}
-					textBaseline='middle'
-					textAlign='right'
-					x={root.ctx.canvas.width - 500}
-					y={40}
-				>
-					
-				</Text>
-			</Group>
+				</FooterItem>
+				<FooterItem button={Button.A} x={root.ctx.canvas.width - 266}>
+					Edit
+				</FooterItem>
+				<FooterItem button={Button.Plus} x={root.ctx.canvas.width - 160}>
+					Generate
+				</FooterItem>
+			</Footer>
 		</>
 	);
 }

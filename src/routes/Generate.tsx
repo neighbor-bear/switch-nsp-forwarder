@@ -1,9 +1,8 @@
 import { NACP } from '@tootallnate/nacp';
-import { Text, useRoot } from 'react-tela';
+import { Text } from 'react-tela';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { prodKeys } from '../prod-keys';
-import { generateRandomID } from '../title-id';
 import type { Module } from '../hacbrewpack';
 
 export function Generate() {
@@ -14,10 +13,7 @@ export function Generate() {
 	useEffect(() => {
 		async function g() {
 			const ModuleFactory = await import('../hacbrewpack.js');
-			const titleId =
-				state.app.id > 0n
-					? state.app.id.toString(16).padStart(16, '0')
-					: generateRandomID();
+			const titleId = state.titleId;
 			const helloWasm = Switch.readFileSync('romfs:/hacbrewpack.wasm');
 			if (!helloWasm) {
 				setStatus('error: missing `hacbrewpack.wasm` file');

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { apps } from '../apps';
 import { AppTile } from '../components/AppTile';
 import { useGamepad } from '../hooks/use-gamepad';
+import type { EditState } from './Edit';
 
 export function Select() {
 	const root = useRoot();
@@ -14,12 +15,11 @@ export function Select() {
 	const perRow = 4;
 
 	function goToEdit([path, app]: [string, Switch.Application]) {
-		navigate('/edit', {
-			state: {
-				app,
-				path,
-			},
-		});
+		const state: EditState = {
+			app,
+			path,
+		};
+		navigate('/edit', { state });
 	}
 
 	useGamepad(
