@@ -2,7 +2,7 @@ import { type DependencyList, useEffect, useRef } from 'react';
 
 export function useGamepad(
 	buttons: Record<number, () => void>,
-	deps?: DependencyList[],
+	deps?: DependencyList,
 ) {
 	const pressed = useRef<boolean[]>([]);
 	useEffect(() => {
