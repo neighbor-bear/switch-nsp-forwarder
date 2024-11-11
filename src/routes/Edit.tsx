@@ -1,6 +1,6 @@
 import { Button } from '@nx.js/constants';
-import React, { useMemo, useState } from 'react';
-import { Group, Rect, Text, useRoot } from 'react-tela';
+import React, { useState } from 'react';
+import { Text, useRoot } from 'react-tela';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TextInput } from '../components/TextInput';
 import { AppIcon } from '../components/AppIcon';
@@ -42,7 +42,7 @@ export function Edit() {
 
 	useGamepad(
 		{
-			[Button.Plus]() {
+			Plus() {
 				navigate('/generate', {
 					state: {
 						app,
@@ -54,20 +54,16 @@ export function Edit() {
 					},
 				});
 			},
-			//[Button.A]() {
-			//	if (navigator.virtualKeyboard.boundingRect.height) return;
-			//	navigator.virtualKeyboard.show();
-			//},
-			[Button.B]() {
+			B() {
 				if (navigator.virtualKeyboard.boundingRect.height) return;
 				// Go back
 				navigate(-1);
 			},
-			[Button.Up]() {
+			Up() {
 				if (navigator.virtualKeyboard.boundingRect.height) return;
 				setFocusedIndex((i) => Math.max(0, i - 1));
 			},
-			[Button.Down]() {
+			Down() {
 				if (navigator.virtualKeyboard.boundingRect.height) return;
 				setFocusedIndex((i) => Math.min(fieldsLength - 1, i + 1));
 			},

@@ -1,4 +1,3 @@
-import { Button } from '@nx.js/constants';
 import { Group, Text, useRoot } from 'react-tela';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -24,26 +23,26 @@ export function Select() {
 
 	useGamepad(
 		{
-			[Button.A]() {
+			A() {
 				goToEdit(apps[selectedIndex]);
 			},
-			[Button.Left]() {
+			Left() {
 				setSelectedIndex((i) => {
 					if (i % perRow === 0) return i;
 					return i - 1;
 				});
 			},
-			[Button.Right]() {
+			Right() {
 				setSelectedIndex((i) => {
 					if (i === apps.length - 1) return i;
 					if (i % perRow === perRow - 1) return i;
 					return i + 1;
 				});
 			},
-			[Button.Up]() {
+			Up() {
 				setSelectedIndex((i) => Math.max(0, i - perRow));
 			},
-			[Button.Down]() {
+			Down() {
 				setSelectedIndex((i) => Math.min(apps.length - 1, i + perRow));
 			},
 		},

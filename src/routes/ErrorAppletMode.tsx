@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, useRoot } from 'react-tela';
-import { Button } from '@nx.js/constants';
 import { useGamepad } from '../hooks/use-gamepad';
 
 export function ErrorAppletMode() {
@@ -8,7 +7,7 @@ export function ErrorAppletMode() {
 
 	useGamepad(
 		{
-			[Button.A]() {
+			A() {
 				Switch.exit();
 			},
 		},

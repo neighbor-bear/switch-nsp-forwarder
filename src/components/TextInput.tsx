@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Group, Rect, Text, type TextProps } from 'react-tela';
 import { useGamepad } from '../hooks/use-gamepad';
-import { Button } from '@nx.js/constants';
 
 export interface TextInputProps extends TextProps {
 	width: number;
@@ -27,7 +26,7 @@ export function TextInput({
 
 	useGamepad(
 		{
-			[Button.A]() {
+			A() {
 				const vk = navigator.virtualKeyboard;
 				if (!focused || vk.boundingRect.height) return;
 				vk.show();
