@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRoot, Group, Rect, Text } from 'react-tela';
 import { BUTTON_ICONS } from '../button-icons';
-import type { Button } from '@nx.js/constants';
+import type { ButtonName } from '../types';
 
 export function Footer({ children }: { children: React.ReactNode }) {
 	const root = useRoot();
@@ -21,7 +21,7 @@ export function FooterItem({
 	button,
 	children,
 	x,
-}: { button: Button; children: string; x: number }) {
+}: { button: ButtonName; children: string; x: number }) {
 	return (
 		<>
 			<Text

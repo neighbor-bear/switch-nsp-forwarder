@@ -1,18 +1,14 @@
 import { Button } from '@nx.js/constants';
 import { type DependencyList, useEffect } from 'react';
-
-type ButtonName = keyof typeof Button;
+import type { ButtonName } from '../types';
 
 export type ButtonHandlers = {
 	[A in ButtonName]?: () => void;
-}
+};
 
 const pressed: boolean[] = [];
 
-export function useGamepad(
-	buttons: ButtonHandlers,
-	deps?: DependencyList,
-) {
+export function useGamepad(buttons: ButtonHandlers, deps?: DependencyList) {
 	useEffect(() => {
 		let raf: number;
 		const loop = () => {

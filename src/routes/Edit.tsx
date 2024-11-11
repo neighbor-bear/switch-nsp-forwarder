@@ -1,4 +1,3 @@
-import { Button } from '@nx.js/constants';
 import React, { useState } from 'react';
 import { Text, useRoot } from 'react-tela';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -99,13 +98,13 @@ export function Edit() {
 			<AppIcon app={app} x={root.ctx.canvas.width - 320} y={64} />
 
 			<Footer>
-				<FooterItem button={Button.B} x={root.ctx.canvas.width - 400}>
+				<FooterItem button='B' x={root.ctx.canvas.width - 400}>
 					Back
 				</FooterItem>
-				<FooterItem button={Button.A} x={root.ctx.canvas.width - 266}>
+				<FooterItem button='A' x={root.ctx.canvas.width - 266}>
 					Edit
 				</FooterItem>
-				<FooterItem button={Button.Plus} x={root.ctx.canvas.width - 160}>
+				<FooterItem button='Plus' x={root.ctx.canvas.width - 160}>
 					Generate
 				</FooterItem>
 			</Footer>
