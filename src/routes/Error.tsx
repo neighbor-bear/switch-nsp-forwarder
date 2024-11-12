@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text } from 'react-tela';
 import { useRouteError } from 'react-router-dom';
 

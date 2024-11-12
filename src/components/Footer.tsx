@@ -1,4 +1,3 @@
-import React from 'react';
 import { useRoot, Group, Rect, Text } from 'react-tela';
 import { BUTTON_ICONS } from '../button-icons';
 import type { ButtonName } from '../types';

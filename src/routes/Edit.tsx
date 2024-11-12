@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Text, useRoot } from 'react-tela';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TextInput } from '../components/TextInput';

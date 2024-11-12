@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from 'react-tela/render';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { AppletType } from '@nx.js/constants';

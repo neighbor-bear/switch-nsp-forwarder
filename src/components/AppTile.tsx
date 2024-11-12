@@ -1,4 +1,3 @@
-import React from 'react';
 import { Group, Rect, Text } from 'react-tela';
 import { AppIcon } from './AppIcon';
 

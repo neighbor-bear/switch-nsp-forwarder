@@ -7,7 +7,7 @@
   "license": "MIT",
   "description": "Generate NSP to NRO forwarders for Switch",
   "scripts": {
-    "build": "esbuild --bundle --sourcemap --sources-content=false --target=es2022 --format=esm --outdir=romfs --define:process.env.NODE_ENV=\\\"production\\\" src/main.tsx",
+    "build": "esbuild --bundle --sourcemap --sources-content=false --target=es2022 --format=esm --outdir=romfs --jsx=automatic --define:process.env.NODE_ENV=\\\"production\\\" src/main.tsx",
     "format": "biome format --write src",
     "nro": "nxjs-nro",
     "nsp": "nxjs-nsp"

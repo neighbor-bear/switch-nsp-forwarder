@@ -1,6 +1,6 @@
 import { NACP } from '@tootallnate/nacp';
 import { Text } from 'react-tela';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { prodKeys } from '../prod-keys';
 import type { Module } from '../hacbrewpack';

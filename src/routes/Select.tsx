@@ -1,6 +1,6 @@
-import { Group, Text, useRoot } from 'react-tela';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Group, Text, useRoot } from 'react-tela';
 import { apps } from '../apps';
 import { AppTile } from '../components/AppTile';
 import { useGamepad } from '../hooks/use-gamepad';

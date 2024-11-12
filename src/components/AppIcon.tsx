@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Image, ImageProps } from 'react-tela';
+import { useEffect, useState } from 'react';
+import { Image, type ImageProps } from 'react-tela';
 
 export interface AppIconProps extends Omit<ImageProps, 'src'> {
 	app: Switch.Application;

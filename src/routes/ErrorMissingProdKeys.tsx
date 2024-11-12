@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, useRoot } from 'react-tela';
 import { useGamepad } from '../hooks/use-gamepad';
 
