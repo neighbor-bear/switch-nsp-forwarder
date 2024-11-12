@@ -28,14 +28,14 @@ importers:
         specifier: ^1.9.4
         version: 1.9.4
       '@nx.js/nro':
-        specifier: ^0.0.54
-        version: 0.0.54
+        specifier: ^0.0.55
+        version: 0.0.55
       '@nx.js/nsp':
-        specifier: ^0.0.54
-        version: 0.0.54
+        specifier: ^0.0.55
+        version: 0.0.55
       '@nx.js/runtime':
-        specifier: ^0.0.54
-        version: 0.0.54
+        specifier: ^0.0.55
+        version: 0.0.55
       '@types/react':
         specifier: ^18.3.12
         version: 18.3.12
@@ -567,19 +567,19 @@ packages:
   '@nx.js/constants@0.1.5':
     resolution: {integrity: sha512-dYbtzx9KRmtmia9ybSbNJHhzw3JSu602MzkboZXzykEjjJ3fRtgz1RbpC90TkqRHwYkaAg9XbuXDgOpQVRSKKA==}
 
-  '@nx.js/nro@0.0.54':
-    resolution: {integrity: sha512-9ePXnt1XBsx2/tTp+jGDKKUR+UgC7ld4kzgZTaAE33v13K5ZhnUMOJ5wvfZCj7kX7U575ZTrZb4eNn2Kr/lBpg==}
+  '@nx.js/nro@0.0.55':
+    resolution: {integrity: sha512-fXwKIEzQtQbRl+1t+dOqzxBt38GCLUP5sARUiflXdVtPDQGgaaagwqmfY9ojDheGw6DfriSBJBTglyGED+mdIg==}
     hasBin: true
 
-  '@nx.js/nsp@0.0.54':
-    resolution: {integrity: sha512-uRP4BGHWcrGo0+Rb3am3v3s0LiApLSjweFCyr2LzT/YW692UCiVpww71Z4la2EK248U6Xia7tmKaXXR39R8irg==}
+  '@nx.js/nsp@0.0.55':
+    resolution: {integrity: sha512-jiKUhjU30B7PtppJXkZEKgnm8MCdZo6iO/L7a6lFo3YTFIj/wjdEWugNB6Ncfl8nA6l5KNpVXQld5wLMpyq30g==}
     hasBin: true
 
   '@nx.js/patch-nacp@0.1.0':
     resolution: {integrity: sha512-CztPmIqDDKedYt1A38c8GsrOFy3EUnNnmNCa7wmltWKjj3GotarwZf89aelLvqapFgFX+XEsaLhJt+aepCgiEQ==}
 
-  '@nx.js/runtime@0.0.54':
-    resolution: {integrity: sha512-1PgTOtRyUbGkJWRA7hyOHMiv0rfJLDsdwjNJU704quamSNU6bl+o8X++W0t9XOOe3FiSMia0Sn064P1XGIb8kw==}
+  '@nx.js/runtime@0.0.55':
+    resolution: {integrity: sha512-gWU44vPUGObg7Y7MCGlhrHGtcxHY4G4PqkiImGVuf62mMoqILGNbIevFxICRQK1ZLK9zuT6B7YhdL7+lt+CI6Q==}
 
   '@remix-run/router@1.20.0':
     resolution: {integrity: sha512-mUnk8rPJBI9loFDZ+YzPGdeniYK+FTmRD1TMCz7ev2SNIozyKKpnGgsxO34u6Z4z/t0ITuu7voi/AshfsGsgFg==}
@@ -1670,7 +1670,7 @@ snapshots:
 
   '@nx.js/constants@0.1.5': {}
 
-  '@nx.js/nro@0.0.54':
+  '@nx.js/nro@0.0.55':
     dependencies:
       '@nx.js/patch-nacp': 0.1.0
       '@tootallnate/nacp': 0.0.1
@@ -1682,7 +1682,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@nx.js/nsp@0.0.54':
+  '@nx.js/nsp@0.0.55':
     dependencies:
       '@nx.js/patch-nacp': 0.1.0
       '@tootallnate/nacp': 0.0.1
@@ -1699,7 +1699,7 @@ snapshots:
       parse-author: 2.0.0
       types-package-json: 2.0.39
 
-  '@nx.js/runtime@0.0.54': {}
+  '@nx.js/runtime@0.0.55': {}
 
   '@remix-run/router@1.20.0': {}
 
