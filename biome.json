@@ -1,9 +1,6 @@
 {
-  "linter": {
-    "enabled": false
-  },
-  "formatter": {
-    "ignore": ["romfs"]
+  "files": {
+    "ignore": ["romfs", "src/hacbrewpack.js"]
   },
   "javascript": {
     "formatter": {
