@@ -1,38 +1,63 @@
 import { NACP } from '@tootallnate/nacp';
 import { Text } from 'react-tela';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { prodKeys } from '../prod-keys';
 import type { Module } from '../hacbrewpack';
 
+type Status = 'generating' | 'error' | 'success';
+
+export interface GenerateState {
+	app: Switch.Application;
+	path: string;
+	titleId: string;
+	name: string;
+	author: string;
+	version: string;
+	profileSelector: boolean;
+}
+
 export function Generate() {
-	const { state } = useLocation();
-	const [status, setStatus] = useState('generating');
+	const navigate = useNavigate();
+	const {
+		app,
+		path,
+		titleId,
+		name,
+		author,
+		version,
+		profileSelector,
+	}: GenerateState = useLocation().state;
+	const [status, setStatus] = useState<Status>('generating');
+	const [error, setError] = useState<string | null>(null);
 	const [logs, setLogs] = useState('');
 
 	useEffect(() => {
 		async function g() {
 			const ModuleFactory = await import('../hacbrewpack.js');
-			const titleId = state.titleId;
 			const helloWasm = Switch.readFileSync('romfs:/hacbrewpack.wasm');
 			const mainData = Switch.readFileSync('romfs:/template/exefs/main');
 			const mainNpdmData = Switch.readFileSync(
 				'romfs:/template/exefs/main.npdm',
 			);
 			if (!helloWasm) {
-				setStatus('error: missing `hacbrewpack.wasm` file');
+				setStatus('error');
+				setError('missing `hacbrewpack.wasm` file');
 				return;
 			}
 			if (!prodKeys) {
-				setStatus('error: missing `prod.keys` file');
+				setStatus('error');
+				setError('missing `prod.keys` file');
 				return;
 			}
 			if (!mainData) {
-				setStatus('error: missing `main` file');
+				setStatus('error');
+				setError('missing `main` file');
 				return;
 			}
 			if (!mainNpdmData) {
-				setStatus('error: missing `main.npdm` file');
+				setStatus('error');
+				setError('missing `main.npdm` file');
 				return;
 			}
 
@@ -54,7 +79,6 @@ export function Generate() {
 				},
 				preRun(_Module) {
 					Module = _Module;
-					setStatus('preRun');
 					const { FS } = Module;
 
 					FS.writeFile('/keys.dat', keys);
@@ -65,28 +89,30 @@ export function Generate() {
 
 					const nacp = new NACP();
 					nacp.id = titleId;
-					nacp.title = state.name;
-					nacp.author = state.author;
-					nacp.version = state.version;
+					nacp.title = name;
+					nacp.author = author;
+					nacp.version = version;
 
-					nacp.startupUserAccount = 0;
+					nacp.startupUserAccount = profileSelector ? 1 : 0;
 
 					FS.mkdir('/control');
 					FS.writeFile('/control/control.nacp', new Uint8Array(nacp.buffer));
 
-					const image = new Uint8Array(state.app.icon);
-					FS.writeFile('/control/icon_AmericanEnglish.dat', image);
+					const { icon } = app;
+					if (icon) {
+						const image = new Uint8Array(icon);
+						FS.writeFile('/control/icon_AmericanEnglish.dat', image);
+					}
 
 					//FS.mkdir('/logo');
 					//FS.writeFile('/logo/NintendoLogo.png', logo);
 					//FS.writeFile('/logo/StartupMovie.gif', startupMovie);
 
 					FS.mkdir('/romfs');
-					FS.writeFile('/romfs/nextArgv', state.path);
-					FS.writeFile('/romfs/nextNroPath', state.path);
+					FS.writeFile('/romfs/nextArgv', path);
+					FS.writeFile('/romfs/nextNroPath', path);
 				},
 				onRuntimeInitialized: () => {
-					setStatus('onRuntimeInitialized');
 					try {
 						const exitCode = Module.callMain([
 							'--nopatchnacplogo',
@@ -94,8 +120,6 @@ export function Generate() {
 							titleId,
 							'--nologo',
 						]);
-						//const exitCode = 1;
-						setStatus(`exit code: ${exitCode}`);
 
 						if (exitCode === 0) {
 							try {
@@ -106,25 +130,29 @@ export function Generate() {
 								const data = Module.FS.readFile(`/hacbrewpack_nsp/${nspName}`);
 
 								// TODO: Sanitize characters that are not allowed in filenames
-								const outUrl = new URL(
-									`${state.name} [${titleId}].nsp`,
-									'sdmc:/',
-								);
-
+								const fileName = `${name} [${titleId}].nsp`;
+								const outUrl = new URL(fileName, 'sdmc:/');
 								Switch.writeFileSync(outUrl, data);
-								setStatus(`Saved NSP to ${outUrl}`);
-							} catch (err: any) {
-								setStatus(`Failed to locate NSP file: ${err.message}`);
+
+								const query = new URLSearchParams({ name: fileName })
+								navigate(`/success?${query}`);
+							} catch (err) {
+								setStatus('error');
+								setError(`Failed to locate NSP file: ${err}`);
 							}
+						} else {
+							setStatus('error');
+							setError(`exit code: ${exitCode}`);
 						}
 					} catch (err) {
-						setStatus(`error: ${err}`);
+						setStatus('error');
+						setError(`error: ${err}`);
 					}
 				},
 			});
 		}
 		setTimeout(g, 250);
-	}, []);
+	}, [navigate, app, path, titleId, name, author, version, profileSelector]);
 
 	return (
 		<>
@@ -132,10 +160,10 @@ export function Generate() {
 				{status}
 			</Text>
 			<Text fill='white' fontSize={24} y={32}>
-				{state.name}
+				{name}
 			</Text>
 			{logs.split('\n').map((line, i) => (
-				<Text key={i} fill='white' fontSize={24} y={64 + i * 30}>
+				<Text key={line} fill='white' fontSize={24} y={64 + i * 30}>
 					{line}
 				</Text>
 			))}

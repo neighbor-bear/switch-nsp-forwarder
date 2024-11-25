@@ -1,14 +1,13 @@
 import { Button } from '@nx.js/constants';
-import { type DependencyList, useEffect } from 'react';
+import { type DependencyList, useEffect, useRef } from 'react';
 import type { ButtonName } from '../types';
 
 export type ButtonHandlers = {
 	[A in ButtonName]?: () => void;
 };
 
-const pressed: boolean[] = [];
-
 export function useGamepad(buttons: ButtonHandlers, deps?: DependencyList) {
+	const pressed = useRef<boolean[]>([]);
 	useEffect(() => {
 		let raf: number;
 		const loop = () => {
@@ -16,18 +15,18 @@ export function useGamepad(buttons: ButtonHandlers, deps?: DependencyList) {
 			if (!gp) return;
 			for (const [button, onPress] of Object.entries(buttons)) {
 				const buttonNum = Button[button as ButtonName];
-				const wasPressed = pressed[buttonNum];
+				const wasPressed = pressed.current[buttonNum];
 				const isPressed = gp.buttons[buttonNum]?.pressed;
 				if (!wasPressed && isPressed) {
-					pressed[buttonNum] = true;
+					pressed.current[buttonNum] = true;
 					onPress();
 				} else if (wasPressed && !isPressed) {
-					pressed[buttonNum] = false;
+					pressed.current[buttonNum] = false;
 				}
 			}
 			raf = requestAnimationFrame(loop);
 		};
 		loop();
 		return () => cancelAnimationFrame(raf);
-	}, deps);
+	}, [...(deps || []), buttons]);
 }

@@ -18,34 +18,43 @@ export function TextInput({
 	x,
 	y,
 	padding = 8,
-	focused,
 	fontSize = 24,
+	focused = false,
 	...textProps
 }: TextInputProps) {
-	const [cursorPosition, setCursorPosition] = useState(0);
+	const [cursorPosition, setCursorPosition] = useState(-1);
 
 	useGamepad(
 		{
 			A() {
+				if (!focused) return; // Ignore since this input is not focused
 				const vk = navigator.virtualKeyboard;
-				if (!focused || vk.boundingRect.height) return;
+				if (vk.boundingRect.height) return; // Ignore since the keyboard is already open
+				vk.value = value;
+				vk.cursorIndex = cursorPosition >= 0 ? cursorPosition : value.length;
 				vk.show();
 			},
 		},
-		[focused, value],
+		[focused, value, cursorPosition],
 	);
 
 	useEffect(() => {
 		if (!focused) return;
 		const vk = navigator.virtualKeyboard;
-		function onCursorMove() {
+		function onCursorMoveEvent() {
 			setCursorPosition(vk.cursorIndex);
 		}
-		vk.addEventListener('cursormove', onCursorMove);
+		function onChangeEvent() {
+			setCursorPosition(vk.cursorIndex);
+			onChange(vk.value);
+		}
+		vk.addEventListener('change', onChangeEvent);
+		vk.addEventListener('cursormove', onCursorMoveEvent);
 		return () => {
-			vk.removeEventListener('cursormove', onCursorMove);
+			vk.removeEventListener('change', onChangeEvent);
+			vk.removeEventListener('cursormove', onCursorMoveEvent);
 		};
-	}, [focused]);
+	}, [focused, onChange]);
 
 	return (
 		<Group
@@ -58,7 +67,7 @@ export function TextInput({
 			<Text {...textProps} fontSize={fontSize} x={padding} y={padding}>
 				{value}
 			</Text>
-			{focused && cursorPosition > 0 ? (
+			{focused && cursorPosition >= 0 ? (
 				<Rect width={1} height={fontSize} fill='white' />
 			) : null}
 			<Rect

@@ -7,6 +7,7 @@ import { useGamepad } from '../hooks/use-gamepad';
 import { usePreventExit } from '../hooks/use-prevent-exit';
 import { generateRandomID } from '../title-id';
 import { Footer, FooterItem } from '../components/Footer';
+import type { GenerateState } from './Generate';
 
 export interface EditState {
 	app: Switch.Application;
@@ -14,8 +15,7 @@ export interface EditState {
 }
 
 export function Edit() {
-	const { app, path }: { app: Switch.Application; path: string } =
-		useLocation().state;
+	const { app, path }: EditState = useLocation().state;
 	const root = useRoot();
 	const navigate = useNavigate();
 	const [titleId, setTitleId] = useState(() =>
@@ -42,16 +42,17 @@ export function Edit() {
 	useGamepad(
 		{
 			Plus() {
-				navigate('/generate', {
-					state: {
-						app,
-						path: nroPath,
-						titleId,
-						name,
-						author,
-						version,
-					},
-				});
+				if (navigator.virtualKeyboard.boundingRect.height) return;
+				const state: GenerateState = {
+					app,
+					path: nroPath,
+					titleId,
+					name,
+					author,
+					version,
+					profileSelector,
+				};
+				navigate('/generate', { state });
 			},
 			B() {
 				if (navigator.virtualKeyboard.boundingRect.height) return;
@@ -78,10 +79,17 @@ export function Edit() {
 
 			{fields.map(({ name, value, onChange }, i) => (
 				<>
-					<Text fill='white' fontSize={24} x={20} y={88 + i * 50}>
+					<Text
+						key={`${name}-label`}
+						fill='white'
+						fontSize={24}
+						x={20}
+						y={88 + i * 50}
+					>
 						{name}:
 					</Text>
 					<TextInput
+						key={`${name}-input`}
 						value={value}
 						onChange={onChange}
 						width={500}

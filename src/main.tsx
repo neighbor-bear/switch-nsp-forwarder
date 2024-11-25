@@ -8,6 +8,7 @@ import { ErrorAppletMode } from './routes/ErrorAppletMode';
 import { ErrorMissingProdKeys } from './routes/ErrorMissingProdKeys';
 import { Select } from './routes/Select';
 import { Generate } from './routes/Generate';
+import { Success } from './routes/Success';
 import { RouteErrorBoundary } from './routes/Error';
 import { Edit } from './routes/Edit';
 
@@ -35,6 +36,11 @@ const routes = [
 	{
 		path: '/generate',
 		element: <Generate />,
+		errorElement: <RouteErrorBoundary />,
+	},
+	{
+		path: '/success',
+		element: <Success />,
 		errorElement: <RouteErrorBoundary />,
 	},
 ];
