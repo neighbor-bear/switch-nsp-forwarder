@@ -1,18 +1,19 @@
-function* nroIterator(path: string | URL) {
-	const entries = Switch.readDirSync(path);
-	if (!entries) {
-		return;
-	}
+function isDirectory(mode: number) {
+	return (mode & 16384) === 16384;
+}
+
+function* nroIterator(path: string | URL): IteratorObject<URL, void> {
+	const entries = Switch.readDirSync(path) ?? [];
 	for (const entry of entries) {
-		if (!entry.endsWith('.nro')) {
-			continue;
-		}
 		const fullPath = new URL(entry, path);
-		const data = Switch.readFileSync(fullPath);
-		if (!data) {
-			continue;
+		const stat = Switch.statSync(fullPath);
+		if (stat) {
+			if (isDirectory(stat.mode)) {
+				yield* nroIterator(new URL(`${fullPath}/`));
+			} else if (entry.endsWith('.nro')) {
+				yield fullPath;
+			}
 		}
-		yield fullPath;
 	}
 }
 
@@ -20,5 +21,6 @@ export const apps: [string, Switch.Application][] = [
 	...nroIterator('sdmc:/switch/'),
 ].map((fullPath) => [
 	fullPath.href,
-	new Switch.Application(Switch.readFileSync(fullPath)),
+	// biome-ignore lint/style/noNonNullAssertion: `readFileSync` should always return a value at this point
+	new Switch.Application(Switch.readFileSync(fullPath)!),
 ]);
