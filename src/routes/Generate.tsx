@@ -134,7 +134,7 @@ export function Generate() {
 								const outUrl = new URL(fileName, 'sdmc:/');
 								Switch.writeFileSync(outUrl, data);
 
-								const query = new URLSearchParams({ name: fileName })
+								const query = new URLSearchParams({ name: fileName });
 								navigate(`/success?${query}`);
 							} catch (err) {
 								setStatus('error');
