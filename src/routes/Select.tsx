@@ -11,7 +11,7 @@ export function Select() {
 	const navigate = useNavigate();
 	const [selectedIndex, setSelectedIndex] = useState(0);
 
-	const perRow = 4;
+	const perRow = 5;
 
 	function goToEdit([path, app]: [string, Switch.Application]) {
 		const state: EditState = {

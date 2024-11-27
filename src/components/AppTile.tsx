@@ -1,4 +1,4 @@
-import { Group, Rect, Text } from 'react-tela';
+import { Group, Rect, Text, useRoot } from 'react-tela';
 import { AppIcon } from './AppIcon';
 
 export function AppTile({
@@ -12,18 +12,32 @@ export function AppTile({
 	selected: boolean;
 	onTouchEnd?: () => void;
 }) {
-	const width = 320;
-	const height = 320;
-	const perRow = 4;
+	const root = useRoot();
+	const perRow = 5;
+	const width = root.ctx.canvas.width / perRow;
+	const height = width;
 	const x = (index % perRow) * width;
 	const y = Math.floor(index / perRow) * height;
+	const iconSize = width * 0.75;
 	return (
 		<Group width={width} height={height} x={x} y={y} onTouchEnd={onTouchEnd}>
 			{selected && (
 				<Rect width={width} height={height} fill='rgba(0, 0, 255, 0.5)' />
 			)}
-			<AppIcon app={app} width={256} height={256} x={width / 2 - 128} y={16} />
-			<Text fill='white' fontSize={20} x={width / 2} y={288} textAlign='center'>
+			<AppIcon
+				app={app}
+				width={iconSize}
+				height={iconSize}
+				x={width / 2 - iconSize / 2}
+				y={16}
+			/>
+			<Text
+				fill='white'
+				fontSize={18}
+				x={width / 2}
+				y={iconSize + 30}
+				textAlign='center'
+			>
 				{app.name}
 			</Text>
 		</Group>
