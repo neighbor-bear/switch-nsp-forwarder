@@ -27,9 +27,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@nx.js/nro": "^0.0.55",
-    "@nx.js/nsp": "^0.0.55",
-    "@nx.js/runtime": "^0.0.55",
+    "@nx.js/nro": "0.0.56",
+    "@nx.js/nsp": "0.0.56",
+    "@nx.js/runtime": "0.0.56",
     "@types/react": "^18.3.12",
     "esbuild": "^0.17.19"
   }
