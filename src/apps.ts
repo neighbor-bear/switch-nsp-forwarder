@@ -5,6 +5,9 @@ function isDirectory(mode: number) {
 function* nroIterator(path: string | URL): IteratorObject<URL, void> {
 	const entries = Switch.readDirSync(path) ?? [];
 	for (const entry of entries) {
+		// Skip hidden files
+		if (entry.startsWith('.')) continue;
+
 		const fullPath = new URL(entry, path);
 		const stat = Switch.statSync(fullPath);
 		if (stat) {
