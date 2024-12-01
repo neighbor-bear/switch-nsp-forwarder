@@ -114,6 +114,7 @@ export function Generate() {
 							id,
 							'--nologo',
 						]);
+						console.debug(`exit code: ${exitCode}`);
 
 						if (exitCode === 0) {
 							try {
@@ -133,6 +134,7 @@ export function Generate() {
 							} catch (err) {
 								setStatus('error');
 								setError(`Failed to locate NSP file: ${err}`);
+								console.debug(`Failed to locate NSP file: ${err}`);
 							}
 						} else {
 							setStatus('error');
@@ -141,6 +143,7 @@ export function Generate() {
 					} catch (err) {
 						setStatus('error');
 						setError(`error: ${err}`);
+						console.debug(err);
 					}
 				},
 			});
