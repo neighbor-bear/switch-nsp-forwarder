@@ -2,12 +2,14 @@ import { Group, Rect, Text, useRoot } from 'react-tela';
 import { AppIcon } from './AppIcon';
 
 export function AppTile({
-	app,
+	icon,
+	name,
 	index,
 	selected,
 	onTouchEnd,
 }: {
-	app: Switch.Application;
+	icon: ArrayBuffer | undefined;
+	name: string;
 	index: number;
 	selected: boolean;
 	onTouchEnd?: () => void;
@@ -25,7 +27,7 @@ export function AppTile({
 				<Rect width={width} height={height} fill='rgba(0, 0, 255, 0.5)' />
 			)}
 			<AppIcon
-				app={app}
+				icon={icon}
 				width={iconSize}
 				height={iconSize}
 				x={width / 2 - iconSize / 2}
@@ -38,7 +40,7 @@ export function AppTile({
 				y={iconSize + 30}
 				textAlign='center'
 			>
-				{app.name}
+				{name}
 			</Text>
 		</Group>
 	);

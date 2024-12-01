@@ -4,23 +4,19 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { prodKeys } from '../prod-keys';
 import type { Module } from '../hacbrewpack';
+import type { AppInfo } from '../apps';
 
 type Status = 'generating' | 'error' | 'success';
 
-export interface GenerateState {
-	app: Switch.Application;
-	path: string;
+export interface GenerateState extends Omit<AppInfo, 'id'> {
 	titleId: string;
-	name: string;
-	author: string;
-	version: string;
 	profileSelector: boolean;
 }
 
 export function Generate() {
 	const navigate = useNavigate();
 	const {
-		app,
+		icon,
 		path,
 		titleId,
 		name,
@@ -98,7 +94,6 @@ export function Generate() {
 					FS.mkdir('/control');
 					FS.writeFile('/control/control.nacp', new Uint8Array(nacp.buffer));
 
-					const { icon } = app;
 					if (icon) {
 						const image = new Uint8Array(icon);
 						FS.writeFile('/control/icon_AmericanEnglish.dat', image);
@@ -152,7 +147,7 @@ export function Generate() {
 			});
 		}
 		setTimeout(g, 250);
-	}, [navigate, app, path, titleId, name, author, version, profileSelector]);
+	}, [navigate, icon, path, titleId, name, author, version, profileSelector]);
 
 	return (
 		<>

@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Text, useRoot } from 'react-tela';
-import { apps } from '../apps';
+import { type AppInfo, apps } from '../apps';
 import { AppTile } from '../components/AppTile';
 import { useGamepad } from '../hooks/use-gamepad';
-import type { EditState } from './Edit';
 
 export function Select() {
 	const root = useRoot();
@@ -13,12 +12,8 @@ export function Select() {
 
 	const perRow = 5;
 
-	function goToEdit([path, app]: [string, Switch.Application]) {
-		const state: EditState = {
-			app,
-			path,
-		};
-		navigate('/edit', { state });
+	function goToEdit(appInfo: AppInfo) {
+		navigate('/edit', { state: appInfo });
 	}
 
 	useGamepad(
@@ -55,7 +50,7 @@ export function Select() {
 				Select an app to create a forwader for:
 			</Text>
 			<Text fill='white' fontSize={24} x={500}>
-				{apps[selectedIndex][0]}
+				{apps[selectedIndex].path}
 			</Text>
 			<Group
 				y={40}

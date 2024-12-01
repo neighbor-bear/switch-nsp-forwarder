@@ -8,24 +8,23 @@ import { usePreventExit } from '../hooks/use-prevent-exit';
 import { generateRandomID } from '../title-id';
 import { Footer, FooterItem } from '../components/Footer';
 import type { GenerateState } from './Generate';
-
-export interface EditState {
-	app: Switch.Application;
-	path: string;
-}
+import type { AppInfo } from '../apps';
 
 export function Edit() {
-	const { app, path }: EditState = useLocation().state;
+	const initialState: AppInfo = useLocation().state;
+	const { icon } = initialState;
 	const root = useRoot();
 	const navigate = useNavigate();
 	const [titleId, setTitleId] = useState(() =>
-		app.id > 0n ? app.id.toString(16).padStart(16, '0') : generateRandomID(),
+		initialState.id > 0n
+			? initialState.id.toString(16).padStart(16, '0')
+			: generateRandomID(),
 	);
-	const [name, setName] = useState(() => app.name);
-	const [author, setAuthor] = useState(() => app.author);
-	const [version, setVersion] = useState(() => app.version);
+	const [name, setName] = useState(() => initialState.name);
+	const [author, setAuthor] = useState(() => initialState.author);
+	const [version, setVersion] = useState(() => initialState.version);
 	const [profileSelector, setProfileSelector] = useState(false);
-	const [nroPath, setNroPath] = useState(path);
+	const [nroPath, setNroPath] = useState(() => initialState.path);
 	const [focusedIndex, setFocusedIndex] = useState(-1);
 
 	const fields = [
@@ -44,7 +43,7 @@ export function Edit() {
 			Plus() {
 				if (navigator.virtualKeyboard.boundingRect.height) return;
 				const state: GenerateState = {
-					app,
+					icon,
 					path: nroPath,
 					titleId,
 					name,
@@ -68,7 +67,7 @@ export function Edit() {
 				setFocusedIndex((i) => Math.min(fieldsLength - 1, i + 1));
 			},
 		},
-		[app, nroPath, titleId, name, author, version, fieldsLength, navigate],
+		[icon, nroPath, titleId, name, author, version, fieldsLength, navigate],
 	);
 
 	return (
@@ -103,7 +102,7 @@ export function Edit() {
 				</>
 			))}
 
-			<AppIcon app={app} x={root.ctx.canvas.width - 320} y={64} />
+			<AppIcon icon={icon} x={root.ctx.canvas.width - 320} y={64} />
 
 			<Footer>
 				<FooterItem button='B' x={root.ctx.canvas.width - 400}>

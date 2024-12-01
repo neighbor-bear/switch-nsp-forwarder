@@ -1,3 +1,12 @@
+export interface AppInfo {
+	path: string;
+	id: bigint;
+	name: string;
+	author: string;
+	version: string;
+	icon: ArrayBuffer | undefined;
+}
+
 function isDirectory(mode: number) {
 	return (mode & 16384) === 16384;
 }
@@ -27,10 +36,17 @@ function* nroIterator(path: string | URL): IteratorObject<URL, void> {
 	}
 }
 
-export const apps: [string, Switch.Application][] = [
-	...nroIterator('sdmc:/switch/'),
-].map((fullPath) => [
-	fullPath.href,
-	// biome-ignore lint/style/noNonNullAssertion: `readFileSync` should always return a value at this point
-	new Switch.Application(Switch.readFileSync(fullPath)!),
-]);
+export const apps: AppInfo[] = [...nroIterator('sdmc:/switch/')].map(
+	(fullPath) => {
+		// biome-ignore lint/style/noNonNullAssertion: `readFileSync` should always return a value at this point
+		const app = new Switch.Application(Switch.readFileSync(fullPath)!);
+		return {
+			path: fullPath.href,
+			id: app.id,
+			name: app.name,
+			author: app.author,
+			version: app.version,
+			icon: app.icon,
+		};
+	},
+);
