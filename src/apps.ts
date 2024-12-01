@@ -11,7 +11,10 @@ function isDirectory(mode: number) {
 	return (mode & 16384) === 16384;
 }
 
-function* nroIterator(path: string | URL): IteratorObject<URL, void> {
+function* nroIterator(
+	path: string | URL,
+	recursive = true,
+): IteratorObject<URL, void> {
 	const entries = Switch.readDirSync(path) ?? [];
 	for (const entry of entries) {
 		// Skip hidden files
@@ -29,7 +32,10 @@ function* nroIterator(path: string | URL): IteratorObject<URL, void> {
 		if (!stat) continue;
 
 		if (isDirectory(stat.mode)) {
-			yield* nroIterator(new URL(`${fullPath}/`));
+			if (recursive) {
+				// Only traverse one level deep into the "switch" directory
+				yield* nroIterator(new URL(`${fullPath}/`), false);
+			}
 		} else if (entry.endsWith('.nro')) {
 			yield fullPath;
 		}
