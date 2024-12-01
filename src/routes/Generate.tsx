@@ -124,8 +124,7 @@ export function Generate() {
 
 								const data = Module.FS.readFile(`/hacbrewpack_nsp/${nspName}`);
 
-								// TODO: Sanitize characters that are not allowed in filenames
-								const fileName = `${name} [${id}].nsp`;
+								const fileName = `${name.replace(/[:/\\]/g, '-')} [${id}].nsp`;
 								const outUrl = new URL(fileName, 'sdmc:/');
 								Switch.writeFileSync(outUrl, data);
 
