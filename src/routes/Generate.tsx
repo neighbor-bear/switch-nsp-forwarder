@@ -151,7 +151,7 @@ export function Generate() {
 	return (
 		<>
 			<Text fill='white' fontSize={24}>
-				{status}
+				{error || status}
 			</Text>
 			<Text fill='white' fontSize={24} y={32}>
 				{name}
