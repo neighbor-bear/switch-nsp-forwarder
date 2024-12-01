@@ -42,17 +42,14 @@ function* nroIterator(
 	}
 }
 
-export const apps: AppInfo[] = [...nroIterator('sdmc:/switch/')].map(
-	(fullPath) => {
-		// biome-ignore lint/style/noNonNullAssertion: `readFileSync` should always return a value at this point
-		const app = new Switch.Application(Switch.readFileSync(fullPath)!);
-		return {
-			path: fullPath.href,
-			id: app.id.toString(16).padStart(16, '0'),
-			name: app.name,
-			author: app.author,
-			version: app.version,
-			icon: app.icon,
-		};
-	},
-);
+export const apps: AppInfo[] = [...nroIterator('sdmc:/switch/')].map((path) => {
+	const app = new Switch.Application(path);
+	return {
+		path: path.href,
+		id: app.id.toString(16).padStart(16, '0'),
+		name: app.name,
+		author: app.author,
+		version: app.version,
+		icon: app.icon,
+	};
+});
