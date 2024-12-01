@@ -9,13 +9,20 @@ function* nroIterator(path: string | URL): IteratorObject<URL, void> {
 		if (entry.startsWith('.')) continue;
 
 		const fullPath = new URL(entry, path);
-		const stat = Switch.statSync(fullPath);
-		if (stat) {
-			if (isDirectory(stat.mode)) {
-				yield* nroIterator(new URL(`${fullPath}/`));
-			} else if (entry.endsWith('.nro')) {
-				yield fullPath;
-			}
+
+		let stat = null;
+		try {
+			stat = Switch.statSync(fullPath);
+		} catch (err) {
+			console.debug(`Failed to stat ${fullPath}: ${err}`);
+		}
+
+		if (!stat) continue;
+
+		if (isDirectory(stat.mode)) {
+			yield* nroIterator(new URL(`${fullPath}/`));
+		} else if (entry.endsWith('.nro')) {
+			yield fullPath;
 		}
 	}
 }
