@@ -14,9 +14,17 @@ export function Edit() {
 	const { icon } = initialState;
 	const root = useRoot();
 	const navigate = useNavigate();
-	const [id, setId] = useState(() =>
-		BigInt(initialState.id) === 0n ? generateRandomID() : initialState.id,
-	);
+	const [id, setId] = useState(() => {
+		let idVal = 0n;
+		try {
+			idVal = BigInt(`0x${initialState.id}`);
+		} catch (err) {
+			console.debug(
+				`Failed to parse id: ${initialState.id} for ${initialState.path}`,
+			);
+		}
+		return idVal === 0n ? generateRandomID() : initialState.id;
+	});
 	const [name, setName] = useState(() => initialState.name);
 	const [author, setAuthor] = useState(() => initialState.author);
 	const [version, setVersion] = useState(() => initialState.version);
