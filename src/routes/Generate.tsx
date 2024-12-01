@@ -8,17 +8,16 @@ import type { AppInfo } from '../apps';
 
 type Status = 'generating' | 'error' | 'success';
 
-export interface GenerateState extends Omit<AppInfo, 'id'> {
-	titleId: string;
+export interface GenerateState extends AppInfo {
 	profileSelector: boolean;
 }
 
 export function Generate() {
 	const navigate = useNavigate();
 	const {
+		id,
 		icon,
 		path,
-		titleId,
 		name,
 		author,
 		version,
@@ -84,7 +83,7 @@ export function Generate() {
 					FS.writeFile('/exefs/main.npdm', mainNpdm);
 
 					const nacp = new NACP();
-					nacp.id = titleId;
+					nacp.id = id;
 					nacp.title = name;
 					nacp.author = author;
 					nacp.version = version;
@@ -112,7 +111,7 @@ export function Generate() {
 						const exitCode = Module.callMain([
 							'--nopatchnacplogo',
 							'--titleid',
-							titleId,
+							id,
 							'--nologo',
 						]);
 
@@ -125,7 +124,7 @@ export function Generate() {
 								const data = Module.FS.readFile(`/hacbrewpack_nsp/${nspName}`);
 
 								// TODO: Sanitize characters that are not allowed in filenames
-								const fileName = `${name} [${titleId}].nsp`;
+								const fileName = `${name} [${id}].nsp`;
 								const outUrl = new URL(fileName, 'sdmc:/');
 								Switch.writeFileSync(outUrl, data);
 
@@ -147,7 +146,7 @@ export function Generate() {
 			});
 		}
 		setTimeout(g, 250);
-	}, [navigate, icon, path, titleId, name, author, version, profileSelector]);
+	}, [navigate, icon, path, id, name, author, version, profileSelector]);
 
 	return (
 		<>

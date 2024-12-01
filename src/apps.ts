@@ -1,6 +1,6 @@
 export interface AppInfo {
 	path: string;
-	id: bigint;
+	id: string;
 	name: string;
 	author: string;
 	version: string;
@@ -42,7 +42,7 @@ export const apps: AppInfo[] = [...nroIterator('sdmc:/switch/')].map(
 		const app = new Switch.Application(Switch.readFileSync(fullPath)!);
 		return {
 			path: fullPath.href,
-			id: app.id,
+			id: app.id.toString(16).padStart(16, '0'),
 			name: app.name,
 			author: app.author,
 			version: app.version,

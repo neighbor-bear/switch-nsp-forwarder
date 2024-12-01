@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { TextInput } from '../components/TextInput';
 import { AppIcon } from '../components/AppIcon';
 import { useGamepad } from '../hooks/use-gamepad';
-import { usePreventExit } from '../hooks/use-prevent-exit';
 import { generateRandomID } from '../title-id';
 import { Footer, FooterItem } from '../components/Footer';
 import type { GenerateState } from './Generate';
@@ -15,10 +14,8 @@ export function Edit() {
 	const { icon } = initialState;
 	const root = useRoot();
 	const navigate = useNavigate();
-	const [titleId, setTitleId] = useState(() =>
-		initialState.id > 0n
-			? initialState.id.toString(16).padStart(16, '0')
-			: generateRandomID(),
+	const [id, setId] = useState(() =>
+		BigInt(initialState.id) === 0n ? generateRandomID() : initialState.id,
 	);
 	const [name, setName] = useState(() => initialState.name);
 	const [author, setAuthor] = useState(() => initialState.author);
@@ -28,7 +25,7 @@ export function Edit() {
 	const [focusedIndex, setFocusedIndex] = useState(-1);
 
 	const fields = [
-		{ name: 'Title ID', value: titleId, onChange: setTitleId, description: '' },
+		{ name: 'Title ID', value: id, onChange: setId, description: '' },
 		{ name: 'App Title', value: name, onChange: setName },
 		{ name: 'Author', value: author, onChange: setAuthor },
 		{ name: 'Version', value: version, onChange: setVersion },
@@ -36,16 +33,14 @@ export function Edit() {
 	];
 	const fieldsLength = fields.length;
 
-	usePreventExit();
-
 	useGamepad(
 		{
-			Plus() {
+			X() {
 				if (navigator.virtualKeyboard.boundingRect.height) return;
 				const state: GenerateState = {
+					id,
 					icon,
 					path: nroPath,
-					titleId,
 					name,
 					author,
 					version,
@@ -67,7 +62,7 @@ export function Edit() {
 				setFocusedIndex((i) => Math.min(fieldsLength - 1, i + 1));
 			},
 		},
-		[icon, nroPath, titleId, name, author, version, fieldsLength, navigate],
+		[icon, nroPath, id, name, author, version, fieldsLength, navigate],
 	);
 
 	return (
@@ -111,7 +106,7 @@ export function Edit() {
 				<FooterItem button='A' x={root.ctx.canvas.width - 266}>
 					Edit
 				</FooterItem>
-				<FooterItem button='Plus' x={root.ctx.canvas.width - 160}>
+				<FooterItem button='X' x={root.ctx.canvas.width - 160}>
 					Generate
 				</FooterItem>
 			</Footer>
