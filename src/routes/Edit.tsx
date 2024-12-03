@@ -3,7 +3,7 @@ import { Text, useRoot } from 'react-tela';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TextInput } from '../components/TextInput';
 import { AppIcon } from '../components/AppIcon';
-import { useGamepad } from '../hooks/use-gamepad';
+import { useGamepadButton } from '../hooks/use-gamepad';
 import { generateRandomID } from '../title-id';
 import { Footer, FooterItem } from '../components/Footer';
 import type { GenerateState } from './Generate';
@@ -40,37 +40,52 @@ export function Edit() {
 		{ name: 'NRO Path', value: nroPath, onChange: setNroPath },
 	];
 	const fieldsLength = fields.length;
+	const keyboardShown = navigator.virtualKeyboard.boundingRect.height > 0;
 
-	useGamepad(
-		{
-			X() {
-				if (navigator.virtualKeyboard.boundingRect.height) return;
-				const state: GenerateState = {
-					id,
-					icon,
-					path: nroPath,
-					name,
-					author,
-					version,
-					profileSelector,
-				};
-				navigate('/generate', { state });
-			},
-			B() {
-				if (navigator.virtualKeyboard.boundingRect.height) return;
-				// Go back
-				navigate(-1);
-			},
-			Up() {
-				if (navigator.virtualKeyboard.boundingRect.height) return;
-				setFocusedIndex((i) => Math.max(0, i - 1));
-			},
-			Down() {
-				if (navigator.virtualKeyboard.boundingRect.height) return;
-				setFocusedIndex((i) => Math.min(fieldsLength - 1, i + 1));
-			},
+	useGamepadButton(
+		'X',
+		() => {
+			const state: GenerateState = {
+				id,
+				icon,
+				path: nroPath,
+				name,
+				author,
+				version,
+				profileSelector,
+			};
+			navigate('/generate', { state });
 		},
-		[icon, nroPath, id, name, author, version, fieldsLength, navigate],
+		[id, icon, nroPath, name, author, version, profileSelector, navigate],
+		!keyboardShown,
+	);
+
+	useGamepadButton(
+		'B',
+		() => {
+			// Go back
+			navigate(-1);
+		},
+		[navigate],
+		!keyboardShown,
+	);
+
+	useGamepadButton(
+		'Up',
+		() => {
+			setFocusedIndex((i) => Math.max(0, i - 1));
+		},
+		[],
+		!keyboardShown,
+	);
+
+	useGamepadButton(
+		'Down',
+		() => {
+			setFocusedIndex((i) => Math.min(fieldsLength - 1, i + 1));
+		},
+		[fieldsLength],
+		!keyboardShown,
 	);
 
 	return (

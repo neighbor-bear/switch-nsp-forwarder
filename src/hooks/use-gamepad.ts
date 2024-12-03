@@ -1,32 +1,64 @@
 import { Button } from '@nx.js/constants';
-import { type DependencyList, useEffect, useRef } from 'react';
+import { type DependencyList, useCallback, useEffect } from 'react';
 import type { ButtonName } from '../types';
 
-export type ButtonHandlers = {
-	[A in ButtonName]?: () => void;
-};
+class GamepadLoop {
+	raf = -1;
+	callbacks = new Map<() => void, ButtonName>();
+	pressed: boolean[] = [];
 
-export function useGamepad(buttons: ButtonHandlers, deps?: DependencyList) {
-	const pressed = useRef<boolean[]>([]);
-	useEffect(() => {
-		let raf: number;
-		const loop = () => {
-			const [gp] = navigator.getGamepads();
-			if (!gp) return;
-			for (const [button, onPress] of Object.entries(buttons)) {
-				const buttonNum = Button[button as ButtonName];
-				const wasPressed = pressed.current[buttonNum];
-				const isPressed = gp.buttons[buttonNum]?.pressed;
-				if (!wasPressed && isPressed) {
-					pressed.current[buttonNum] = true;
-					onPress();
-				} else if (wasPressed && !isPressed) {
-					pressed.current[buttonNum] = false;
-				}
+	loop = () => {
+		if (this.callbacks.size === 0) return;
+
+		const [gp] = navigator.getGamepads();
+		if (!gp) return;
+
+		for (const [cb, button] of this.callbacks) {
+			const buttonNum = Button[button];
+			const wasPressed = this.pressed[buttonNum];
+			const isPressed = gp.buttons[buttonNum]?.pressed;
+			if (!wasPressed && isPressed) {
+				this.pressed[buttonNum] = true;
+				cb();
+			} else if (wasPressed && !isPressed) {
+				this.pressed[buttonNum] = false;
 			}
-			raf = requestAnimationFrame(loop);
+		}
+
+		this.raf = requestAnimationFrame(this.loop);
+	};
+
+	add(cb: () => void, button: ButtonName) {
+		this.callbacks.set(cb, button);
+		this.loop();
+	}
+
+	delete(cb: () => void) {
+		this.callbacks.delete(cb);
+		if (this.callbacks.size === 0) {
+			cancelAnimationFrame(this.raf);
+		}
+	}
+}
+
+const gamepadLoop = new GamepadLoop();
+
+export function useGamepadButton(
+	button: ButtonName,
+	callback: () => void,
+	deps: DependencyList,
+	focused = true,
+) {
+	const cb = useCallback(callback, deps);
+
+	useEffect(() => {
+		if (!focused) {
+			gamepadLoop.delete(cb);
+			return;
+		}
+		gamepadLoop.add(cb, button);
+		return () => {
+			gamepadLoop.delete(cb);
 		};
-		loop();
-		return () => cancelAnimationFrame(raf);
-	}, [...(deps || []), buttons]);
+	}, [focused, cb, button]);
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Group, Rect, Text, type TextProps } from 'react-tela';
-import { useGamepad } from '../hooks/use-gamepad';
+import { useGamepadButton } from '../hooks/use-gamepad';
 
 export interface TextInputProps extends TextProps {
 	width: number;
@@ -24,18 +24,17 @@ export function TextInput({
 }: TextInputProps) {
 	const [cursorPosition, setCursorPosition] = useState(-1);
 
-	useGamepad(
-		{
-			A() {
-				if (!focused) return; // Ignore since this input is not focused
-				const vk = navigator.virtualKeyboard;
-				if (vk.boundingRect.height) return; // Ignore since the keyboard is already open
-				vk.value = value;
-				vk.cursorIndex = cursorPosition >= 0 ? cursorPosition : value.length;
-				vk.show();
-			},
+	useGamepadButton(
+		'A',
+		() => {
+			const vk = navigator.virtualKeyboard;
+			if (vk.boundingRect.height) return; // Ignore since the keyboard is already open
+			vk.value = value;
+			vk.cursorIndex = cursorPosition >= 0 ? cursorPosition : value.length;
+			vk.show();
 		},
-		[focused, value, cursorPosition],
+		[value, cursorPosition],
+		focused,
 	);
 
 	useEffect(() => {

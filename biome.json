@@ -1,4 +1,24 @@
 {
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "correctness": {
+        "useExhaustiveDependencies": {
+          "level": "error",
+          "options": {
+            "hooks": [
+              {
+                "name": "useGamepadButton",
+                "closureIndex": 1,
+                "dependenciesIndex": 2
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
   "files": {
     "ignore": ["romfs", "src/hacbrewpack.js"]
   },
