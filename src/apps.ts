@@ -24,6 +24,8 @@ function* nroIterator(
 		try {
 			stat = Switch.statSync(path);
 		} catch (err) {
+			// I/O error may be thrown for files that are currently
+			// open, which happens for the `nxjs-debug.log` file
 			console.debug(`Failed to stat ${path}: ${err}`);
 		}
 
