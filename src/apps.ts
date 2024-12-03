@@ -1,3 +1,5 @@
+import { isDirectory } from './util';
+
 export interface AppInfo {
 	path: string;
 	id: string;
@@ -7,26 +9,22 @@ export interface AppInfo {
 	icon: ArrayBuffer | undefined;
 }
 
-function isDirectory(mode: number) {
-	return (mode & 16384) === 16384;
-}
-
 function* nroIterator(
-	path: string | URL,
+	dir: string | URL,
 	recursive = true,
 ): IteratorObject<URL, void> {
-	const entries = Switch.readDirSync(path) ?? [];
+	const entries = Switch.readDirSync(dir) ?? [];
 	for (const entry of entries) {
 		// Skip hidden files
 		if (entry.startsWith('.')) continue;
 
-		const fullPath = new URL(entry, path);
+		const path = new URL(entry, dir);
 
 		let stat = null;
 		try {
-			stat = Switch.statSync(fullPath);
+			stat = Switch.statSync(path);
 		} catch (err) {
-			console.debug(`Failed to stat ${fullPath}: ${err}`);
+			console.debug(`Failed to stat ${path}: ${err}`);
 		}
 
 		if (!stat) continue;
@@ -34,15 +32,15 @@ function* nroIterator(
 		if (isDirectory(stat.mode)) {
 			if (recursive) {
 				// Only traverse one level deep into the "switch" directory
-				yield* nroIterator(new URL(`${fullPath}/`), false);
+				yield* nroIterator(new URL(`${path}/`), false);
 			}
 		} else if (entry.endsWith('.nro')) {
-			yield fullPath;
+			yield path;
 		}
 	}
 }
 
-export const apps: AppInfo[] = [...nroIterator('sdmc:/switch/')].map((path) => {
+export function pathToAppInfo(path: URL): AppInfo {
 	const app = new Switch.Application(path);
 	return {
 		path: path.href,
@@ -52,4 +50,9 @@ export const apps: AppInfo[] = [...nroIterator('sdmc:/switch/')].map((path) => {
 		version: app.version,
 		icon: app.icon,
 	};
-});
+}
+
+export const apps: AppInfo[] = [
+	new URL('sdmc:/hbmenu.nro'),
+	...nroIterator('sdmc:/switch/'),
+].map(pathToAppInfo);
