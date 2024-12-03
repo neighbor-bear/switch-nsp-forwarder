@@ -84,10 +84,14 @@ export function FilePicker({ onSelect, onClose }: FilePickerProps) {
 	);
 
 	useEffect(() => {
-		const entries: Entry[] = (Switch.readDirSync(dir) ?? []).map((e) => {
-			const stat = Switch.statSync(new URL(e, dir));
+		const names = (Switch.readDirSync(dir) ?? []).filter((name) => {
+			// Skip hidden files
+			return !name.startsWith('.');
+		});
+		const entries: Entry[] = names.map((name) => {
+			const stat = Switch.statSync(new URL(name, dir));
 			return {
-				name: e,
+				name,
 				isDirectory: stat ? isDirectory(stat.mode) : false,
 			};
 		});
