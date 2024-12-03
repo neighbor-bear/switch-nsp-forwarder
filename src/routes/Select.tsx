@@ -3,14 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { Group, Text, useRoot } from 'react-tela';
 import { type AppInfo, apps, pathToAppInfo } from '../apps';
 import { AppTile } from '../components/AppTile';
+import { Footer, FooterItem } from '../components/Footer';
+import { FilePicker } from '../components/FilePicker';
 import { useGamepadButton } from '../hooks/use-gamepad';
 
 export function Select() {
 	const root = useRoot();
 	const navigate = useNavigate();
 	const [selectedIndex, setSelectedIndex] = useState(0);
+	const [filePickerShowing, setFilePickerShowing] = useState(true);
 
 	const perRow = 5;
+	const focused = !filePickerShowing;
 
 	const goToEdit = useCallback(
 		(appInfo: AppInfo) => {
@@ -18,8 +22,6 @@ export function Select() {
 		},
 		[navigate],
 	);
-
-	const focused = true;
 
 	useGamepadButton(
 		'A',
@@ -35,6 +37,15 @@ export function Select() {
 			goToEdit(pathToAppInfo(path));
 		},
 		[goToEdit],
+		focused,
+	);
+
+	useGamepadButton(
+		'X',
+		() => {
+			setFilePickerShowing(true);
+		},
+		[],
 		focused,
 	);
 
@@ -89,10 +100,11 @@ export function Select() {
 			<Text fill='white' fontSize={24} x={500}>
 				{apps[selectedIndex].path}
 			</Text>
+
 			<Group
 				y={40}
 				width={root.ctx.canvas.width}
-				height={root.ctx.canvas.height - 40}
+				height={root.ctx.canvas.height - 114}
 			>
 				{apps.map((app, i) => (
 					<AppTile
@@ -105,6 +117,26 @@ export function Select() {
 					/>
 				))}
 			</Group>
+
+			<Footer>
+				<FooterItem button='X' x={root.ctx.canvas.width - 330}>
+					File Picker
+				</FooterItem>
+				<FooterItem button='A' x={root.ctx.canvas.width - 140}>
+					Select
+				</FooterItem>
+			</Footer>
+
+			{filePickerShowing && (
+				<FilePicker
+					onClose={() => {
+						setFilePickerShowing(false);
+					}}
+					onSelect={(url) => {
+						goToEdit(pathToAppInfo(url));
+					}}
+				/>
+			)}
 		</>
 	);
 }
