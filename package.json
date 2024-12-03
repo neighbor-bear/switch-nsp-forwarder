@@ -11,7 +11,8 @@
     "format": "biome format --write src",
     "lint": "biome lint",
     "nro": "nxjs-nro",
-    "nsp": "nxjs-nsp"
+    "nsp": "nxjs-nsp",
+    "typecheck": "tsc"
   },
   "author": {
     "name": "Nathan Rajlich",
@@ -31,6 +32,7 @@
     "@nx.js/nsp": "0.0.56",
     "@nx.js/runtime": "0.0.56",
     "@types/react": "^18.3.12",
-    "esbuild": "^0.17.19"
+    "esbuild": "^0.17.19",
+    "typescript": "^5.7.2"
   }
 }
