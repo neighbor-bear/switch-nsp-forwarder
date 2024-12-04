@@ -1,5 +1,6 @@
 import { Text, useRoot } from 'react-tela';
 import { useGamepadButton } from '../hooks/use-gamepad';
+import { Footer, FooterItem } from '../components/Footer';
 
 export function ErrorAppletMode() {
 	const root = useRoot();
@@ -38,26 +39,11 @@ export function ErrorAppletMode() {
 			>
 				Please re-launch via title redirection.
 			</Text>
-			<Text
-				fontFamily='sans-serif'
-				fill='#999'
-				fontSize={28}
-				textAlign='center'
-				x={root.ctx.canvas.width / 2}
-				y={480}
-			>
-				{'(Press     to exit)'}
-			</Text>
-			<Text
-				fontFamily='system-icons'
-				fill='#999'
-				fontSize={28}
-				textAlign='center'
-				x={root.ctx.canvas.width / 2 - 8}
-				y={480}
-			>
-				
-			</Text>
+			<Footer>
+				<FooterItem button='A' x={root.ctx.canvas.width - 100}>
+					Exit
+				</FooterItem>
+			</Footer>
 		</>
 	);
 }
