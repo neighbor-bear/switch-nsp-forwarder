@@ -119,7 +119,10 @@ export function Select() {
 			</Group>
 
 			<Footer>
-				<FooterItem button='X' x={root.ctx.canvas.width - 330}>
+				<FooterItem button='Plus' x={root.ctx.canvas.width - 460}>
+					Exit
+				</FooterItem>
+				<FooterItem button='X' x={root.ctx.canvas.width - 340}>
 					File Picker
 				</FooterItem>
 				<FooterItem button='A' x={root.ctx.canvas.width - 140}>

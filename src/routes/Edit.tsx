@@ -38,6 +38,7 @@ export function Edit() {
 		{ name: 'Author', value: author, onChange: setAuthor },
 		{ name: 'Version', value: version, onChange: setVersion },
 		{ name: 'NRO Path', value: nroPath, onChange: setNroPath },
+		//{ name: 'Enable Profile Selector', value: profileSelector, onChange: setProfileSelector },
 	];
 	const fieldsLength = fields.length;
 	const keyboardShown = navigator.virtualKeyboard.boundingRect.height > 0;
