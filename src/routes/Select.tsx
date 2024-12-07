@@ -11,7 +11,7 @@ export function Select() {
 	const root = useRoot();
 	const navigate = useNavigate();
 	const [selectedIndex, setSelectedIndex] = useState(0);
-	const [filePickerShowing, setFilePickerShowing] = useState(true);
+	const [filePickerShowing, setFilePickerShowing] = useState(false);
 
 	const perRow = 5;
 	const focused = !filePickerShowing;
