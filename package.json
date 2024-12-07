@@ -3,7 +3,7 @@
   "titleId": "01c7d19eae2a0000",
   "productName": "NSP Forwarder Generator",
   "name": "nsp-forwarder",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "description": "Generate NSP to NRO forwarders for Switch",
   "scripts": {
