@@ -31,16 +31,6 @@ export function Select() {
 	);
 
 	useGamepadButton(
-		'Minus',
-		() => {
-			const path = new URL('sdmc:/hbmenu.nro');
-			goToEdit(pathToAppInfo(path));
-		},
-		[goToEdit],
-		focused,
-	);
-
-	useGamepadButton(
 		'X',
 		() => {
 			setFilePickerShowing(true);
