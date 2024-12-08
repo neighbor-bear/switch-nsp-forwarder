@@ -28,7 +28,7 @@ export function Edit() {
 	const [name, setName] = useState(() => initialState.name);
 	const [author, setAuthor] = useState(() => initialState.author);
 	const [version, setVersion] = useState(() => initialState.version);
-	const [profileSelector, setProfileSelector] = useState(false);
+	const [profileSelector, _setProfileSelector] = useState(false);
 	const [nroPath, setNroPath] = useState(() => initialState.path);
 	const [focusedIndex, setFocusedIndex] = useState(-1);
 
