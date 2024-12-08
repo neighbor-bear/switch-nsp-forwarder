@@ -88,13 +88,19 @@ export function FilePicker({ onSelect, onClose }: FilePickerProps) {
 			// Skip hidden files
 			return !name.startsWith('.');
 		});
-		const entries: Entry[] = names.map((name) => {
-			const stat = Switch.statSync(new URL(name, dir));
-			return {
-				name,
-				isDirectory: stat ? isDirectory(stat.mode) : false,
-			};
-		});
+		const entries: Entry[] = names
+			.map((name) => {
+				try {
+					const stat = Switch.statSync(new URL(name, dir));
+					return {
+						name,
+						isDirectory: stat ? isDirectory(stat.mode) : false,
+					};
+				} catch (err) {
+					console.debug(`Failed to stat "${name}" in "${dir}": ${err}`);
+				}
+			})
+			.filter((v) => typeof v !== 'undefined');
 		setEntries(
 			[{ name: '..', isDirectory: true }, ...entries].sort((a, b) => {
 				if (a.isDirectory && !b.isDirectory) return -1;

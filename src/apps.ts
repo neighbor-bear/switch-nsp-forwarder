@@ -54,7 +54,7 @@ export function pathToAppInfo(path: URL): AppInfo | undefined {
 			icon: app.icon,
 		};
 	} catch (err) {
-		console.debug(`Failed to parse ${path}: ${err}`);
+		console.debug(`Failed to parse "${path}": ${err}`);
 	}
 }
 
