@@ -58,9 +58,9 @@ export function pathToAppInfo(path: URL): AppInfo | undefined {
 	}
 }
 
-export const apps = [
+export const apps: AppInfo[] = [
 	new URL('sdmc:/hbmenu.nro'),
 	...nroIterator('sdmc:/switch/'),
 ]
 	.map(pathToAppInfo)
-	.filter(Boolean) as AppInfo[];
+	.filter((v) => typeof v !== 'undefined');
