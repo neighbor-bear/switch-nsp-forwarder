@@ -126,7 +126,10 @@ export function Select() {
 						setFilePickerShowing(false);
 					}}
 					onSelect={(url) => {
-						goToEdit(pathToAppInfo(url));
+						const app = pathToAppInfo(url);
+						if (app) {
+							goToEdit(app);
+						}
 					}}
 				/>
 			)}

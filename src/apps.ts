@@ -42,19 +42,25 @@ function* nroIterator(
 	}
 }
 
-export function pathToAppInfo(path: URL): AppInfo {
-	const app = new Switch.Application(path);
-	return {
-		path: path.href,
-		id: app.id.toString(16).padStart(16, '0'),
-		name: app.name,
-		author: app.author,
-		version: app.version,
-		icon: app.icon,
-	};
+export function pathToAppInfo(path: URL): AppInfo | undefined {
+	try {
+		const app = new Switch.Application(path);
+		return {
+			path: path.href,
+			id: app.id.toString(16).padStart(16, '0'),
+			name: app.name,
+			author: app.author,
+			version: app.version,
+			icon: app.icon,
+		};
+	} catch (err) {
+		console.debug(`Failed to parse ${path}: ${err}`);
+	}
 }
 
-export const apps: AppInfo[] = [
+export const apps = [
 	new URL('sdmc:/hbmenu.nro'),
 	...nroIterator('sdmc:/switch/'),
-].map(pathToAppInfo);
+]
+	.map(pathToAppInfo)
+	.filter(Boolean) as AppInfo[];
