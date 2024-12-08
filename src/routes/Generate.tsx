@@ -2,6 +2,7 @@ import { NACP } from '@tootallnate/nacp';
 import { Text } from 'react-tela';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Jimp } from 'jimp';
 import { prodKeys } from '../prod-keys';
 import type { Module } from '../hacbrewpack';
 import type { AppInfo } from '../apps';
@@ -60,6 +61,14 @@ export function Generate() {
 			const mainNpdm = new Uint8Array(mainNpdmData);
 			const keys = new Uint8Array(prodKeys);
 
+			// Run the icon through Jimp to resize it and/or remove EXIF metadata
+			let iconBuf = icon;
+			if (iconBuf) {
+				const logo = await Jimp.fromBuffer(iconBuf);
+				logo.resize({ w: 256, h: 256 });
+				iconBuf = await logo.getBuffer('image/jpeg');
+			}
+
 			let Module: Module;
 			await ModuleFactory.default({
 				noInitialRun: true,
@@ -93,8 +102,8 @@ export function Generate() {
 					FS.mkdir('/control');
 					FS.writeFile('/control/control.nacp', new Uint8Array(nacp.buffer));
 
-					if (icon) {
-						const image = new Uint8Array(icon);
+					if (iconBuf) {
+						const image = new Uint8Array(iconBuf);
 						FS.writeFile('/control/icon_AmericanEnglish.dat', image);
 					}
 
