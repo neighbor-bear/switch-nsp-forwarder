@@ -1,11 +1,13 @@
 {
   "private": true,
-  "titleId": "01c7d19eae2a0000",
-  "productName": "NSP Forwarder Generator",
   "name": "nsp-forwarder",
   "version": "0.0.2",
   "license": "MIT",
   "description": "Generate NSP to NRO forwarders for Switch",
+  "nacp": {
+    "id": "01c7d19eae2a0000",
+    "title": "NSP Forwarder Generator"
+  },
   "scripts": {
     "build": "esbuild --bundle --sourcemap --sources-content=false --target=es2022 --format=esm --outdir=romfs --jsx=automatic --define:process.env.NODE_ENV=\\\"production\\\" src/main.tsx",
     "format": "biome format --write src",
@@ -29,9 +31,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@nx.js/nro": "0.0.56",
-    "@nx.js/nsp": "0.0.56",
-    "@nx.js/runtime": "0.0.56",
+    "@nx.js/nro": "0.0.58",
+    "@nx.js/nsp": "0.0.58",
+    "@nx.js/runtime": "0.0.58",
     "@types/react": "^18.3.12",
     "esbuild": "^0.17.19",
     "typescript": "^5.7.2"
