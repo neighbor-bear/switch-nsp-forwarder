@@ -3,12 +3,34 @@ import { type DependencyList, useCallback, useEffect } from 'react';
 import type { ButtonName } from '../types';
 
 class GamepadLoop {
-	raf = -1;
+	running = false;
 	callbacks = new Map<() => void, ButtonName>();
 	pressed: boolean[] = [];
 
+	constructor() {
+		navigator.virtualKeyboard.addEventListener(
+			'geometrychange',
+			this.#onVirtualKeyboardGeometryChange,
+		);
+	}
+
+	queueLoop() {
+		if (this.running) return;
+		if (navigator.virtualKeyboard.boundingRect.height > 0) return;
+		this.running = true;
+		queueMicrotask(this.loop);
+	}
+
+	#onVirtualKeyboardGeometryChange = () => {
+		if (navigator.virtualKeyboard.boundingRect.height > 0) {
+			this.running = false;
+		} else {
+			this.queueLoop();
+		}
+	};
+
 	loop = () => {
-		if (this.callbacks.size === 0) return;
+		if (this.callbacks.size === 0 || !this.running) return;
 
 		const [gp] = navigator.getGamepads();
 		if (!gp) return;
@@ -25,18 +47,18 @@ class GamepadLoop {
 			}
 		}
 
-		this.raf = requestAnimationFrame(this.loop);
+		requestAnimationFrame(this.loop);
 	};
 
 	add(cb: () => void, button: ButtonName) {
 		this.callbacks.set(cb, button);
-		this.loop();
+		this.queueLoop();
 	}
 
 	delete(cb: () => void) {
 		this.callbacks.delete(cb);
 		if (this.callbacks.size === 0) {
-			cancelAnimationFrame(this.raf);
+			this.running = false;
 		}
 	}
 }
