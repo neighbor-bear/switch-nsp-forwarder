@@ -6,7 +6,8 @@
   "description": "Generate NSP to NRO forwarders for Switch",
   "nacp": {
     "id": "01c7d19eae2a0000",
-    "title": "NSP Forwarder Generator"
+    "title": "NSP Forwarder Generator",
+    "userAccountSaveDataSize": "0"
   },
   "scripts": {
     "build": "esbuild --bundle --sourcemap --sources-content=false --target=es2022 --format=esm --outdir=romfs --jsx=automatic --define:process.env.NODE_ENV=\\\"production\\\" src/main.tsx",
