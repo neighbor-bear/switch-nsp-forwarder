@@ -6,8 +6,9 @@ import { prodKeys } from './prod-keys';
 // Routes
 import { ErrorAppletMode } from './routes/ErrorAppletMode';
 import { ErrorMissingProdKeys } from './routes/ErrorMissingProdKeys';
-import { Select } from './routes/Select';
 import { Generate } from './routes/Generate';
+import { Select } from './routes/Select';
+import { SelectForwarderType } from './routes/SelectForwarderType';
 import { Success } from './routes/Success';
 import { RouteErrorBoundary } from './routes/Error';
 import { Edit } from './routes/Edit';
@@ -29,6 +30,11 @@ const routes = [
 		errorElement: <RouteErrorBoundary />,
 	},
 	{
+		path: '/select-forwarder-type',
+		element: <SelectForwarderType />,
+		errorElement: <RouteErrorBoundary />,
+	},
+	{
 		path: '/edit',
 		element: <Edit />,
 		errorElement: <RouteErrorBoundary />,
@@ -45,7 +51,7 @@ const routes = [
 	},
 ];
 
-let initialRoute = '/select';
+let initialRoute = '/select-forwarder-type';
 if (Switch.appletType() !== AppletType.Application) {
 	// Ensure the app is running in full-memory mode
 	initialRoute = '/error-applet-mode';

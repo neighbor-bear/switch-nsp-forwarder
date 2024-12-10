@@ -30,6 +30,8 @@ export function Select() {
 		focused,
 	);
 
+	useGamepadButton('B', () => navigate(-1), [navigate], focused);
+
 	useGamepadButton(
 		'X',
 		() => {
@@ -109,11 +111,14 @@ export function Select() {
 			</Group>
 
 			<Footer>
-				<FooterItem button='Plus' x={root.ctx.canvas.width - 460}>
+				<FooterItem button='Plus' x={root.ctx.canvas.width - 560}>
 					Exit
 				</FooterItem>
-				<FooterItem button='X' x={root.ctx.canvas.width - 340}>
+				<FooterItem button='X' x={root.ctx.canvas.width - 450}>
 					File Picker
+				</FooterItem>
+				<FooterItem button='B' x={root.ctx.canvas.width - 260}>
+					Back
 				</FooterItem>
 				<FooterItem button='A' x={root.ctx.canvas.width - 140}>
 					Select
