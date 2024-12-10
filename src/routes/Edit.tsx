@@ -110,7 +110,7 @@ export function Edit() {
 						key={`${name}-input`}
 						value={value}
 						onChange={onChange}
-						width={500}
+						width={700}
 						x={160}
 						y={80 + i * 50}
 						fontSize={24}
