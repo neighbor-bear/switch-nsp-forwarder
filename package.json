@@ -11,10 +11,11 @@
   },
   "scripts": {
     "build": "esbuild --bundle --sourcemap --sources-content=false --target=es2022 --format=esm --outdir=romfs --jsx=automatic --define:process.env.NODE_ENV=\\\"production\\\" src/main.tsx",
-    "format": "biome format --write src",
+    "format": "biome format --write src test",
     "lint": "biome lint",
     "nro": "nxjs-nro",
     "nsp": "nxjs-nsp",
+    "test": "vitest",
     "typecheck": "tsc"
   },
   "author": {
@@ -25,18 +26,23 @@
   "dependencies": {
     "@nx.js/constants": "^0.1.5",
     "@tootallnate/nacp": "^0.0.1",
+    "fuzzy-search": "^3.2.1",
     "jimp": "^1.6.0",
     "react": "^18.3.1",
     "react-router-dom": "6.27.0",
-    "react-tela": "^0.0.3"
+    "react-tela": "^0.0.3",
+    "sql.js": "^1.12.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@nx.js/nro": "0.0.58",
     "@nx.js/nsp": "0.0.58",
     "@nx.js/runtime": "0.0.58",
+    "@types/fuzzy-search": "^2.1.5",
     "@types/react": "^18.3.12",
+    "@types/sql.js": "^1.4.9",
     "esbuild": "^0.17.19",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
   }
 }
