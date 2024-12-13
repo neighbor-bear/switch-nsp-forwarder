@@ -36,7 +36,7 @@ export function SelectForwarderType() {
 				What type of forwarder do you want to generate?
 			</Text>
 			<NROForwarderIcon
-				x={root.ctx.canvas.width / 2 - 350}
+				x={root.ctx.canvas.width / 2 - 380}
 				y={200}
 				selected={selectedIndex === 0}
 				onTouchEnd={() => navigate(NEXT_ROUTES[0])}
