@@ -30,6 +30,7 @@ export function Generate() {
 
 	useEffect(() => {
 		async function g() {
+			const start = Date.now();
 			const ModuleFactory = await import('../hacbrewpack.js');
 			const helloWasm = Switch.readFileSync('romfs:/hacbrewpack.wasm');
 			const mainData = Switch.readFileSync('romfs:/template/exefs/main');
@@ -162,7 +163,11 @@ export function Generate() {
 								const outUrl = new URL(fileName, 'sdmc:/');
 								Switch.writeFileSync(outUrl, data);
 
-								const query = new URLSearchParams({ name: fileName });
+								const duration = Date.now() - start;
+								const query = new URLSearchParams({
+									name: fileName,
+									duration: String(duration),
+								});
 								navigate(`/success?${query}`);
 							} catch (err) {
 								setStatus('error');

@@ -66,6 +66,17 @@ export function Success() {
 			>
 				(Goldleaf, DBI, Tinfoil, etc.)
 			</Text>
+			<Text
+				fontFamily='sans-serif'
+				fill='cyan'
+				fontSize={16}
+				textAlign='right'
+				textBaseline='bottom'
+				x={root.ctx.canvas.width - 10}
+				y={root.ctx.canvas.height - 10}
+			>
+				{`${searchParams.get('duration') ?? ''} ms`}
+			</Text>
 		</>
 	);
 }
