@@ -1,3 +1,13 @@
+import { openSession, PcvModuleId } from '@nx.js/clkrst';
+
+const session = openSession(PcvModuleId.CpuBus);
+const originalClockRate = session.getClockRate();
+const { rates } = session.getPossibleClockRates();
+session.setClockRate(rates[rates.length - 1]);
+addEventListener('unload', () => {
+	session.setClockRate(originalClockRate);
+});
+
 import { render } from 'react-tela/render';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { AppletType } from '@nx.js/constants';
