@@ -66,7 +66,32 @@ export function Generate() {
 			if (iconBuf) {
 				const logo = await Jimp.fromBuffer(iconBuf);
 				logo.resize({ w: 256, h: 256 });
-				iconBuf = await logo.getBuffer('image/jpeg');
+
+				// The icon size must be less than 0x20000 bytes otherwise
+				// Atmosphère shows a "?" icon on the home screen, so we
+				// generate the JPEG in a loop until we get a smaller icon.
+				let quality = 100;
+				while (true) {
+					iconBuf = await logo.getBuffer('image/jpeg', { quality });
+					console.debug(
+						`icon size: ${iconBuf.byteLength} with JPEG quality ${quality}%`,
+					);
+
+					if (iconBuf.byteLength < 0x20000) {
+						// The generated icon is within the allowed size, so we're done.
+						break;
+					}
+
+					// Icon is too large, so reduce the JPEG quality and try again.
+					quality -= 2;
+					if (quality <= 0) {
+						console.debug('icon size is still too large - giving up...');
+						break;
+					}
+					console.debug(
+						`icon size is too large, reducing JPEG quality to ${quality}%`,
+					);
+				}
 			}
 
 			let Module: Module;
