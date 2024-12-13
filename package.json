@@ -35,9 +35,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@nx.js/nro": "0.0.58",
-    "@nx.js/nsp": "0.0.58",
-    "@nx.js/runtime": "0.0.58",
+    "@nx.js/nro": "0.0.59",
+    "@nx.js/nsp": "0.0.59",
+    "@nx.js/runtime": "0.0.59",
     "@types/fuzzy-search": "^2.1.5",
     "@types/react": "^18.3.12",
     "@types/sql.js": "^1.4.9",

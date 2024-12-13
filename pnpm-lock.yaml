@@ -37,14 +37,14 @@ importers:
         specifier: ^1.9.4
         version: 1.9.4
       '@nx.js/nro':
-        specifier: 0.0.58
-        version: 0.0.58
+        specifier: 0.0.59
+        version: 0.0.59
       '@nx.js/nsp':
-        specifier: 0.0.58
-        version: 0.0.58
+        specifier: 0.0.59
+        version: 0.0.59
       '@nx.js/runtime':
-        specifier: 0.0.58
-        version: 0.0.58
+        specifier: 0.0.59
+        version: 0.0.59
       '@types/fuzzy-search':
         specifier: ^2.1.5
         version: 2.1.5
@@ -841,19 +841,19 @@ packages:
   '@nx.js/constants@0.1.5':
     resolution: {integrity: sha512-dYbtzx9KRmtmia9ybSbNJHhzw3JSu602MzkboZXzykEjjJ3fRtgz1RbpC90TkqRHwYkaAg9XbuXDgOpQVRSKKA==}
 
-  '@nx.js/nro@0.0.58':
-    resolution: {integrity: sha512-PyQYFU4vVNODH8g0bgAMgyfTvdzLLddPfCHss+2taXO3Mnc0Jmu3l6mwKgRyjT/Xr/gf2o6Et0RmyCXOG+aiuQ==}
+  '@nx.js/nro@0.0.59':
+    resolution: {integrity: sha512-JSRBmJS9hsTugtMsc+hVVjlBD9Q6Oj2gPVGyK1b8vAZLt5ZN1lzqKyaA9duxgJT5BijcTU+qkrkdXOJNCRoXtw==}
     hasBin: true
 
-  '@nx.js/nsp@0.0.58':
-    resolution: {integrity: sha512-9swNlBIyyqUqcH+s7zlFR2EJgDEaoWYtUJlueF8RyJ9PzCZ0kspVh0RxNc9C6NOjLLEJjQmgB+mW+1UXAHVKlw==}
+  '@nx.js/nsp@0.0.59':
+    resolution: {integrity: sha512-Cy/6jGQxVM30qbeRvsRjzrLTzyBW2h0HK0ZOylbwH3kbQqP78enfMMjUNdYgXTiBfNB2KG3I4yHjviwoPElNzA==}
     hasBin: true
 
-  '@nx.js/patch-nacp@1.0.0':
-    resolution: {integrity: sha512-iBOxWE0jw3MfTC+ljhh3Z4iyOfUnK1I5kBfF4BB5MV19EYXPyJyGtLVXO69JRpQlV1rXQEpApRQMsjVPOAPd0A==}
+  '@nx.js/patch-nacp@1.0.1':
+    resolution: {integrity: sha512-j1jqkuQt9CixQCL+/jsUuaSZfHW1juiEK9s0h0O2/XAPETBAG2QoZlQa8ZnGgbL/ioTIYNO2K520KsutzA/xwA==}
 
-  '@nx.js/runtime@0.0.58':
-    resolution: {integrity: sha512-ocBH74IoBjMJjtMhRZnJcE0zqUQJjzT/vVfU6cevxwCiyyFvRsQbodQtOJEQPWfJ4eR2uS1cttxO0E3nfYfA9Q==}
+  '@nx.js/runtime@0.0.59':
+    resolution: {integrity: sha512-cXiD41UhEhbTpiGdVElPAH7Bav2AyYh1OwtGEHT5LsOl+q3XRspDq/bTyqEtHAV5GM9pgsalL3A5hJpXC+bt0w==}
 
   '@remix-run/router@1.20.0':
     resolution: {integrity: sha512-mUnk8rPJBI9loFDZ+YzPGdeniYK+FTmRD1TMCz7ev2SNIozyKKpnGgsxO34u6Z4z/t0ITuu7voi/AshfsGsgFg==}
@@ -2558,9 +2558,9 @@ snapshots:
 
   '@nx.js/constants@0.1.5': {}
 
-  '@nx.js/nro@0.0.58':
+  '@nx.js/nro@0.0.59':
     dependencies:
-      '@nx.js/patch-nacp': 1.0.0
+      '@nx.js/patch-nacp': 1.0.1
       '@tootallnate/nacp': 0.2.0
       '@tootallnate/nro': 0.1.2
       '@tootallnate/romfs': 0.1.0
@@ -2571,9 +2571,9 @@ snapshots:
       - debug
       - encoding
 
-  '@nx.js/nsp@0.0.58':
+  '@nx.js/nsp@0.0.59':
     dependencies:
-      '@nx.js/patch-nacp': 1.0.0
+      '@nx.js/patch-nacp': 1.0.1
       '@tootallnate/nacp': 0.2.0
       bytes: 3.1.2
       chalk: 5.3.0
@@ -2584,14 +2584,14 @@ snapshots:
       - debug
       - encoding
 
-  '@nx.js/patch-nacp@1.0.0':
+  '@nx.js/patch-nacp@1.0.1':
     dependencies:
       '@tootallnate/nacp': 0.2.0
       parse-author: 2.0.0
       title-case: 4.3.2
       types-package-json: 2.0.39
 
-  '@nx.js/runtime@0.0.58': {}
+  '@nx.js/runtime@0.0.59': {}
 
   '@remix-run/router@1.20.0': {}
 
