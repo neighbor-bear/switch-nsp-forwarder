@@ -10,6 +10,7 @@ import type { AppInfo } from '../apps';
 type Status = 'generating' | 'error' | 'success';
 
 export interface GenerateState extends AppInfo {
+	romPath: string;
 	profileSelector: boolean;
 }
 
@@ -19,6 +20,7 @@ export function Generate() {
 		id,
 		icon,
 		path,
+		romPath,
 		name,
 		author,
 		version,
@@ -138,7 +140,11 @@ export function Generate() {
 					//FS.writeFile('/logo/StartupMovie.gif', startupMovie);
 
 					FS.mkdir('/romfs');
-					FS.writeFile('/romfs/nextArgv', path);
+					let argv = path;
+					if (romPath) {
+						argv += ` ${romPath}`;
+					}
+					FS.writeFile('/romfs/nextArgv', argv);
 					FS.writeFile('/romfs/nextNroPath', path);
 				},
 				onRuntimeInitialized: () => {
@@ -188,7 +194,17 @@ export function Generate() {
 			});
 		}
 		setTimeout(g, 250);
-	}, [navigate, icon, path, id, name, author, version, profileSelector]);
+	}, [
+		navigate,
+		icon,
+		path,
+		romPath,
+		id,
+		name,
+		author,
+		version,
+		profileSelector,
+	]);
 
 	return (
 		<>

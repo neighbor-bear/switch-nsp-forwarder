@@ -19,6 +19,7 @@ import { ErrorMissingProdKeys } from './routes/ErrorMissingProdKeys';
 import { Generate } from './routes/Generate';
 import { Select } from './routes/Select';
 import { SelectForwarderType } from './routes/SelectForwarderType';
+import { SelectRetroArch } from './routes/SelectRetroArch';
 import { Success } from './routes/Success';
 import { RouteErrorBoundary } from './routes/Error';
 import { Edit } from './routes/Edit';
@@ -42,6 +43,11 @@ const routes = [
 	{
 		path: '/select-forwarder-type',
 		element: <SelectForwarderType />,
+		errorElement: <RouteErrorBoundary />,
+	},
+	{
+		path: '/select-retroarch',
+		element: <SelectRetroArch />,
 		errorElement: <RouteErrorBoundary />,
 	},
 	{

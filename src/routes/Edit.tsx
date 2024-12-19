@@ -9,8 +9,12 @@ import { Footer, FooterItem } from '../components/Footer';
 import type { GenerateState } from './Generate';
 import type { AppInfo } from '../apps';
 
+export interface EditState extends AppInfo {
+	romPath?: string;
+}
+
 export function Edit() {
-	const initialState: AppInfo = useLocation().state;
+	const initialState: EditState = useLocation().state;
 	const { icon } = initialState;
 	const root = useRoot();
 	const navigate = useNavigate();
@@ -30,6 +34,7 @@ export function Edit() {
 	const [version, setVersion] = useState(() => initialState.version);
 	const [profileSelector, _setProfileSelector] = useState(false);
 	const [nroPath, setNroPath] = useState(() => initialState.path);
+	const [romPath, setRomPath] = useState(() => initialState.romPath ?? '');
 	const [focusedIndex, setFocusedIndex] = useState(-1);
 
 	const fields = [
@@ -37,9 +42,16 @@ export function Edit() {
 		{ name: 'App Title', value: name, onChange: setName },
 		{ name: 'Author', value: author, onChange: setAuthor },
 		{ name: 'Version', value: version, onChange: setVersion },
-		{ name: 'NRO Path', value: nroPath, onChange: setNroPath },
+		{
+			name: romPath ? 'Core Path' : 'NRO Path',
+			value: nroPath,
+			onChange: setNroPath,
+		},
 		//{ name: 'Enable Profile Selector', value: profileSelector, onChange: setProfileSelector },
 	];
+	if (initialState.romPath) {
+		fields.push({ name: 'ROM Path', value: romPath, onChange: setRomPath });
+	}
 	const fieldsLength = fields.length;
 	const keyboardShown = navigator.virtualKeyboard.boundingRect.height > 0;
 
@@ -50,6 +62,7 @@ export function Edit() {
 				id,
 				icon,
 				path: nroPath,
+				romPath,
 				name,
 				author,
 				version,
@@ -57,7 +70,17 @@ export function Edit() {
 			};
 			navigate('/generate', { state });
 		},
-		[id, icon, nroPath, name, author, version, profileSelector, navigate],
+		[
+			id,
+			icon,
+			nroPath,
+			romPath,
+			name,
+			author,
+			version,
+			profileSelector,
+			navigate,
+		],
 		!keyboardShown,
 	);
 
