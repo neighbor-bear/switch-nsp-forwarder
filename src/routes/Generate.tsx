@@ -148,6 +148,7 @@ export function Generate() {
 							'--titleid',
 							id,
 							'--nologo',
+							'--plaintext',
 						]);
 						console.debug(`exit code: ${exitCode}`);
 
