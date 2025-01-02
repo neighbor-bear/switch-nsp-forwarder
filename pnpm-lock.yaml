@@ -14,6 +14,12 @@ importers:
       '@nx.js/constants':
         specifier: ^0.4.0
         version: 0.4.0
+      '@nx.js/install-title':
+        specifier: ^0.0.1
+        version: 0.0.1
+      '@nx.js/ncm':
+        specifier: ^1.1.0
+        version: 1.1.0
       '@tootallnate/nacp':
         specifier: ^0.0.1
         version: 0.0.1
@@ -691,6 +697,12 @@ packages:
   '@nx.js/constants@0.4.0':
     resolution: {integrity: sha512-bUs7P7Mu5+hQmgzcfdp8bNzmwxPJtI+B8+5zuWYm66empjO7WCFk9j9/G0TJ8Kb935gOqO58+RG3HVCMri36IQ==}
 
+  '@nx.js/install-title@0.0.1':
+    resolution: {integrity: sha512-W3F4awJU+vbSm3ZPOAmjGaeHTdY8Zu2z98j6v1GUS6vFLbHjFQKkbEyDkKkFabVvZY83HJkVaHTFExlN1oBidw==}
+
+  '@nx.js/ncm@1.1.0':
+    resolution: {integrity: sha512-NhOTMk59PZ8CogI1B26KUPwnZFwk3ufrSeALG4NLe3jWiMzqNfBesPRpuTlYDbtLsnGOdBUMFi8oWBoJL8soHw==}
+
   '@nx.js/nro@0.0.61':
     resolution: {integrity: sha512-eTHav44uIpHha/PGObWxd/RMShuP2MzpDvq0FelhZqbciXfMETMbWIXTOedxNdnOudhb+Q5Btd815dUJ6ZFg6A==}
     hasBin: true
@@ -704,6 +716,9 @@ packages:
 
   '@nx.js/runtime@0.0.61':
     resolution: {integrity: sha512-purboX7rbRhkzIInjlt+mn+7RDLR5DfH3dy1XfIjU9X5j6TvpAJQ8OSfEL6/Dn0epnT1ReLWQtVOm0D1ZT3peA==}
+
+  '@nx.js/util@1.0.0':
+    resolution: {integrity: sha512-GMB0ATTm85fd/XhfB8czEiAZ6ZD2e2bAKjCYF1wdgMPj21fFz5zfwkQ2t1oF/VkjLhBH3kDdNDIIhVQy6VIHug==}
 
   '@remix-run/router@1.20.0':
     resolution: {integrity: sha512-mUnk8rPJBI9loFDZ+YzPGdeniYK+FTmRD1TMCz7ev2SNIozyKKpnGgsxO34u6Z4z/t0ITuu7voi/AshfsGsgFg==}
@@ -720,6 +735,9 @@ packages:
 
   '@tootallnate/nro@0.1.2':
     resolution: {integrity: sha512-ftaCXHpuScjtoTgA3C7Ne8ChfQo7TvSMcQaXA+y10Zh9qC8Abw6JKk7RCPC2YeVLg1n+1b4H887SB52EaZ4LvQ==}
+
+  '@tootallnate/nsp@0.0.2':
+    resolution: {integrity: sha512-z5rPb6sMFwidTpLw05VHX/Hu1yUGvKXhQd+990nbcAPwGOzMkdSToETQ/4jSzyDoke1FsPyLdpSYlUuXWIEuDg==}
 
   '@tootallnate/romfs@0.1.0':
     resolution: {integrity: sha512-ZXEgARulK9g0wLgL2mrsxOyAfcI0pAVSi+0UUs1B3lfbBv7qaltMe37YTmn8Aa8BvJ/sc+XqTI5aA7U6NX/nRg==}
@@ -2020,6 +2038,18 @@ snapshots:
 
   '@nx.js/constants@0.4.0': {}
 
+  '@nx.js/install-title@0.0.1':
+    dependencies:
+      '@nx.js/constants': 0.4.0
+      '@nx.js/ncm': 1.1.0
+      '@nx.js/util': 1.0.0
+      '@tootallnate/nsp': 0.0.2
+
+  '@nx.js/ncm@1.1.0':
+    dependencies:
+      '@nx.js/constants': 0.4.0
+      '@nx.js/util': 1.0.0
+
   '@nx.js/nro@0.0.61':
     dependencies:
       '@nx.js/patch-nacp': 2.0.0
@@ -2055,6 +2085,8 @@ snapshots:
 
   '@nx.js/runtime@0.0.61': {}
 
+  '@nx.js/util@1.0.0': {}
+
   '@remix-run/router@1.20.0': {}
 
   '@tokenizer/token@0.3.0': {}
@@ -2066,6 +2098,8 @@ snapshots:
   '@tootallnate/nro@0.1.2':
     dependencies:
       '@tootallnate/nacp': 0.2.0
+
+  '@tootallnate/nsp@0.0.2': {}
 
   '@tootallnate/romfs@0.1.0': {}
 

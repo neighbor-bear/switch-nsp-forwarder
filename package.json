@@ -25,6 +25,8 @@
   "dependencies": {
     "@nx.js/clkrst": "^1.0.1",
     "@nx.js/constants": "^0.4.0",
+    "@nx.js/install-title": "^0.0.1",
+    "@nx.js/ncm": "^1.1.0",
     "@tootallnate/nacp": "^0.0.1",
     "jimp": "^1.6.0",
     "react": "^18.3.1",

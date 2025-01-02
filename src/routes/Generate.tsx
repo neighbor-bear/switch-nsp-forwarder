@@ -3,15 +3,18 @@ import { Text } from 'react-tela';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Jimp } from 'jimp';
+import { NcmStorageId } from '@nx.js/ncm';
+import { installNsp } from '@nx.js/install-title';
 import { prodKeys } from '../prod-keys';
 import type { Module } from '../hacbrewpack';
 import type { AppInfo } from '../apps';
 
-type Status = 'generating' | 'error' | 'success';
+type Status = 'generating' | 'installing' | 'error' | 'success';
 
 export interface GenerateState extends AppInfo {
 	romPath: string;
 	profileSelector: boolean;
+	install: boolean;
 }
 
 export function Generate() {
@@ -25,6 +28,7 @@ export function Generate() {
 		author,
 		version,
 		profileSelector,
+		install,
 	}: GenerateState = useLocation().state;
 	const [status, setStatus] = useState<Status>('generating');
 	const [error, setError] = useState<string | null>(null);
@@ -165,17 +169,35 @@ export function Generate() {
 								)[0];
 
 								const data = Module.FS.readFile(`/hacbrewpack_nsp/${nspName}`);
-
-								const fileName = `${name.replace(/[:/\\]/g, '-')} [${id}].nsp`;
-								const outUrl = new URL(fileName, 'sdmc:/');
-								Switch.writeFileSync(outUrl, data);
-
 								const duration = Date.now() - start;
-								const query = new URLSearchParams({
-									name: fileName,
-									duration: String(duration),
-								});
-								navigate(`/success?${query}`);
+
+								if (install) {
+									setStatus('installing');
+									(async () => {
+										for await (const event of installNsp(
+											new Blob([data]),
+											NcmStorageId.SdCard,
+										)) {
+											console.debug(event);
+										}
+									})().then(() => {
+										const query = new URLSearchParams({
+											installed: '1',
+											duration: String(duration),
+										});
+										navigate(`/success?${query}`);
+									});
+								} else {
+									const fileName = `${name.replace(/[:/\\]/g, '-')} [${id}].nsp`;
+									const outUrl = new URL(fileName, 'sdmc:/');
+									Switch.writeFileSync(outUrl, data);
+
+									const query = new URLSearchParams({
+										name: fileName,
+										duration: String(duration),
+									});
+									navigate(`/success?${query}`);
+								}
 							} catch (err) {
 								setStatus('error');
 								setError(`Failed to locate NSP file: ${err}`);
@@ -204,6 +226,7 @@ export function Generate() {
 		author,
 		version,
 		profileSelector,
+		install,
 	]);
 
 	return (

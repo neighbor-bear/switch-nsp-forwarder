@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Text, useRoot } from 'react-tela';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TextInput } from '../components/TextInput';
@@ -55,9 +55,8 @@ export function Edit() {
 	const fieldsLength = fields.length;
 	const keyboardShown = navigator.virtualKeyboard.boundingRect.height > 0;
 
-	useGamepadButton(
-		'X',
-		() => {
+	const goToGenerate = useCallback(
+		(install: boolean) => {
 			const state: GenerateState = {
 				id,
 				icon,
@@ -67,6 +66,7 @@ export function Edit() {
 				author,
 				version,
 				profileSelector,
+				install,
 			};
 			navigate('/generate', { state });
 		},
@@ -81,6 +81,19 @@ export function Edit() {
 			profileSelector,
 			navigate,
 		],
+	);
+
+	useGamepadButton(
+		'X',
+		() => goToGenerate(true),
+		[goToGenerate],
+		!keyboardShown,
+	);
+
+	useGamepadButton(
+		'Y',
+		() => goToGenerate(false),
+		[goToGenerate],
 		!keyboardShown,
 	);
 
@@ -147,14 +160,17 @@ export function Edit() {
 			<AppIcon icon={icon} x={root.ctx.canvas.width - 320} y={64} />
 
 			<Footer>
-				<FooterItem button='B' x={root.ctx.canvas.width - 400}>
+				<FooterItem button='B' x={root.ctx.canvas.width - 740}>
 					Back
 				</FooterItem>
-				<FooterItem button='A' x={root.ctx.canvas.width - 266}>
+				<FooterItem button='A' x={root.ctx.canvas.width - 620}>
 					Edit
 				</FooterItem>
-				<FooterItem button='X' x={root.ctx.canvas.width - 160}>
-					Generate
+				<FooterItem button='Y' x={root.ctx.canvas.width - 510}>
+					Save Forwarder
+				</FooterItem>
+				<FooterItem button='X' x={root.ctx.canvas.width - 260}>
+					Install Forwarder
 				</FooterItem>
 			</Footer>
 		</>
