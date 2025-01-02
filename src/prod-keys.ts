@@ -9,7 +9,7 @@ if (prodKeys) {
 	// If there is no `prod.keys` file, then generate the header key from the "spl" service.
 
 	// These source values are seen in other open source repos:
-	//   - https://github.com/Atmosphere-NX/Atmosphere/blob/master/Source/FS/Content/nca/nca.cpp#L108
+	//   - https://github.com/blawar/tinleaf/blob/3363538600e47e1862d64d265dab1a031b32d037/include/util/crypto.hpp#L41-L42
 	//   - https://github.com/ITotalJustice/sphaira/blob/0370e47f7fac0e426675624f363fe50f3b442048/sphaira/source/owo.cpp#L339-L346
 	const headerKekSource = new Uint8Array([
 		0x1f, 0x12, 0x91, 0x3a, 0x4a, 0xcb, 0xf0, 0x0d, 0x4c, 0xde, 0x3a, 0xf6,
