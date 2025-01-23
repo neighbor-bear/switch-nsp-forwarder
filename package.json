@@ -25,9 +25,9 @@
   "dependencies": {
     "@nx.js/clkrst": "^1.0.1",
     "@nx.js/constants": "^0.4.0",
-    "@nx.js/install-title": "^0.0.1",
+    "@nx.js/install-title": "^0.0.2",
     "@nx.js/ncm": "^1.1.0",
-    "@tootallnate/nacp": "^0.0.1",
+    "@tootallnate/nacp": "^0.2.0",
     "jimp": "^1.6.0",
     "react": "^18.3.1",
     "react-router-dom": "6.27.0",
@@ -35,9 +35,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@nx.js/nro": "0.0.61",
-    "@nx.js/nsp": "0.0.61",
-    "@nx.js/runtime": "0.0.61",
+    "@nx.js/nro": "0.0.62",
+    "@nx.js/nsp": "0.0.62",
+    "@nx.js/runtime": "0.0.62",
     "@types/react": "^18.3.12",
     "esbuild": "^0.17.19",
     "typescript": "^5.7.2"
