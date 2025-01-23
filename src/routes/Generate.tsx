@@ -1,10 +1,10 @@
-import { NACP } from '@tootallnate/nacp';
-import { Text } from 'react-tela';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { Jimp } from 'jimp';
+import { Text } from 'react-tela';
+import { NACP } from '@tootallnate/nacp';
 import { NcmStorageId } from '@nx.js/ncm';
 import { installNsp } from '@nx.js/install-title';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { prodKeys } from '../prod-keys';
 import type { Module } from '../hacbrewpack';
 import type { AppInfo } from '../apps';
@@ -172,6 +172,7 @@ export function Generate() {
 								const duration = Date.now() - start;
 
 								if (install) {
+									// Install the generated NSP forwarder
 									setStatus('installing');
 									(async () => {
 										for await (const event of installNsp(
@@ -183,11 +184,13 @@ export function Generate() {
 									})().then(() => {
 										const query = new URLSearchParams({
 											installed: '1',
+											name,
 											duration: String(duration),
 										});
 										navigate(`/success?${query}`);
 									});
 								} else {
+									// Save the generated NSP forwarder to the SD card
 									const fileName = `${name.replace(/[:/\\]/g, '-')} [${id}].nsp`;
 									const outUrl = new URL(fileName, 'sdmc:/');
 									Switch.writeFileSync(outUrl, data);
@@ -215,7 +218,7 @@ export function Generate() {
 				},
 			});
 		}
-		setTimeout(g, 250);
+		setTimeout(g, 50);
 	}, [
 		navigate,
 		icon,

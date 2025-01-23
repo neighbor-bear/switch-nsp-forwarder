@@ -1,10 +1,19 @@
 import { Text, useRoot } from 'react-tela';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Footer, FooterItem } from '../components/Footer';
+import { useGamepadButton } from '../hooks/use-gamepad';
 
 export function Success() {
 	const root = useRoot();
+	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 	const wasInstalled = searchParams.get('installed') === '1';
+	const name = searchParams.get('name') ?? '';
+
+	useGamepadButton('Minus', () => navigate('/select-forwarder-type'), [
+		navigate,
+	]);
+
 	return (
 		<>
 			<Text
@@ -28,16 +37,28 @@ export function Success() {
 				
 			</Text>
 			{wasInstalled ? (
-				<Text
-					fontFamily='sans-serif'
-					fill='white'
-					fontSize={32}
-					textAlign='center'
-					x={root.ctx.canvas.width / 2}
-					y={340}
-				>
-					Installed NSP file
-				</Text>
+				<>
+					<Text
+						fontFamily='sans-serif'
+						fill='white'
+						fontSize={32}
+						textAlign='center'
+						x={root.ctx.canvas.width / 2}
+						y={340}
+					>
+						Installed Forwarder:
+					</Text>
+					<Text
+						fontFamily='sans-serif'
+						fill='yellow'
+						fontSize={32}
+						textAlign='center'
+						x={root.ctx.canvas.width / 2}
+						y={400}
+					>
+						{name}
+					</Text>
+				</>
 			) : (
 				<>
 					<Text
@@ -48,7 +69,7 @@ export function Success() {
 						x={root.ctx.canvas.width / 2}
 						y={340}
 					>
-						Created NSP file:
+						Created Forwarder:
 					</Text>
 					<Text
 						fontFamily='sans-serif'
@@ -58,7 +79,7 @@ export function Success() {
 						x={root.ctx.canvas.width / 2}
 						y={400}
 					>
-						{searchParams.get('name') ?? ''}
+						{name}
 					</Text>
 					<Text
 						fontFamily='sans-serif'
@@ -93,6 +114,15 @@ export function Success() {
 					</Text>
 				</>
 			)}
+
+			<Footer>
+				<FooterItem button='Minus' x={root.ctx.canvas.width - 320}>
+					Start Over
+				</FooterItem>
+				<FooterItem button='Plus' x={root.ctx.canvas.width - 120}>
+					Exit
+				</FooterItem>
+			</Footer>
 		</>
 	);
 }
