@@ -111,7 +111,7 @@ export function Success() {
 				textAlign='right'
 				textBaseline='bottom'
 				x={root.ctx.canvas.width - 10}
-				y={root.ctx.canvas.height - 10}
+				y={root.ctx.canvas.height - 90}
 			>
 				{`${searchParams.get('duration') ?? ''} ms`}
 			</Text>
