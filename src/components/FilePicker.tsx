@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Group, Rect, Text, useRoot } from 'react-tela';
-import { useGamepadButton } from '../hooks/use-gamepad';
+import { useGamepadButton, useDirection } from '../hooks/use-gamepad';
 import { isDirectory } from '../util';
 
 interface Entry {
@@ -17,9 +17,24 @@ export function FilePicker({ onSelect, onClose }: FilePickerProps) {
 	const [dir, setDir] = useState(new URL('sdmc:/'));
 	const [entries, setEntries] = useState<Entry[]>([]);
 	const [selectedIndex, setSelectedIndex] = useState(0);
+	const [scrollOffset, setScrollOffset] = useState(0);
 	const root = useRoot();
 	const focused = true;
 	const numEntries = entries.length;
+	const itemHeight = 20;
+	const padding = 8;
+	const visibleWidth = root.ctx.canvas.width - 80;
+	const visibleHeight = root.ctx.canvas.height - 80;
+	const itemsPerPage = Math.floor(visibleHeight / (itemHeight + padding * 2));
+	const centeringPadding = Math.floor(
+		(visibleHeight % (itemHeight + padding * 2)) / 2,
+	);
+
+	// Calculate visible entries
+	const visibleEntries = entries.slice(
+		scrollOffset,
+		scrollOffset + itemsPerPage,
+	);
 
 	const doSelect = useCallback(
 		(entry: Entry) => {
@@ -49,6 +64,46 @@ export function FilePicker({ onSelect, onClose }: FilePickerProps) {
 		[dir, onClose, onSelect],
 	);
 
+	useDirection(
+		'Up',
+		() => {
+			setSelectedIndex((i) => {
+				const newIndex = Math.max(0, i - 1);
+				// If we're at the top of the visible area and there are items above
+				if (newIndex < scrollOffset && scrollOffset > 0) {
+					setScrollOffset(newIndex);
+				}
+				return newIndex;
+			});
+		},
+		// scrollOffset is necessary to work right, but causes a shortcut in the delay logic.
+		// this is a non-ideal behavior, but the UX isn't THAT bad despite it being a bug.
+		[numEntries, scrollOffset, itemsPerPage],
+		focused,
+		true,
+	);
+
+	useDirection(
+		'Down',
+		() => {
+			setSelectedIndex((i) => {
+				const newIndex = Math.min(numEntries - 1, i + 1);
+				// If we're at the bottom of the visible area and there are items below
+				if (newIndex >= scrollOffset + itemsPerPage) {
+					setScrollOffset((offset) =>
+						Math.min(numEntries - itemsPerPage, offset + 1),
+					);
+				}
+				return newIndex;
+			});
+		},
+		// scrollOffset is necessary to work right, but causes a shortcut in the delay logic.
+		// this is a non-ideal behavior, but the UX isn't THAT bad despite it being a bug.
+		[numEntries, scrollOffset, itemsPerPage],
+		focused,
+		true,
+	);
+
 	useGamepadButton(
 		'A',
 		() => {
@@ -58,28 +113,11 @@ export function FilePicker({ onSelect, onClose }: FilePickerProps) {
 		focused,
 	);
 
+	// FIXME: exit the picker when we're at the root directory
 	useGamepadButton(
 		'B',
 		() => doSelect(entries[0]),
 		[doSelect, entries],
-		focused,
-	);
-
-	useGamepadButton(
-		'Up',
-		() => {
-			setSelectedIndex((i) => Math.max(0, i - 1));
-		},
-		[],
-		focused,
-	);
-
-	useGamepadButton(
-		'Down',
-		() => {
-			setSelectedIndex((i) => Math.min(numEntries - 1, i + 1));
-		},
-		[numEntries],
 		focused,
 	);
 
@@ -108,6 +146,9 @@ export function FilePicker({ onSelect, onClose }: FilePickerProps) {
 				return a.name.localeCompare(b.name);
 			}),
 		);
+		// Reset when changing directories
+		setSelectedIndex(0);
+		setScrollOffset(0);
 	}, [dir]);
 
 	return (
@@ -117,29 +158,38 @@ export function FilePicker({ onSelect, onClose }: FilePickerProps) {
 				height={root.ctx.canvas.height}
 				fill='rgba(0, 0, 0, 0.5)'
 			/>
-			<Group
-				width={root.ctx.canvas.width - 80}
-				height={root.ctx.canvas.height - 80}
-				x={40}
-				y={40}
-			>
+			<Group width={visibleWidth} height={visibleHeight} x={40} y={40}>
 				<Rect
-					width={root.ctx.canvas.width - 80}
-					height={root.ctx.canvas.height - 80}
+					width={visibleWidth}
+					height={visibleHeight}
 					fill='black'
 					lineWidth={4}
 				/>
-				{entries.map((entry, i) => (
-					<FilePickerItem
-						key={entry.name}
-						entry={entry}
-						index={i}
-						selected={i === selectedIndex}
-					/>
-				))}
+				<Group
+					width={visibleWidth}
+					height={visibleHeight}
+					y={centeringPadding}
+					x={0}
+				>
+					{visibleEntries.map((entry, i) => (
+						<FilePickerItem
+							key={entry.name}
+							entry={entry}
+							index={i}
+							selected={scrollOffset + i === selectedIndex}
+						/>
+					))}
+				</Group>
+				<Scrollbar
+					height={visibleHeight}
+					x={visibleWidth}
+					numEntries={numEntries}
+					itemsPerPage={itemsPerPage}
+					scrollOffset={scrollOffset}
+				/>
 				<Rect
-					width={root.ctx.canvas.width - 80}
-					height={root.ctx.canvas.height - 80}
+					width={visibleWidth}
+					height={visibleHeight}
 					stroke='white'
 					lineWidth={4}
 				/>
@@ -148,16 +198,52 @@ export function FilePicker({ onSelect, onClose }: FilePickerProps) {
 	);
 }
 
+interface ScrollbarProps {
+	height: number;
+	x: number;
+	numEntries: number;
+	itemsPerPage: number;
+	scrollOffset: number;
+	padding?: number;
+}
+
+function Scrollbar({
+	height,
+	x,
+	numEntries,
+	itemsPerPage,
+	scrollOffset,
+	padding = 8,
+}: ScrollbarProps) {
+	if (numEntries <= itemsPerPage) return null;
+
+	// Calculate scrollbar dimensions
+	const scrollbarWidth = 8;
+	const scrollbarHeight = Math.floor(
+		Math.max((height * itemsPerPage) / numEntries, height * 0.1),
+	);
+	const scrollbarY = Math.round(
+		(height - scrollbarHeight) * (scrollOffset / (numEntries - itemsPerPage)),
+	);
+	return (
+		<Rect
+			width={scrollbarWidth}
+			height={scrollbarHeight}
+			x={x - scrollbarWidth - padding}
+			y={scrollbarY}
+			fill='rgba(255, 255, 255, 0.5)'
+		/>
+	);
+}
+
 function FilePickerItem({
 	entry,
 	index,
 	selected,
-	onTouchEnd,
 }: {
 	entry: Entry;
 	index: number;
 	selected: boolean;
-	onTouchEnd?: () => void;
 }) {
 	const root = useRoot();
 	const width = root.ctx.canvas.width - 80;
@@ -165,13 +251,7 @@ function FilePickerItem({
 	const padding = 8;
 	const y = (height + padding * 2) * index;
 	return (
-		<Group
-			width={width}
-			height={height + padding * 2}
-			x={0}
-			y={y}
-			onTouchEnd={onTouchEnd}
-		>
+		<Group width={width} height={height + padding * 2} x={0} y={y}>
 			{selected && (
 				<Rect width={width} height={height + padding * 2} fill='blue' />
 			)}

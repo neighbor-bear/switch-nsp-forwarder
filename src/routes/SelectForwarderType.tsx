@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Text, useRoot } from 'react-tela';
 import { Footer, FooterItem } from '../components/Footer';
-import { useGamepadButton } from '../hooks/use-gamepad';
+import { useDirection, useGamepadButton } from '../hooks/use-gamepad';
 import {
 	NROForwarderIcon,
 	RetroArchForwarderIcon,
@@ -20,9 +20,9 @@ export function SelectForwarderType() {
 		selectedIndex,
 	]);
 
-	useGamepadButton('Left', () => setSelectedIndex(0), []);
+	useDirection('Left', () => setSelectedIndex(0), []);
 
-	useGamepadButton('Right', () => setSelectedIndex(1), []);
+	useDirection('Right', () => setSelectedIndex(1), []);
 
 	return (
 		<>
