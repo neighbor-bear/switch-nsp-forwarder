@@ -40,14 +40,14 @@ importers:
         specifier: ^1.9.4
         version: 1.9.4
       '@nx.js/nro':
-        specifier: 0.0.62
-        version: 0.0.62
+        specifier: 0.0.64
+        version: 0.0.64
       '@nx.js/nsp':
-        specifier: 0.0.62
-        version: 0.0.62
+        specifier: 0.0.64
+        version: 0.0.64
       '@nx.js/runtime':
-        specifier: 0.0.63
-        version: 0.0.63
+        specifier: 0.0.64
+        version: 0.0.64
       '@types/react':
         specifier: ^18.3.23
         version: 18.3.23
@@ -538,22 +538,22 @@ packages:
   '@nx.js/ncm@1.2.0':
     resolution: {integrity: sha512-azxdrFxu6BnRcpydU2aoipwGHONnLtk4q8kg44aZ+GKe3fHsiEqNYvG5f/Y80OTFScTiLor5d53t7l0gbb65Nw==}
 
-  '@nx.js/nro@0.0.62':
-    resolution: {integrity: sha512-wGG+AxpclaWmSFluC9529CShNum5bvMZFRDYa4CFhj5iZ4nMeVWihRVEOv0GOkB55/3sxrhNnzG/xKY4aX3oZQ==}
+  '@nx.js/nro@0.0.64':
+    resolution: {integrity: sha512-qKvFATQfP/gUBLeIBlbqtmi2F9JqxZI0kwhb6MiUc3/9q61d1lcLewe0bqSt51gjJgACN6UJakCEE6WJNa0NAg==}
     hasBin: true
 
   '@nx.js/ns@1.0.0':
     resolution: {integrity: sha512-9l9OM/VP9jfnp8zJ78SDKVqRbD4nOGXvFgfmex5B8njM+9CZy6+R0R8KXrRnkShI/+8zeZYjgPjzDFyg4YUeoA==}
 
-  '@nx.js/nsp@0.0.62':
-    resolution: {integrity: sha512-72ZnkxazdkhgxFlBQl4X2RBxblsEuYGrd2uwjc1T0nXiuq1QQ9SLFdwamDoHXrC4NCfbYfIec2Kz3mHwXl+lsA==}
+  '@nx.js/nsp@0.0.64':
+    resolution: {integrity: sha512-BYcXou6SSMcaJNy8a8rqPD4IYGv1rfQAyvkWlf7SdFIEjJzhEc0xVGGqtwpHVpZdMfsoKhabdp4uVN+bAoP/hg==}
     hasBin: true
 
   '@nx.js/patch-nacp@2.0.0':
     resolution: {integrity: sha512-px4mL57q5g167kvo3wguxe2i/Ky5By9i5SBN3dmdGr6Mlo3JwHRGILegFLux0sjClU0LEwJWMWdoFShinOuwqw==}
 
-  '@nx.js/runtime@0.0.63':
-    resolution: {integrity: sha512-5SJiX/y2phIbnz7s9aTAVHkHcT6/Sh2iiGEEpQ8eh7OjbQKmPR/B3n9reZVVn60fUMgtJWsEYdml4QaQy83ukg==}
+  '@nx.js/runtime@0.0.64':
+    resolution: {integrity: sha512-5y1x7sFajsfF5+hgp+WueoRREIwW3DFY6FEsVf/gW0+3NAytABCZB+97qw16pnBsyEDh5d7IlBF6JaAUAp7SEg==}
 
   '@nx.js/util@1.1.0':
     resolution: {integrity: sha512-UUWJCFpFSKHhp3HYrKk+BVmUpS2JxD55Dqhw6TJTmOaTI3HKOqQJJlIOwK/GRRW3VTXAOO13x+k4BHxFy7jnPg==}
@@ -1647,7 +1647,7 @@ snapshots:
       '@nx.js/constants': 0.4.0
       '@nx.js/util': 1.1.0
 
-  '@nx.js/nro@0.0.62':
+  '@nx.js/nro@0.0.64':
     dependencies:
       '@nx.js/patch-nacp': 2.0.0
       '@tootallnate/nacp': 0.2.0
@@ -1663,7 +1663,7 @@ snapshots:
     dependencies:
       '@nx.js/constants': 0.4.0
 
-  '@nx.js/nsp@0.0.62':
+  '@nx.js/nsp@0.0.64':
     dependencies:
       '@nx.js/patch-nacp': 2.0.0
       '@tootallnate/nacp': 0.2.0
@@ -1682,7 +1682,7 @@ snapshots:
       title-case: 4.3.2
       types-package-json: 2.0.39
 
-  '@nx.js/runtime@0.0.63': {}
+  '@nx.js/runtime@0.0.64': {}
 
   '@nx.js/util@1.1.0': {}
 
