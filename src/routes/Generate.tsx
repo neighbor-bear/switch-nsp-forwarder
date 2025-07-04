@@ -43,6 +43,16 @@ export function Generate() {
 			const mainNpdmData = Switch.readFileSync(
 				'romfs:/template/exefs/main.npdm',
 			);
+			if (!name) {
+				setStatus('error');
+				setError('missing `name` field');
+				return;
+			}
+			if (!author) {
+				setStatus('error');
+				setError('missing `author` field');
+				return;
+			}
 			if (!helloWasm) {
 				setStatus('error');
 				setError('missing `hacbrewpack.wasm` file');
