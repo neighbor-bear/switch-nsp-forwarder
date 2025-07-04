@@ -81,4 +81,9 @@ const router = createMemoryRouter(routes, {
 	initialIndex: 0,
 });
 
+// Enable high-quality image smoothing for the canvas
+const ctx = screen.getContext('2d');
+ctx.imageSmoothingEnabled = true;
+ctx.imageSmoothingQuality = 'high';
+
 render(<RouterProvider router={router} />, screen);
