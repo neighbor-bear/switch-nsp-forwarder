@@ -156,7 +156,7 @@ export function Generate() {
 					FS.mkdir('/romfs');
 					let argv = path;
 					if (romPath) {
-						argv += ` ${romPath}`;
+						argv += ` "${romPath}"`;
 					}
 					FS.writeFile('/romfs/nextArgv', argv);
 					FS.writeFile('/romfs/nextNroPath', path);
