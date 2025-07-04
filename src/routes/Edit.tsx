@@ -33,8 +33,10 @@ export function Edit() {
 	const [author, setAuthor] = useState(() => initialState.author);
 	const [version, setVersion] = useState(() => initialState.version);
 	const [profileSelector, _setProfileSelector] = useState(false);
-	const [nroPath, setNroPath] = useState(() => initialState.path);
-	const [romPath, setRomPath] = useState(() => initialState.romPath ?? '');
+	const [nroPath, setNroPath] = useState(() => decodeURI(initialState.path));
+	const [romPath, setRomPath] = useState(() =>
+		decodeURI(initialState.romPath ?? ''),
+	);
 	const [focusedIndex, setFocusedIndex] = useState(-1);
 
 	const fields = [
