@@ -17,7 +17,7 @@ export function ErrorMissingProdKeys() {
 				x={root.ctx.canvas.width / 2}
 				y={200}
 			>
-				"prod.keys" File Not Found
+				"prod.keys" 文件未找到
 			</Text>
 			<Text
 				fontFamily='sans-serif'
@@ -27,7 +27,7 @@ export function ErrorMissingProdKeys() {
 				x={root.ctx.canvas.width / 2}
 				y={340}
 			>
-				Please run the `Lockpick_RCM.bin` payload
+				请运行 Lockpick_RCM.bin 有效载荷
 			</Text>
 			<Text
 				fontFamily='sans-serif'
@@ -37,12 +37,12 @@ export function ErrorMissingProdKeys() {
 				x={root.ctx.canvas.width / 2}
 				y={390}
 			>
-				to generate your "prod.keys" file.
+				以生成您的 "prod.keys" 文件。
 			</Text>
 
 			<Footer>
 				<FooterItem button='A' x={root.ctx.canvas.width - 100}>
-					Exit
+					退出
 				</FooterItem>
 			</Footer>
 		</>

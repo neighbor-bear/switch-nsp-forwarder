@@ -69,7 +69,7 @@ export function Success() {
 						x={root.ctx.canvas.width / 2}
 						y={340}
 					>
-						Created Forwarder:
+						创建快捷方式：
 					</Text>
 					<Text
 						fontFamily='sans-serif'
@@ -89,7 +89,7 @@ export function Success() {
 						x={root.ctx.canvas.width / 2}
 						y={500}
 					>
-						Please install it with your preferred title installer.
+						请使用您常用的包安装程序进行安装。
 					</Text>
 					<Text
 						fontFamily='sans-serif'
@@ -118,10 +118,10 @@ export function Success() {
 
 			<Footer>
 				<FooterItem button='Minus' x={root.ctx.canvas.width - 320}>
-					Start Over
+					重新开始
 				</FooterItem>
 				<FooterItem button='Plus' x={root.ctx.canvas.width - 120}>
-					Exit
+					退出
 				</FooterItem>
 			</Footer>
 		</>

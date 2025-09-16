@@ -95,7 +95,7 @@ export function Select() {
 	return (
 		<>
 			<Text fill='white' fontSize={24}>
-				Select an app to create a forwarder for:
+				请选择要为其创建桌面图标的应用：
 			</Text>
 			<Text fill='white' fontSize={24} x={500}>
 				{apps[selectedIndex].path}
@@ -128,16 +128,16 @@ export function Select() {
 
 			<Footer>
 				<FooterItem button='Plus' x={root.ctx.canvas.width - 560}>
-					Exit
+					退出
 				</FooterItem>
 				<FooterItem button='X' x={root.ctx.canvas.width - 450}>
-					File Picker
+					文件选择器
 				</FooterItem>
 				<FooterItem button='B' x={root.ctx.canvas.width - 260}>
-					Back
+					返回
 				</FooterItem>
 				<FooterItem button='A' x={root.ctx.canvas.width - 140}>
-					Select
+					选择
 				</FooterItem>
 			</Footer>
 

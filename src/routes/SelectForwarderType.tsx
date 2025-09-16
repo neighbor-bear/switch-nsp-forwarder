@@ -33,7 +33,7 @@ export function SelectForwarderType() {
 				x={root.ctx.canvas.width / 2}
 				y={100}
 			>
-				What type of forwarder do you want to generate?
+				您想生成哪种类型的桌面图标应用？
 			</Text>
 			<NROForwarderIcon
 				x={root.ctx.canvas.width / 2 - 380}
@@ -49,10 +49,10 @@ export function SelectForwarderType() {
 			/>
 			<Footer>
 				<FooterItem button='Plus' x={root.ctx.canvas.width - 260}>
-					Exit
+					退出
 				</FooterItem>
 				<FooterItem button='A' x={root.ctx.canvas.width - 140}>
-					Select
+					选择
 				</FooterItem>
 			</Footer>
 		</>

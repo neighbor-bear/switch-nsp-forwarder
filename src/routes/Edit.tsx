@@ -130,7 +130,7 @@ export function Edit() {
 	return (
 		<>
 			<Text fill='white' fontSize={32} x={4} y={8}>
-				Edit configuration for your forwarder:
+				编辑您的快捷方式配置：
 			</Text>
 
 			{fields.map(({ name, value, onChange }, i) => (
@@ -163,16 +163,16 @@ export function Edit() {
 
 			<Footer>
 				<FooterItem button='B' x={root.ctx.canvas.width - 740}>
-					Back
+					返回
 				</FooterItem>
 				<FooterItem button='A' x={root.ctx.canvas.width - 620}>
-					Edit
+					编辑
 				</FooterItem>
 				<FooterItem button='Y' x={root.ctx.canvas.width - 510}>
-					Save Forwarder
+					保存
 				</FooterItem>
 				<FooterItem button='X' x={root.ctx.canvas.width - 260}>
-					Install Forwarder
+					安装
 				</FooterItem>
 			</Footer>
 		</>

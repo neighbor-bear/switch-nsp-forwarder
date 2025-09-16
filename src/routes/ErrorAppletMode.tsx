@@ -17,7 +17,7 @@ export function ErrorAppletMode() {
 				x={root.ctx.canvas.width / 2}
 				y={200}
 			>
-				● Applet Mode ●
+				● 小程序模式 ●
 			</Text>
 			<Text
 				fontFamily='sans-serif'
@@ -27,7 +27,7 @@ export function ErrorAppletMode() {
 				x={root.ctx.canvas.width / 2}
 				y={340}
 			>
-				NSP Forwarder Generator requires full-memory access.
+				NSP转发生成器需要完全内存访问权限。
 			</Text>
 			<Text
 				fontFamily='sans-serif'
@@ -37,11 +37,11 @@ export function ErrorAppletMode() {
 				x={root.ctx.canvas.width / 2}
 				y={390}
 			>
-				Please re-launch via title redirection.
+				请通过标题重定向重新启动。
 			</Text>
 			<Footer>
 				<FooterItem button='A' x={root.ctx.canvas.width - 100}>
-					Exit
+					退出
 				</FooterItem>
 			</Footer>
 		</>
